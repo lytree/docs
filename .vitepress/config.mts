@@ -14,30 +14,18 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       {
-        text: '公考', items: [
-          { text: '言语理解', link: '/official/lalognosis' },
-          { text: '资料分析', link: '/official/dataanalysis' },
-          { text: '数量', link: '/official/quantity' },
-          { text: '判断推理', link: '/official/inferring' },
-          { text: '政治理论', link: '/official/political/1' },
-        ]
+        text: '公考',link:'official' 
       },
       {
         text: '语言', items: [
-          { text: 'java', link: '/java' },
-          { text: '资料分析', link: '/dataanalysis' },
-          { text: '数量', link: '/quantity' },
-          { text: '判断推理', link: '/Inferring' },
-          { text: '政治理论', link: '/political/1' },
+          { text: 'java', link: '/script/java' },
+          { text: 'dotnet', link: '/script/dotnet' },
         ]
       },
       {
         text: '中间件', items: [
-          { text: 'Redis', link: '/redis/' },
-          { text: '资料分析', link: '/dataanalysis' },
-          { text: '数量', link: '/quantity' },
-          { text: '判断推理', link: '/Inferring' },
-          { text: '政治理论', link: '/political/1' },
+          { text: 'Redis', link: '/middleware/redis/' },
+          { text: 'Consul', link: '/middleware/consul' },
         ]
       }
     ],
