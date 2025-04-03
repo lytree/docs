@@ -18,8 +18,8 @@ export default defineConfig({
       },
       {
         text: '语言', items: [
-          { text: 'java', link: '/script/java' },
-          { text: 'dotnet', link: '/script/dotnet' },
+          { text: 'java', link: '/script/java/1' },
+          { text: 'dotnet', link: '/script/dotnet/1' },
         ]
       },
       {
@@ -40,7 +40,7 @@ export default defineConfig({
       "/script/java": [{
         text: '语法', collapsed: true, items: [
           {
-            text: "redis",
+            text: "语法",
             link: '/script/java/1'
           }
         ]
@@ -48,7 +48,7 @@ export default defineConfig({
       "/script/dotnet": [{
         text: '语法', collapsed: true, items: [
           {
-            text: "redis",
+            text: "语法",
             link: '/script/dotnet/1'
           }
         ]
