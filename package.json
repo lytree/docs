@@ -1,5 +1,7 @@
 {
   "devDependencies": {
+    "mini-svg-data-uri": "^1.4.4",
+    "@iconify/json": "^2.2.323",
     "sass": "^1.86.3",
     "unocss": "66.1.0-beta.8",
     "vitepress": "^1.6.3"
@@ -17,5 +19,8 @@
     "onlyBuiltDependencies": [
       "@parcel/watcher"
     ]
+  },
+  "dependencies": {
+    "flowbite": "^3.1.2"
   }
 }

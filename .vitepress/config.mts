@@ -1,7 +1,7 @@
 import { defineConfig } from 'vitepress'
 import viteConfig from "./vite.mts"
-import nav from "./theme.nav.mts"
-import sidebar from "./theme.sidebar.mts"
+import { nav, sidebar } from "./config.doc.mts"
+import { } from "./config.blog.mts"
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   vite: viteConfig,

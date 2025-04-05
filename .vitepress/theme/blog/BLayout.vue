@@ -1,8 +1,11 @@
 <script setup lang="tsx">
 import { Content } from 'vitepress';
-import { VPImage } from 'vitepress/theme';
+import BImage from './BImage.vue';
 import BNavbar from './BNavbar.vue';
 import BFooter from './BFooter.vue';
+import BTOC from './BTOC.vue';
+import BSideBar from './BSideBar.vue';
+import BBackToTop from './BBackToTop.vue';
 const BANNER_HEIGHT = `top: -100vh`
 
 
@@ -17,10 +20,10 @@ const BANNER_HEIGHT = `top: -100vh`
     </div>
 
     <div id="banner-wrapper" class="absolute z-10 w-full transition duration-70 overflow-hidden" :style=BANNER_HEIGHT>
-        <VPImage id="banner" alt="Banner image of the blog" class="object-cover h-full transition
-            duration-700 opacity-0 scale-105" src="">
-        </VPImage>
-    </div>}
+        <BImage id="banner" alt="Banner image of the blog"
+            class="object-cover h-full transition duration-700 opacity-0 scale-105" image="/heroimg.webp">
+        </BImage>
+    </div>
 
     <!-- Main content -->
     <div class="absolute w-full z-30 pointer-events-none" style="top: 30vh">
@@ -32,18 +35,18 @@ const BANNER_HEIGHT = `top: -100vh`
                 <a href="" id="banner-credit" target="_blank" rel="noopener" aria-label="Visit image source"
                     class="group onload-animation transition-all
                     absolute flex justify-center items-center rounded-full px-3 right-4 -top-[3.25rem] bg-black/60 hover:bg-black/70 h-9 hover:pr-9 active:bg-black/80">
-                    <Icon class="text-white/75 text-[1.25rem] mr-1" name="material-symbols:copyright-outline-rounded">
-                    </Icon>
-                    <div class="text-white/75 text-xs">{siteConfig.banner.credit.text}</div>
-                    <div class="transition absolute text-[oklch(0.75_0.14_var(--hue))] right-4 text-[0.75rem] opacity-0 group-hover:opacity-100"
-                        name="fa6-solid:arrow-up-right-from-square">
+                    <div class="text-white/75 text-[1.25rem] mr-1 i-material-symbols-copyright-outline-rounded">
+                    </div>
+                    <div class="text-white/75 text-xs"></div>
+                    <div
+                        class="transition absolute text-[oklch(0.75_0.14_var(--hue))] right-4 text-[0.75rem] opacity-0 group-hover:opacity-100 i-fa6-solid-arrow-up-right-from-square">
                     </div>
                 </a>
 
 
-                <SideBar
+                <BSideBar
                     class="mb-4 row-start-2 row-end-3 col-span-2 lg:row-start-1 lg:row-end-2 lg:col-span-1 lg:max-w-[17.5rem] onload-animation">
-                </SideBar>
+                </BSideBar>
 
                 <main id="swup-container" class="transition-swup-fade col-span-2 lg:col-span-1 overflow-hidden">
                     <div id="content-wrapper" class="onload-animation">
@@ -61,7 +64,7 @@ const BANNER_HEIGHT = `top: -100vh`
                 </div>
             </div>
 
-            <BackToTop></BackToTop>
+            <BBackToTop></BBackToTop>
         </div>
     </div>
 
@@ -75,7 +78,7 @@ const BANNER_HEIGHT = `top: -100vh`
                     class="fixed top-14 w-[var(--toc-width)] h-[calc(100vh_-_20rem)] overflow-y-scroll overflow-x-hidden hide-scrollbar">
                     <div id="toc" class="w-full h-full transition-swup-fade ">
                         <div class="h-8 w-full"></div>
-                        <TOC headings={headings}></TOC>
+                        <BTOC headings={headings}></BTOC>
                         <div class="h-8 w-full"></div>
                     </div>
                 </div>
