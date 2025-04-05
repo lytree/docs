@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "sass": "^1.86.3",
     "unocss": "66.1.0-beta.8",
     "vitepress": "^1.6.3"
   },
@@ -12,6 +13,9 @@
   "pnpm": {
     "ignoredBuiltDependencies": [
       "esbuild"
+    ],
+    "onlyBuiltDependencies": [
+      "@parcel/watcher"
     ]
   }
 }

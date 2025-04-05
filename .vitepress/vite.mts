@@ -1,7 +1,12 @@
 import UnoCSS from 'unocss/vite'
+import { transformerDirectives, transformerVariantGroup } from 'unocss'
 
 export default {
     plugins: [
-        UnoCSS()
+        UnoCSS({
+            transformers: [
+                transformerDirectives(), transformerVariantGroup()
+            ],
+        })
     ]
 }

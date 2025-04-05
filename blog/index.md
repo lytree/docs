@@ -1,0 +1,5 @@
+---
+router: blog
+---
+
+blog

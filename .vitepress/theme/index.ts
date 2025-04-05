@@ -4,14 +4,11 @@ import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import 'virtual:uno.css'
 import './style.css'
+import CustomLayout from './CustomLayout.vue'
 
 export default {
   extends: DefaultTheme,
-  Layout: () => {
-    return h(DefaultTheme.Layout, null, {
-      // https://vitepress.dev/guide/extending-default-theme#layout-slots
-    })
-  },
+  Layout: CustomLayout,
   enhanceApp({ app, router, siteData }) {
     // ...
   }

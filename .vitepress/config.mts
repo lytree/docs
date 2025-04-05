@@ -7,7 +7,7 @@ export default defineConfig({
   vite: viteConfig,
   title: "docs",
   description: "exam",
-  head: [['link', { rel: 'icon', href: '/public/favicon/favicon32.png' }]],
+  head: [['link', { rel: 'icon', href: '/favicon/favicon32.png' }]],
 
   themeConfig: {
     // https://vitepress.dev/reference/default-theme-config
