@@ -1,7 +1,8 @@
 {
   "devDependencies": {
-    "mini-svg-data-uri": "^1.4.4",
     "@iconify/json": "^2.2.323",
+    "@iconify/vue": "^4.3.0",
+    "mini-svg-data-uri": "^1.4.4",
     "sass": "^1.86.3",
     "unocss": "66.1.0-beta.8",
     "vitepress": "^1.6.3"
@@ -17,10 +18,12 @@
       "esbuild"
     ],
     "onlyBuiltDependencies": [
-      "@parcel/watcher"
+      "@parcel/watcher",
+      "vue-demi"
     ]
   },
   "dependencies": {
-    "flowbite": "^3.1.2"
+    "@vueuse/core": "^11.3.0",
+    "dayjs": "^1.11.13"
   }
 }

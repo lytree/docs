@@ -1,38 +1,44 @@
-<script setup lang="tsx">
-import { ref } from 'vue'
-function backToTop() {
-    window.scroll({ top: 0, behavior: 'smooth' });
-}
-
-function scrollFunction() {
-    const back_to_top_btn = ref()
-    if (document.body.scrollTop > 600 || document.documentElement.scrollTop > 600) {
-        back_to_top_btn?.value.classList.remove('hide')
-    } else {
-        back_to_top_btn?.value.classList.add('hide')
-    }
-}
-window.onscroll = scrollFunction
-</script>
 <template>
-    <!-- There can't be a filter on parent element, or it will break `fixed` -->
-    <div class="back-to-top-wrapper hidden lg:block">
-        <div ref="back_to_top_btn" class="back-to-top-btn hide flex items-center rounded-2xl overflow-hidden transition"
-            @onclick="backToTop()">
+    <div class="back-to-top-wrapper">
+        <div id="back-to-top-btn" class="back-to-top-btn" :class="{ hide: isHidden }" @click="backToTop">
             <button aria-label="Back to Top" class="btn-card h-[3.75rem] w-[3.75rem]">
-                <div class="i-material-symbols-keyboard-arrow-up-rounded mx-auto"></div>
+                <Icon name="material-symbols:keyboard-arrow-up-rounded" class="mx-auto" />
             </button>
         </div>
     </div>
-
 </template>
-<style lang="scss">
+
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { Icon } from "@iconify/vue"; 
+
+const isHidden = ref(true)
+
+const backToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const handleScroll = () => {
+    isHidden.value = window.scrollY < 300
+}
+
+onMounted(() => {
+    window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('scroll', handleScroll)
+})
+</script>
+
+<style scoped lang="scss">
 .back-to-top-wrapper {
     width: 3.75rem;
     height: 3.75rem;
     position: absolute;
     right: 0;
     top: 0;
+    pointer-events: none;
 }
 
 .back-to-top-btn {
@@ -41,10 +47,12 @@ window.onscroll = scrollFunction
     font-weight: bold;
     border: none;
     position: fixed;
-    bottom: 15rem;
+    bottom: 10rem;
+    transform: translateX(5rem);
     opacity: 1;
     cursor: pointer;
-    transform: translateX(5rem);
+    pointer-events: auto;
+    transition: transform 0.3s ease, opacity 0.3s ease;
 
     i {
         font-size: 1.75rem;
