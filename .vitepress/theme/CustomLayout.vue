@@ -78,10 +78,11 @@ useDarkTransition()
     </template>
     <template #doc-after>
       <slot name="doc-after" />
+      <BlogBackToTop />
       <!-- 评论 -->
       <!-- <ClientOnly>
         <BlogButtonAfterArticle />
-        <BlogBackToTop />
+        
         <BlogCommentWrapper>
           <CommentArtalk />
           <CommentGiscus />

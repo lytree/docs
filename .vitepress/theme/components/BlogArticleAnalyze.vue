@@ -3,14 +3,6 @@
 // https://zhuanlan.zhihu.com/p/36375802
 import { useData } from 'vitepress'
 import { computed, onMounted, ref } from 'vue'
-// import { Icon } from 'element-plus'
-// import {
-//   AlarmClock,
-//   Clock,
-//   CollectionTag,
-//   EditPen,
-//   UserFilled
-// } from '@element-plus/icons-vue'
 import { Icon } from "@iconify/vue";
 import { useAnalyzeTitles, useArticleConfig, useAuthorList, useCurrentArticle, useDocMetaInsertPosition, useDocMetaInsertSelector, useFormatShowDate, useGlobalAuthor } from '../composables/config/blog'
 import countWord, { formatDate } from '../utils/client'
@@ -144,8 +136,7 @@ const timeTitle = computed(() =>
   <div id="hack-article-des" ref="$des" class="meta-des">
     <!-- TODO：是否需要原创？转载等标签，理论上可以添加标签解决，可以参考 charles7c -->
     <span v-if="author && !hiddenAuthor" class="author" :title="authorTitle">
-      <Icon>
-        <UserFilled />
+      <Icon icon="mdi:user">
       </Icon>
       <a v-if="currentAuthorInfo" class="link" :href="currentAuthorInfo.url" :title="currentAuthorInfo.des">
         {{ currentAuthorInfo.nickname }}
