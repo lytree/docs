@@ -5,11 +5,15 @@ import DefaultTheme from 'vitepress/theme'
 import 'virtual:uno.css'
 import './style.css'
 import CustomLayout from './CustomLayout.vue'
+// page
+import UserWorksPage from './components/UserWorks.vue'
+import { withConfigProvider } from './composables/config/blog'
 
 export default {
   extends: DefaultTheme,
-  Layout: CustomLayout,
+  Layout: withConfigProvider(CustomLayout),
   enhanceApp({ app, router, siteData }) {
+    app.component('UserWorksPage', UserWorksPage as any)
     // ...
   }
 } satisfies Theme

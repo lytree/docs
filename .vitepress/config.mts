@@ -1,15 +1,16 @@
 import { defineConfig } from 'vitepress'
 import viteConfig from "./vite.mts"
 import { nav, sidebar } from "./config.doc.mts"
-import { } from "./config.blog.mts"
+import { blogThemeConfig } from "./config.blog.mts"
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   vite: viteConfig,
   title: "docs",
   description: "exam",
   head: [['link', { rel: 'icon', href: '/favicon/favicon32.png' }]],
-
+  extends: blogThemeConfig,
   themeConfig: {
+
     // https://vitepress.dev/reference/default-theme-config
     nav: nav,
     sidebar: sidebar,

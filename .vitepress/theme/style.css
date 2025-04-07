@@ -42,10 +42,6 @@
  * - `danger`: Used to show error, or dangerous message to the users. Used
  *   in custom container, badges, etc.
  * -------------------------------------------------------------------------- */
-@import "flowbite/src/themes/default";
-@plugin "flowbite/plugin";
-@source "../node_modules/flowbite";
-@source "../node_modules/flowbite-datepicker";
 
 :root {
   --vp-c-default-1: var(--vp-c-gray-1);
