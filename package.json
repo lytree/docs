@@ -1,16 +1,29 @@
 {
   "devDependencies": {
+    "@iconify/json": "^2.2.323",
+    "@iconify/vue": "^4.3.0",
+    "mini-svg-data-uri": "^1.4.4",
+    "sass": "^1.86.3",
     "unocss": "66.1.0-beta.8",
     "vitepress": "^1.6.3"
   },
   "scripts": {
     "docs:dev": "vitepress dev --host",
     "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview"
+    "docs:preview": "vitepress preview",
+    "docs:create": ""
   },
   "pnpm": {
     "ignoredBuiltDependencies": [
       "esbuild"
+    ],
+    "onlyBuiltDependencies": [
+      "@parcel/watcher",
+      "vue-demi"
     ]
+  },
+  "dependencies": {
+    "@vueuse/core": "^11.3.0",
+    "dayjs": "^1.11.13"
   }
 }
