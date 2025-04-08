@@ -2,7 +2,6 @@
 import BlogHomeOverview from './BlogHomeOverview.vue'
 import BlogHotArticle from './BlogHotArticle.vue'
 import BlogHomeTags from './BlogHomeTags.vue'
-import BlogFriendLink from './BlogFriendLink.vue'
 </script>
 
 <template>
@@ -12,11 +11,6 @@ import BlogFriendLink from './BlogFriendLink.vue'
 
     <!-- 置顶的一些文章 -->
     <BlogHotArticle />
-
-    <!-- 友链 -->
-    <ClientOnly>
-      <BlogFriendLink />
-    </ClientOnly>
 
     <!-- 标签 -->
     <BlogHomeTags />

@@ -1,7 +1,7 @@
 import fs from 'fs'
 import type { PluginOption } from 'vite'
 import type { SiteConfig } from 'vitepress'
-import { grayMatter } from '@sugarat/theme-shared'
+import { grayMatter } from './fs'
 import type { Theme } from '../../composables/config/index'
 import { getArticleMeta } from './theme'
 import { debounce, isEqual } from './index'

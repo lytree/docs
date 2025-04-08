@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { computed } from 'vue'
 import { useRecommendConfig, useShowRecommend } from '../composables/config/blog'
-import BlogRecommendArticle from './BlogRecommendArticle.vue'
+
 
 const recommend = useRecommendConfig()
 const show = useShowRecommend()
