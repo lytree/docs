@@ -1,8 +1,9 @@
 import UnoCSS from 'unocss/vite'
 import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vitepress'
+import { defineConfig } from 'vite'
+import { themeReloadPlugin, providePageData } from './vite.plugins.ts'
 
-export default {
+export const viteConfig: any = {
     resolve: {
         alias: [
             {
@@ -14,6 +15,8 @@ export default {
         ]
     },
     plugins: [
+        themeReloadPlugin({ docsDir: "./blog" }),
+        providePageData(),
         UnoCSS({
             configFile: "./vite.uno.mts",
         })

@@ -1,7 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
-import { getDefaultTitle, getFileLastModifyTime, getTextSummary, getVitePressPages, grayMatter, normalizePath, renderDynamicMarkdown } from '@sugarat/theme-shared'
-import type { SiteConfig } from 'vitepress'
+import { getDefaultTitle, getFileLastModifyTime, getTextSummary, grayMatter, normalizePath, } from './fs'
+import { getVitePressPages, renderDynamicMarkdown } from './vitepress'
 import type { Theme } from '../../composables/config/index'
 import { formatDate } from '../client'
 import { getFirstImagURLFromMD } from './index'
@@ -9,13 +9,13 @@ import { getFirstImagURLFromMD } from './index'
 export function patchDefaultThemeSideBar(cfg?: Partial<Theme.BlogConfig>) {
   return cfg?.blog !== false && cfg?.recommend !== false
     ? {
-        sidebar: [
-          {
-            text: '',
-            items: []
-          }
-        ]
-      }
+      sidebar: [
+        {
+          text: '',
+          items: []
+        }
+      ]
+    }
     : undefined
 }
 
@@ -80,14 +80,14 @@ export async function getArticleMeta(filepath: string, route: string, timeZone =
   return meta as Theme.PageMeta
 }
 
-export async function getArticles(cfg: Partial<Theme.BlogConfig>, vpConfig: SiteConfig) {
+export async function getArticles(params) {
   const pages = getVitePressPages(vpConfig)
   const metaResults = pages.reduce((prev, value) => {
     const { page, route, originRoute, filepath, isDynamic, dynamicRoute } = value
 
     const metaPromise = (isDynamic && dynamicRoute)
-      ? getArticleMeta(filepath, originRoute, cfg?.timeZone, renderDynamicMarkdown(filepath, dynamicRoute.params, dynamicRoute.content))
-      : getArticleMeta(filepath, originRoute, cfg?.timeZone)
+      ? getArticleMeta(filepath, originRoute, params?.timeZone, renderDynamicMarkdown(filepath, dynamicRoute.params, dynamicRoute.content))
+      : getArticleMeta(filepath, originRoute, params?.timeZone)
 
     // 提前获取，有缓存取缓存
     prev[page] = {

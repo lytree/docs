@@ -6,15 +6,11 @@ import type { Theme } from '../../composables/config/index'
 import { getArticleMeta } from './theme'
 import { debounce, isEqual } from './index'
 
-export function themeReloadPlugin() {
-  let blogConfig: Theme.BlogConfig
-  let vitepressConfig: SiteConfig
-  let docsDir: string
-
+export function themeReloadPlugin(params: { docsDir: string, timeZone?: string } = { docsDir: "/" }) {
   const generateRoute = (filepath: string) => {
-    return filepath.replace(docsDir, '').replace('.md', '')
+    return filepath.replace(params.docsDir, '').replace('.md', '')
   }
-
+  let pagesData: any[] = [];
   return {
     name: '@sugarat/theme-reload',
     apply: 'serve',
@@ -25,8 +21,8 @@ export function themeReloadPlugin() {
       server.watcher.on('add', async (path) => {
         // TODO: rewrite 和 动态路由兼容
         const route = generateRoute(path)
-        const meta = await getArticleMeta(path, route, blogConfig?.timeZone)
-        blogConfig.pagesData.push({
+        const meta = await getArticleMeta(path, route)
+        pagesData.push({
           route,
           meta
         })
@@ -39,8 +35,8 @@ export function themeReloadPlugin() {
         const { data: frontmatter } = grayMatter(fileContent, {
           excerpt: true,
         })
-        const meta = await getArticleMeta(path, route, blogConfig?.timeZone)
-        const matched = blogConfig.pagesData.find(v => v.route === route)
+        const meta = await getArticleMeta(path, route,)
+        const matched = pagesData.find(v => v.route === route)
 
         // 自动生成的部分属性不参与比较，避免刷新频繁
         const excludeKeys = ['date', 'description'].filter(key => !frontmatter[key])
@@ -73,17 +69,15 @@ export function themeReloadPlugin() {
 
       server.watcher.on('unlink', (path) => {
         const route = generateRoute(path)
-        const idx = blogConfig.pagesData.findIndex(v => v.route === route)
+        const idx = pagesData.findIndex(v => v.route === route)
         if (idx >= 0) {
-          blogConfig.pagesData.splice(idx, 1)
+          pagesData.splice(idx, 1)
           restart()
         }
       })
     },
     configResolved(config: any) {
-      vitepressConfig = config.vitepress
-      docsDir = vitepressConfig.srcDir
-      blogConfig = config.vitepress.site.themeConfig.blog
+      pagesData = config.vitepress.site.themeConfig.blog.pagesData
     },
   } as PluginOption
 }

@@ -2,65 +2,48 @@ import type { HeadConfig, SiteConfig } from 'vitepress'
 import {
   pagefindPlugin
 } from 'vitepress-plugin-pagefind'
-import { RssPlugin } from 'vitepress-plugin-rss'
 import type { PluginOption } from 'vite'
-import { joinPath } from '@sugarat/theme-shared'
-import { AnnouncementPlugin } from 'vitepress-plugin-announcement'
 import { groupIconVitePlugin } from 'vitepress-plugin-group-icons'
-import type { Theme } from '../../composables/config/index'
-import { _require } from './mdPlugins'
-import { themeReloadPlugin } from './hot-reload-plugin'
-import { getArticles } from './theme'
+import type { Theme } from './theme/composables/config/index'
+import { _require } from './theme/utils/node/mdPlugins'
+import { themeReloadPlugin } from './theme/utils/node/hot-reload-plugin'
+import { getArticles } from './theme/utils/node/theme'
 
-export function getVitePlugins(cfg: Partial<Theme.BlogConfig> = {}) {
-  const plugins: any[] = []
+// export function getVitePlugins(cfg: Partial<Theme.BlogConfig> = {}) {
+//   const plugins: any[] = []
 
-  // 处理 cover image 的路径（暂只支持自动识别的文章首图）
-  plugins.push(coverImgTransform())
+//   // 处理 cover image 的路径（暂只支持自动识别的文章首图）
+//   plugins.push(coverImgTransform())
 
-  // 处理自定义主题色
-  if (cfg.themeColor) {
-    plugins.push(setThemeScript(cfg.themeColor))
-  }
-  // 自动重载首页
-  plugins.push(themeReloadPlugin())
+//   // 处理自定义主题色
+//   if (cfg.themeColor) {
+//     plugins.push(setThemeScript(cfg.themeColor))
+//   }
+//   // 自动重载首页
+//   plugins.push(themeReloadPlugin())
 
-  // 主题 pageData生成
-  plugins.push(providePageData(cfg))
+//   // 主题 pageData生成
+//   plugins.push(providePageData(cfg))
 
-  // 内置 pagefind
-  if (cfg && cfg.search !== false) {
-    const ops = cfg.search instanceof Object ? cfg.search : {}
-    plugins.push(
-      pagefindPlugin({
-        ...ops,
-      })
-    )
-  }
+//   // 内置 pagefind
+//   plugins.push(
+//     pagefindPlugin({})
+//   )
 
-  // 内置支持 Markdown 流程图 Mermaid
-  if (cfg?.mermaid !== false) {
-    const { MermaidPlugin } = _require('vitepress-plugin-mermaid')
-    plugins.push(inlineInjectMermaidClient())
-    plugins.push(MermaidPlugin(cfg?.mermaid === true ? {} : (cfg?.mermaid ?? {})))
-  }
 
-  // 内置支持RSS
-  if (cfg?.RSS) {
-    ;[cfg?.RSS].flat().forEach(rssConfig => plugins.push(RssPlugin(rssConfig)))
-  }
+//   // 内置支持 Markdown 流程图 Mermaid
+//   if (cfg?.mermaid !== false) {
+//     const { MermaidPlugin } = _require('vitepress-plugin-mermaid')
+//     plugins.push(inlineInjectMermaidClient())
+//     plugins.push(MermaidPlugin(cfg?.mermaid === true ? {} : (cfg?.mermaid ?? {})))
+//   }
 
-  // 内置支持 全局公告
-  if (cfg?.popover) {
-    plugins.push(AnnouncementPlugin(cfg.popover))
-  }
+//   // 内置支持 group icon
 
-  // 内置支持 group icon
+//   plugins.push(groupIconVitePlugin(cfg?.groupIcon))
 
-  plugins.push(groupIconVitePlugin(cfg?.groupIcon))
-
-  return plugins
-}
+//   return plugins
+// }
 
 export function registerVitePlugins(vpCfg: any, plugins: any[]) {
   vpCfg.vite = {
@@ -214,12 +197,12 @@ export function coverImgTransform() {
   } as PluginOption
 }
 
-export function providePageData(cfg: Partial<Theme.BlogConfig>) {
+export function providePageData(params: { docsDir: string, timeZone?: string } = { docsDir: "/" }) {
   return {
     name: '@sugarat/theme-plugin-provide-page-data',
     async config(config: any, env) {
       const vitepressConfig: SiteConfig = config.vitepress
-      const pagesData = await getArticles(cfg, vitepressConfig)
+      const pagesData = await getArticles(params)
       if (vitepressConfig.site.locales && Object.keys(vitepressConfig.site.locales).length > 1) {
         if (!vitepressConfig.site.themeConfig.blog.locales) {
           vitepressConfig.site.themeConfig.blog.locales = {}
@@ -280,3 +263,5 @@ export function setThemeScript(
   }
   return pluginOps
 }
+
+export { themeReloadPlugin }

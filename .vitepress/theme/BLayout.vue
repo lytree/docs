@@ -7,7 +7,7 @@ import { useDarkTransition } from './hooks/useDarkTransition'
 import BlogHomeInfo from './components/BlogHomeInfo.vue'
 import BlogHomeBanner from './components/BlogHomeBanner.vue'
 import BlogList from './components/BlogList.vue'
-import BlogSidebar from './components/BlogSidebar.vue'
+// import BlogSidebar from './components/BlogSidebar.vue'
 import BlogImagePreview from './components/BlogImagePreview.vue'
 import BlogArticleAnalyze from './components/BlogArticleAnalyze.vue'
 import BlogAlert from './components/BlogAlert.vue'
@@ -74,7 +74,7 @@ useDarkTransition()
     </template>
     <template #sidebar-nav-after>
       <slot name="sidebar-nav-after" />
-      <BlogSidebar />
+      <!-- <BlogSidebar /> -->
     </template>
     <template #doc-after>
       <slot name="doc-after" />
@@ -181,6 +181,20 @@ useDarkTransition()
 </template>
 
 <style scoped lang="scss">
+.VPHome {
+  &::before {
+    background-image: url(/heroimg.webp.webp);
+    background-size: cover;
+  }
+}
+
+.VPHome {
+  // 定义遮罩样式，控制图片展示的程度
+  background: radial-gradient(ellipse,
+      rgba(var(--bg-gradient-home), 1) 0%,
+      rgba(var(--bg-gradient-home), 0) 150%);
+}
+
 .home {
   margin: 0 auto;
   padding: 20px;

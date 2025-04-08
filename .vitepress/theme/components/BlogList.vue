@@ -21,6 +21,7 @@ const activeTag = useActiveTag()
 const activeTagLabel = computed(() => activeTag.value.label)
 
 const wikiList = computed(() => {
+ 
   const topList = docs.value.filter(v => !v.meta.hidden && !!v.meta.top)
   topList.sort((a, b) => {
     const aTop = a?.meta?.top
@@ -86,7 +87,7 @@ watch(route, () => {
 }, { immediate: true })
 
 // 未覆盖的场景处理 左上回到首页
-router.onAfterRouteChanged = () => {
+router.onAfterRouteChange = () => {
   refreshCurrentPage()
 }
 </script>
@@ -94,33 +95,17 @@ router.onAfterRouteChanged = () => {
 <template>
   <ul data-pagefind-ignore="all">
     <li v-for="v in currentWikiData" :key="v.route">
-      <BlogItem
-        :route="v.route"
-        :title="v.meta.title"
-        :description="v.meta.description"
-        :description-h-t-m-l="v.meta.descriptionHTML"
-        :date="v.meta.date"
-        :tag="v.meta.tag"
-        :cover="v.meta.cover"
-        :author="v.meta.author || globalAuthor"
-        :pin="v.meta.top"
-      />
+      <BlogItem :route="v.route" :title="v.meta.title" :description="v.meta.description"
+        :description-h-t-m-l="v.meta.descriptionHTML" :date="v.meta.date" :tag="v.meta.tag" :cover="v.meta.cover"
+        :author="v.meta.author || globalAuthor" :pin="v.meta.top" />
     </li>
   </ul>
   <!-- 解决element-ui bug -->
   <ClientOnly>
     <div class="el-pagination-wrapper">
-      <ElPagination
-        v-if="wikiList.length >= pageSize"
-        small
-        background
-        :default-current-page="1"
-        :current-page="currentPage"
-        :page-size="pageSize"
-        :total="filterData.length"
-        layout="prev, pager, next, jumper"
-        @update:current-page="handleUpdatePageNum"
-      />
+      <ElPagination v-if="wikiList.length >= pageSize" small background :default-current-page="1"
+        :current-page="currentPage" :page-size="pageSize" :total="filterData.length" layout="prev, pager, next, jumper"
+        @update:current-page="handleUpdatePageNum" />
     </div>
   </ClientOnly>
 </template>
@@ -130,6 +115,7 @@ router.onAfterRouteChanged = () => {
   :deep(.el-pagination li.is-active.number) {
     background-color: var(--vp-c-brand-2);
   }
+
   :deep(.el-pagination button:hover) {
     color: var(--vp-c-brand-2);
   }
@@ -137,6 +123,7 @@ router.onAfterRouteChanged = () => {
   :deep(.el-pager li:not(.is-active):hover) {
     color: var(--vp-c-brand-2);
   }
+
   :deep(.el-input__wrapper.is-focus) {
     box-shadow: 0 0 0 1px var(--vp-c-brand-2) inset;
   }

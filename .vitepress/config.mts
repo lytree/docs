@@ -1,5 +1,5 @@
 import { defineConfig } from 'vitepress'
-import viteConfig from "./vite.mts"
+import { viteConfig } from "./vite.mts"
 import { nav, sidebar } from "./config.doc.mts"
 import { blogThemeConfig } from "./config.blog.mts"
 // https://vitepress.dev/reference/site-config

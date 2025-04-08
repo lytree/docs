@@ -3,7 +3,7 @@ import fs from 'node:fs'
 import type { MarkdownEnv, ResolvedRouteConfig, SiteConfig, SiteData } from 'vitepress'
 import { normalizePath, slash } from './fs'
 
-export function getVitePressPages(vpConfig: SiteConfig) {
+export function getVitePressPages(params: { docsDir: string, timeZone?: string } = { docsDir: "/" }) {
   // 复用内置 pages 解析逻辑，同时兼容动态路由
   const { pages, dynamicRoutes, rewrites } = vpConfig
   const result: {
@@ -19,7 +19,7 @@ export function getVitePressPages(vpConfig: SiteConfig) {
     env: MarkdownEnv
   }[] = []
   // CV https://github.com/ATQQ/vitepress/blob/36bde803c870c62461651e5148e092c893a1c36b/src/node/markdownToVue.ts#L44
-  const srcDir = vpConfig.srcDir
+  const srcDir = params.docsDir
   const vitepressDynamicRoutes = new Map(
     vpConfig?.dynamicRoutes?.routes.map(r => [
       r.fullPath,
@@ -37,7 +37,7 @@ export function getVitePressPages(vpConfig: SiteConfig) {
     const rewritePath = rewrites.map[page]
     const isRewrite = !!rewritePath
     const originRoute = `/${normalizePath(page)
-        .replace(/\.md$/, '')}`
+      .replace(/\.md$/, '')}`
     const rewriteRoute = rewritePath
       ? `/${normalizePath(rewritePath)
         .replace(/\.md$/, '')}`
@@ -158,8 +158,8 @@ export function getLocaleForPath(
     Object.keys(siteData?.locales || {}).find(
       key =>
         key !== 'root'
-          && !isExternal(key)
-          && isActive(relativePath, `/${key}/`, true)
+        && !isExternal(key)
+        && isActive(relativePath, `/${key}/`, true)
     ) || 'root'
   )
 }
