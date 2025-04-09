@@ -7,15 +7,15 @@ const { Layout } = DefaultTheme
 </script>
 
 <template>
-  <div v-if="frontmatter.router == 'overview'">
+  <template v-if="frontmatter.router == 'overview'">
     overview
-  </div>
-  <div v-else-if="frontmatter.router == 'blog'">
+  </template>
+  <template v-else-if="frontmatter.router == 'blog'">
     <BlogLayout class="blog" />
-  </div>
-  <div v-else-if="frontmatter.router == 'doc'">
+  </template>
+  <template v-else-if="frontmatter.router == 'doc'">
     <Layout class="doc" />
-  </div>
-  <div v-else>
-  </div>
+  </template>
+  <template v-else>
+  </template>
 </template>
