@@ -96,23 +96,23 @@ useDarkTransition()
     <!-- 透传默认主题的其它插槽 -->
     <!-- navbar -->
     <template #nav-bar-title-before>
-      nav-bar-title-before
+
       <!-- <slot name="nav-bar-title-before" /> -->
     </template>
     <template #nav-bar-title-after>
-      nav-bar-title-afte
+
       <!-- <slot name="nav-bar-title-after" /> -->
     </template>
     <template #nav-bar-content-after>
-      nav-bar-content-after
+
       <!-- <slot name="nav-bar-content-after" /> -->
     </template>
     <template #nav-screen-content-before>
-      nav-screen-content-before
+
       <!-- <slot name="nav-screen-content-before" /> -->
     </template>
     <template #nav-screen-content-after>
-      nav-screen-content-after
+
       <!-- <slot name="nav-screen-content-after" /> -->
     </template>
 

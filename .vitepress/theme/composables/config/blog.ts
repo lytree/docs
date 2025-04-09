@@ -21,6 +21,7 @@ import { useColorMode } from '@vueuse/core'
 
 import { formatDate, replaceValue } from '../../utils/client'
 import type { Theme } from './index'
+import { el } from 'element-plus/es/locale/index.mjs'
 
 const configSymbol: InjectionKey<Ref<Theme.Config>> = Symbol('blogThemeConfig')
 
@@ -32,7 +33,7 @@ export function withConfigProvider(App: Component) {
   return defineComponent({
     name: 'ConfigProvider',
     setup(_, { slots }) {
-      const { theme, localeIndex } = useData()
+      const { theme, localeIndex } = useData<Theme.Config>()
       const config = computed(() => resolveConfig(theme.value, localeIndex.value))
 
       provide(configSymbol, config)
@@ -186,18 +187,27 @@ export function useButtonAfterConfig() {
 //   return inject(configSymbol)!.value?.blog?.blog ?? true
 // }
 
-export function useArticles() {
+export function useArticles(path?: string) {
   const blogConfig = useConfig()
   const { localeIndex, site } = useData()
 
   const localeKeys = computed(() => Object.keys(site.value.locales))
-
   const articles = computed(() => {
     if (localeKeys.value.length === 0) {
-      return (blogConfig?.value?.blog?.pagesData || [])
+      if (path) {
+        return (blogConfig?.value?.blog?.pagesData.filter(page => page.route.startsWith(path)) || [])
+      } else {
+        return (blogConfig?.value?.blog?.pagesData || [])
+      }
     }
-    return blogConfig?.value?.blog?.locales?.[localeIndex.value]?.pagesData || []
+    if (path) {
+      return blogConfig?.value?.blog?.locales?.[localeIndex.value]?.pagesData?.filter(page => page.route.startsWith(localeIndex.value + "/" + path)) || []
+    } else {
+      return blogConfig?.value?.blog?.locales?.[localeIndex.value]?.pagesData || []
+    }
+
   })
+
   return articles
 }
 

@@ -14,14 +14,13 @@ import BlogItem from './BlogItem.vue'
 
 const { frontmatter } = useData<Theme.Config>()
 const globalAuthor = useGlobalAuthor()
-const docs = useArticles()
+const docs = useArticles("/blog")
 
 const activeTag = useActiveTag()
 
 const activeTagLabel = computed(() => activeTag.value.label)
 
 const wikiList = computed(() => {
- 
   const topList = docs.value.filter(v => !v.meta.hidden && !!v.meta.top)
   topList.sort((a, b) => {
     const aTop = a?.meta?.top
@@ -90,6 +89,7 @@ watch(route, () => {
 router.onAfterRouteChange = () => {
   refreshCurrentPage()
 }
+
 </script>
 
 <template>
@@ -103,7 +103,7 @@ router.onAfterRouteChange = () => {
   <!-- 解决element-ui bug -->
   <ClientOnly>
     <div class="el-pagination-wrapper">
-      <ElPagination v-if="wikiList.length >= pageSize" small background :default-current-page="1"
+      <ElPagination v-if="wikiList.length >= pageSize" size="small" background :default-current-page="1"
         :current-page="currentPage" :page-size="pageSize" :total="filterData.length" layout="prev, pager, next, jumper"
         @update:current-page="handleUpdatePageNum" />
     </div>

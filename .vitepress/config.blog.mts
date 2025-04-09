@@ -21,5 +21,4 @@ export const blogTheme: Partial<Theme.BlogConfig> =
         ],
         "/blog": []
     },
-    pagesData: []
 }

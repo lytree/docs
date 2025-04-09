@@ -26,7 +26,6 @@ watch(
     },
     { immediate: true, deep: true, flush: 'sync' }
 )
-console.log(navs, theme);
 </script>
 
 <template>

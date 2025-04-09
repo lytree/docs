@@ -198,7 +198,7 @@ export function coverImgTransform() {
   } as PluginOption
 }
 
-export function providePageData(params: { docsDir: string, timeZone?: string } = { docsDir: "/" }) {
+export function providePageData() {
   return {
     name: 'vitepress-plugin-provide-page-data',
     async config(config: any, env) {
@@ -230,7 +230,7 @@ export function providePageData(params: { docsDir: string, timeZone?: string } =
         }
       }
       //@ts-ignore
-      vitepressConfig.userConfig.pagesData = pagesData
+      vitepressConfig.site.themeConfig.blog.pagesData = pagesData
     },
   } as PluginOption
 }
