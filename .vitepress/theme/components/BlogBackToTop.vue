@@ -12,7 +12,7 @@ const $vpDoc = document.querySelector('.main')
 const el = ref<any>($vpDoc)
 const { width } = useElementSize(el)
 const docWidth = computed(() => `${width.value}px`)
-
+console.log($vpDoc, width)
 const backToTopConfig = useBackToTopConfig()
 const open = useOpenBackToTop()
 
