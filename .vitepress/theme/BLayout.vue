@@ -14,16 +14,9 @@ import BlogAlert from './components/BlogAlert.vue'
 import BlogFooter from './components/BlogFooter.vue'
 import BlogHomeHeaderAvatar from './components/BlogHomeHeaderAvatar.vue'
 import BlogBackToTop from './components/BlogBackToTop.vue'
-// import CommentGiscus from './components/CommentGiscus.vue'
-// import BlogOml2d from './components/BlogOml2d.vue'
-
-// import CommentArtalk from './components/CommentArtalk.vue'
-// import BlogButtonAfterArticle from './components/BlogButtonAfterArticle.vue'
-// import BlogCommentWrapper from './components/BlogCommentWrapper.vue'
 
 const { frontmatter } = useData()
 const layout = computed(() => frontmatter.value.layout)
-// const isBlogTheme = useBlogThemeMode()
 const { Layout } = Theme
 
 // 切换深色模式过渡
@@ -33,14 +26,6 @@ useDarkTransition()
 
 <template>
   <Layout class="blog-theme-layout">
-    <!-- <template #layout-top>
-      <slot name="layout-top" />
-      <ClientOnly>
-        <BlogOml2d />
-        <BlogAlert />
-      </ClientOnly>
-    </template> -->
-
     <template #doc-before>
       <slot name="doc-before" />
       <!-- 阅读时间分析 -->
@@ -79,15 +64,6 @@ useDarkTransition()
     <template #doc-after>
       <slot name="doc-after" />
       <BlogBackToTop />
-      <!-- 评论 -->
-      <!-- <ClientOnly>
-        <BlogButtonAfterArticle />
-        
-        <BlogCommentWrapper>
-          <CommentArtalk />
-          <CommentGiscus />
-        </BlogCommentWrapper>
-      </ClientOnly> -->
     </template>
     <template #layout-bottom>
       <BlogFooter />
@@ -181,20 +157,6 @@ useDarkTransition()
 </template>
 
 <style scoped lang="scss">
-.VPHome {
-  &::before {
-    background-image: url(/heroimg.webp.webp);
-    background-size: cover;
-  }
-}
-
-.VPHome {
-  // 定义遮罩样式，控制图片展示的程度
-  background: radial-gradient(ellipse,
-      rgba(var(--bg-gradient-home), 1) 0%,
-      rgba(var(--bg-gradient-home), 0) 150%);
-}
-
 .home {
   margin: 0 auto;
   padding: 20px;

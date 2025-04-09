@@ -1,4 +1,6 @@
 ---
+layout: home
+router: blog
 title: 从零开始建立 EMQX MQTT 服务器的 K8S 集群
 date: 2024-06-28
 update: 2024-09-22T23:26:13Z

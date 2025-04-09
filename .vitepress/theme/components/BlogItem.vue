@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script lang="tsx" setup>
 import { useRouter, withBase } from 'vitepress'
 import { computed } from 'vue'
 import { wrapperCleanUrls } from '../utils/client'
@@ -67,12 +67,10 @@ const resultCover = computed(() => {
 </script>
 
 <template>
-  <a
-    class="blog-item" :href="link" @click="(e) => {
-      e.preventDefault()
-      handleSkipDoc()
-    }"
-  >
+  <a class="blog-item" :href="link" @click="(e) => {
+    e.preventDefault()
+    handleSkipDoc()
+  }">
     <i v-show="!!pin" class="pin" />
     <!-- 标题 -->
     <p class="title mobile-visible">
