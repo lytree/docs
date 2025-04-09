@@ -62,7 +62,9 @@ useDarkTransition()
     </template>
     <template #doc-after>
       <slot name="doc-after" />
-      <BlogBackToTop />
+      <ClientOnly>
+        <BlogBackToTop />
+      </ClientOnly>
     </template>
     <template #layout-bottom>
       <BlogFooter />
