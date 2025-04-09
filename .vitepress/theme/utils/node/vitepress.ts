@@ -3,9 +3,10 @@ import fs from 'node:fs'
 import type { MarkdownEnv, ResolvedRouteConfig, SiteConfig, SiteData } from 'vitepress'
 import { normalizePath, slash } from './fs'
 
-export function getVitePressPages(params: { docsDir: string, timeZone?: string } = { docsDir: "/" }) {
+export function getVitePressPages(viteConfig) {
   // 复用内置 pages 解析逻辑，同时兼容动态路由
-  const { pages, dynamicRoutes, rewrites } = vpConfig
+  const { pages, dynamicRoutes, rewrites } = viteConfig
+
   const result: {
     page: string
     route: string
@@ -19,20 +20,21 @@ export function getVitePressPages(params: { docsDir: string, timeZone?: string }
     env: MarkdownEnv
   }[] = []
   // CV https://github.com/ATQQ/vitepress/blob/36bde803c870c62461651e5148e092c893a1c36b/src/node/markdownToVue.ts#L44
-  const srcDir = params.docsDir
+  const srcDir = viteConfig.srcDir
   const vitepressDynamicRoutes = new Map(
-    vpConfig?.dynamicRoutes?.routes.map(r => [
+    viteConfig?.dynamicRoutes?.routes.map(r => [
       r.fullPath,
       slash(path.join(srcDir, r.route))
     ]) || []
   )
+
   const vitepressRewrites = new Map(
-    Object.entries(vpConfig?.rewrites.map || {}).map(([key, value]) => [
+    Object.entries(viteConfig?.rewrites.map || {}).map(([key, value]) => [
       slash(path.join(srcDir, key)),
+      //@ts-ignore
       slash(path.join(srcDir, value!))
     ]) || []
   )
-
   for (const page of pages) {
     const rewritePath = rewrites.map[page]
     const isRewrite = !!rewritePath
@@ -47,23 +49,23 @@ export function getVitePressPages(params: { docsDir: string, timeZone?: string }
 
     const route = rewriteRoute || originRoute
     const filepath = isDynamic
-      ? normalizePath(path.resolve(vpConfig.srcDir, dynamicRoute.route))
-      : normalizePath(`${vpConfig.srcDir}/${page}`)
+      ? normalizePath(path.resolve(viteConfig.srcDir, dynamicRoute.route))
+      : normalizePath(`${viteConfig.srcDir}/${page}`)
 
-    let file = path.resolve(vpConfig.srcDir, page)
+    let file = path.resolve(viteConfig.srcDir, page)
     const fileOrig = vitepressDynamicRoutes.get(file) || file
     file = vitepressRewrites.get(file) || file
     const relativePath = slash(path.relative(srcDir, file))
-    const cleanUrls = !!vpConfig.cleanUrls
+    const cleanUrls = !!viteConfig.cleanUrls
     const includes: string[] = []
     // processIncludes?
-    const localeIndex = getLocaleForPath(vpConfig.site, relativePath)
+    const localeIndex = getLocaleForPath(viteConfig.site, relativePath)
     const env: MarkdownEnv = {
       path: file,
       relativePath,
       cleanUrls,
       includes,
-      realPath: fileOrig,
+      realPath: fileOrig as string,
       localeIndex
     }
 
@@ -80,7 +82,6 @@ export function getVitePressPages(params: { docsDir: string, timeZone?: string }
       env
     })
   }
-
   return result
 }
 

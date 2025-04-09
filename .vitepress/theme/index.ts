@@ -8,7 +8,7 @@ import CustomLayout from './CLayout.vue'
 // page
 import UserWorksPage from './components/UserWorks.vue'
 import { withConfigProvider } from './composables/config/blog'
-
+import {} from "./utils/node"
 export default {
   extends: DefaultTheme,
   Layout: withConfigProvider(CustomLayout),

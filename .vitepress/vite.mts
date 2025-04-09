@@ -15,7 +15,7 @@ export const viteConfig: any = {
         ]
     },
     plugins: [
-        themeReloadPlugin({ docsDir: "./blog" }),
+        // themeReloadPlugin({ docsDir: "./blog" }),
         providePageData(),
         UnoCSS({
             configFile: "./vite.uno.mts",

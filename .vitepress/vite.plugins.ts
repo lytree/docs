@@ -8,6 +8,7 @@ import type { Theme } from './theme/composables/config/index'
 import { _require } from './theme/utils/node/mdPlugins'
 import { themeReloadPlugin } from './theme/utils/node/hot-reload-plugin'
 import { getArticles } from './theme/utils/node/theme'
+import { joinPath } from './theme/utils/node/fs'
 
 // export function getVitePlugins(cfg: Partial<Theme.BlogConfig> = {}) {
 //   const plugins: any[] = []
@@ -106,7 +107,7 @@ export function coverImgTransform() {
   const viteAssetsMap: Record<string, string> = {}
   const relativePathMap: Record<string, string> = {}
   return {
-    name: '@sugarat/theme-plugin-cover-transform',
+    name: 'vitepress-plugin-cover-transform',
     apply: 'build',
     // enforce: 'pre',
     configResolved(config: any) {
@@ -199,10 +200,11 @@ export function coverImgTransform() {
 
 export function providePageData(params: { docsDir: string, timeZone?: string } = { docsDir: "/" }) {
   return {
-    name: '@sugarat/theme-plugin-provide-page-data',
+    name: 'vitepress-plugin-provide-page-data',
     async config(config: any, env) {
       const vitepressConfig: SiteConfig = config.vitepress
-      const pagesData = await getArticles(params)
+      const pagesData = await getArticles(vitepressConfig)
+
       if (vitepressConfig.site.locales && Object.keys(vitepressConfig.site.locales).length > 1) {
         if (!vitepressConfig.site.themeConfig.blog.locales) {
           vitepressConfig.site.themeConfig.blog.locales = {}
@@ -227,7 +229,8 @@ export function providePageData(params: { docsDir: string, timeZone?: string } =
           return
         }
       }
-      vitepressConfig.site.themeConfig.blog.pagesData = pagesData
+      //@ts-ignore
+      vitepressConfig.userConfig.pagesData = pagesData
     },
   } as PluginOption
 }
@@ -237,7 +240,7 @@ export function setThemeScript(
 ) {
   let resolveConfig: any
   const pluginOps: PluginOption = {
-    name: '@sugarat/theme-plugin-theme-color-script',
+    name: 'vitepress-plugin-theme-color-script',
     enforce: 'pre',
     configResolved(config: any) {
       if (resolveConfig) {
