@@ -3,7 +3,7 @@
 
 import './styles/index.scss'
 import 'virtual:uno.css'
-import './style.css'
+
 
 // element-ui
 // import 'element-plus/dist/index.css'

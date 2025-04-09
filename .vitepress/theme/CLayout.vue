@@ -11,10 +11,10 @@ const { Layout } = DefaultTheme
     overview
   </div>
   <div v-else-if="frontmatter.router == 'blog'">
-    <BlogLayout />
+    <BlogLayout class="blog" />
   </div>
   <div v-else-if="frontmatter.router == 'doc'">
-    <Layout />
+    <Layout class="doc" />
   </div>
   <div v-else>
   </div>
