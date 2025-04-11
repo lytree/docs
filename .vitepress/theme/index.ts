@@ -19,9 +19,6 @@ import 'element-plus/theme-chalk/el-carousel.css'
 import 'element-plus/theme-chalk/el-carousel-item.css'
 import 'element-plus/theme-chalk/el-alert.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
-
-
-import { h } from 'vue'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 
