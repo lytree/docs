@@ -9,7 +9,7 @@ export const viteConfig: any = {
             {
                 find: /^.*\/VPNavBarMenu\.vue$/,
                 replacement: fileURLToPath(
-                    new URL('./theme/CNavBarMenu.vue', import.meta.url)
+                    new URL('./theme/NavBarMenu.vue', import.meta.url)
                 )
             }
         ]

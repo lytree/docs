@@ -2,12 +2,14 @@
 import DefaultTheme from 'vitepress/theme'
 import { useData } from 'vitepress'
 import BlogLayout from './BLayout.vue'
+import Overview from './Overview.vue'
 const { frontmatter } = useData()
 const { Layout } = DefaultTheme
 </script>
 
 <template>
   <template v-if="frontmatter.router == 'overview'">
+    <Overview />
   </template>
   <template v-else-if="frontmatter.router == 'blog'">
     <BlogLayout class="blog" />
