@@ -10,7 +10,6 @@ import BlogList from './components/BlogList.vue'
 // import BlogSidebar from './components/BlogSidebar.vue'
 import BlogImagePreview from './components/BlogImagePreview.vue'
 import BlogArticleAnalyze from './components/BlogArticleAnalyze.vue'
-import BlogFooter from './components/BlogFooter.vue'
 import BlogHomeHeaderAvatar from './components/BlogHomeHeaderAvatar.vue'
 import BlogBackToTop from './components/BlogBackToTop.vue'
 
@@ -67,7 +66,6 @@ useDarkTransition()
       </ClientOnly>
     </template>
     <template #layout-bottom>
-      <BlogFooter />
       <slot name="layout-bottom" />
     </template>
     <!-- 透传默认主题的其它插槽 -->

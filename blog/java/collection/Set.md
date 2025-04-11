@@ -23,8 +23,6 @@ lastmod: 2022-10-30T13:22:31Z
 
 　　HashSet 实际上就是封装了 HashMap，操作 HashSet 元素实际上就是操作 HashMap。这也是面向对象的一种体现，重用性贼高！
 
-　　详解见 [HashMap](map.md##HashMap)
-
 ## TreeSet 集合
 
 > 底层数据结构是红黑树(是一个自平衡的二叉树)

@@ -1,4 +1,5 @@
 ---
+router: blog
 title: Java虚拟机栈栈帧
 date: 2022-10-30T13:42:05Z
 lastmod: 2023-08-25T20:01:25Z
