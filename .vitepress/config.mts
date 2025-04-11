@@ -7,7 +7,7 @@ import { blogTheme } from "./config.blog.mts"
 export default defineConfigWithTheme<Theme.Config>({
   vite: viteConfig,
   lang: "zh-cn",
-  title: "docs",
+  title: "杨柳",
   description: "exam",
   head: [['link', { rel: 'icon', href: '/favicon/favicon32.png' }]],
   markdown: {

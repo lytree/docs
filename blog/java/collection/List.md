@@ -1,4 +1,5 @@
 ---
+router: blog
 title: List
 date: 2022-10-30T13:22:01Z
 lastmod: 2023-05-27T15:43:26Z

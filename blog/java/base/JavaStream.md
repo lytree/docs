@@ -1,4 +1,5 @@
 ---
+router: blog
 title: JavaStream
 date: 2022-10-30T13:27:17Z
 lastmod: 2023-08-25T20:01:12Z
