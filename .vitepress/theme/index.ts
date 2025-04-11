@@ -22,7 +22,7 @@ import 'element-plus/theme-chalk/dark/css-vars.css'
 import type { Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 
-import CustomLayout from './CLayout.vue'
+import CustomLayout from './Layout.vue'
 // page
 import UserWorksPage from './components/UserWorks.vue'
 import { withConfigProvider } from './composables/config/blog'

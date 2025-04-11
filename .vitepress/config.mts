@@ -10,6 +10,9 @@ export default defineConfigWithTheme<Theme.Config>({
   title: "docs",
   description: "exam",
   head: [['link', { rel: 'icon', href: '/favicon/favicon32.png' }]],
+  markdown: {
+    math: true
+  },
   themeConfig: {
     blog: blogTheme,
     sidebar: sidebar,

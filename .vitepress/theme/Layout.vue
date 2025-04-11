@@ -8,7 +8,6 @@ const { Layout } = DefaultTheme
 
 <template>
   <template v-if="frontmatter.router == 'overview'">
-    overview
   </template>
   <template v-else-if="frontmatter.router == 'blog'">
     <BlogLayout class="blog" />
@@ -16,6 +15,6 @@ const { Layout } = DefaultTheme
   <template v-else-if="frontmatter.router == 'doc'">
     <Layout class="doc" />
   </template>
-  <template v-else>
+  <template v-else-if="frontmatter.router == 'nav'">
   </template>
 </template>
