@@ -1,6 +1,10 @@
+Install-Module powershell-yaml
+Import-Module powershell-yaml
+
+$path = (Get-Location).Path
 # 指定需要遍历的目录（注意修改为你实际使用的路径）
-$directory = "/root/github/docs/docs/script/java/effectivejava"
-Push-Location "/root/github/docs"
+$directory = Join-Path $path "/docs/script/java/effectivejava"
+Push-Location $path
 
 $files = Get-ChildItem -Path $directory -File -Recurse
 
