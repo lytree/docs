@@ -17,7 +17,7 @@ features:
     image: https://img.shields.io/badge/微博-181717?logo=zhihu&logoColor=fff
   - title: 导航
     url: /nav/
-    image: https://img.shields.io/badge/知乎-181717?logo=zhihu&logoColor=fff
+    image: https://img.shields.io/badge/导航-181717?logo=zhihu&logoColor=fff
   - title: 博客
     url: /blog/
     image: https://img.shields.io/badge/博客-181717?logo=bloglovin&logoColor=fff

@@ -1,9 +1,9 @@
 {
   "devDependencies": {
-    "@iconify/json": "^2.2.325",
+    "@iconify/json": "^2.2.326",
     "@iconify/vue": "^4.3.0",
     "@types/cross-spawn": "^6.0.6",
-    "@types/node": "^22.14.0",
+    "@types/node": "^22.14.1",
     "cross-spawn": "^7.0.6",
     "element-plus": "^2.9.7",
     "gray-matter": "^4.0.3",
@@ -19,9 +19,9 @@
   },
   "scripts": {
     "docs:dev": "vitepress dev --host",
-    "docs:build": "vitepress build --dev",
+    "docs:build": "vitepress build",
     "docs:preview": "vitepress preview",
-    "docs:create": ""
+    "docs:create": "node scripts/new-post.js"
   },
   "pnpm": {
     "ignoredBuiltDependencies": [
@@ -38,7 +38,7 @@
     "dayjs": "^1.11.13",
     "swiper": "^11.2.6",
     "vitepress-markdown-timeline": "^1.2.2",
-    "vitepress-plugin-group-icons": "^1.4.1",
+    "vitepress-plugin-group-icons": "^1.5.1",
     "vitepress-plugin-mermaid": "2.0.13",
     "vitepress-plugin-pagefind": "^0.4.13",
     "vitepress-plugin-tabs": "0.2.0"
