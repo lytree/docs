@@ -287,7 +287,6 @@ export const sidebar: any = {
                     text: '46. 优先考虑流中无副作用的函数'
                 },
 
-
                 {
                     link: 'docs/script/java/effectivejava/48',
                     text: '48. 谨慎使用流并行'
