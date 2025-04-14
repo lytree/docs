@@ -1,50 +1,11 @@
 import type { HeadConfig, SiteConfig } from 'vitepress'
-import {
-  pagefindPlugin
-} from 'vitepress-plugin-pagefind'
+
 import type { PluginOption } from 'vite'
-import { groupIconVitePlugin } from 'vitepress-plugin-group-icons'
 import type { Theme } from './theme/composables/config/index'
 import { _require } from './theme/utils/node/mdPlugins'
-import { themeReloadPlugin } from './theme/utils/node/hot-reload-plugin'
 import { getArticles } from './theme/utils/node/theme'
 import { joinPath } from './theme/utils/node/fs'
 
-// export function getVitePlugins(cfg: Partial<Theme.BlogConfig> = {}) {
-//   const plugins: any[] = []
-
-//   // 处理 cover image 的路径（暂只支持自动识别的文章首图）
-//   plugins.push(coverImgTransform())
-
-//   // 处理自定义主题色
-//   if (cfg.themeColor) {
-//     plugins.push(setThemeScript(cfg.themeColor))
-//   }
-//   // 自动重载首页
-//   plugins.push(themeReloadPlugin())
-
-//   // 主题 pageData生成
-//   plugins.push(providePageData(cfg))
-
-//   // 内置 pagefind
-//   plugins.push(
-//     pagefindPlugin({})
-//   )
-
-
-//   // 内置支持 Markdown 流程图 Mermaid
-//   if (cfg?.mermaid !== false) {
-//     const { MermaidPlugin } = _require('vitepress-plugin-mermaid')
-//     plugins.push(inlineInjectMermaidClient())
-//     plugins.push(MermaidPlugin(cfg?.mermaid === true ? {} : (cfg?.mermaid ?? {})))
-//   }
-
-//   // 内置支持 group icon
-
-//   plugins.push(groupIconVitePlugin(cfg?.groupIcon))
-
-//   return plugins
-// }
 
 export function registerVitePlugins(vpCfg: any, plugins: any[]) {
   vpCfg.vite = {
@@ -68,32 +29,6 @@ export function inlineInjectMermaidClient() {
   } as PluginOption
 }
 
-export function inlineBuildEndPlugin(buildEndFn: any[]) {
-  let rewrite = false
-  return {
-    name: '@sugarar/theme-plugin-build-end',
-    enforce: 'pre',
-    configResolved(config: any) {
-      // 避免重复定义
-      if (rewrite) {
-        return
-      }
-      const vitepressConfig: SiteConfig = config.vitepress
-      if (!vitepressConfig) {
-        return
-      }
-      rewrite = true
-      // 添加 自定义 vitepress build 的钩子
-      const selfBuildEnd = vitepressConfig.buildEnd
-      vitepressConfig.buildEnd = (siteCfg) => {
-        selfBuildEnd?.(siteCfg)
-        buildEndFn
-          .filter(fn => typeof fn === 'function')
-          .forEach(fn => fn(siteCfg))
-      }
-    }
-  }
-}
 
 // 支持frontmatter中的相对路径图片自动处理
 export function coverImgTransform() {
@@ -234,37 +169,3 @@ export function providePageData() {
     },
   } as PluginOption
 }
-
-export function setThemeScript(
-  themeColor: Theme.ThemeColor
-) {
-  let resolveConfig: any
-  const pluginOps: PluginOption = {
-    name: 'vitepress-plugin-theme-color-script',
-    enforce: 'pre',
-    configResolved(config: any) {
-      if (resolveConfig) {
-        return
-      }
-      resolveConfig = config
-
-      const vitepressConfig: SiteConfig = config.vitepress
-      if (!vitepressConfig) {
-        return
-      }
-      // 通过 head 添加额外的脚本注入
-      const selfTransformHead = vitepressConfig.transformHead
-      vitepressConfig.transformHead = async (ctx) => {
-        const selfHead = (await Promise.resolve(selfTransformHead?.(ctx))) || []
-        return selfHead.concat([
-          ['script', { type: 'text/javascript' }, `;(function() {
-            document.documentElement.setAttribute("theme", "${themeColor}");
-          })()`]
-        ] as HeadConfig[])
-      }
-    }
-  }
-  return pluginOps
-}
-
-export { themeReloadPlugin }

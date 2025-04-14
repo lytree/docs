@@ -1,8 +1,7 @@
 import UnoCSS from 'unocss/vite'
 import { fileURLToPath, URL } from 'node:url'
-import { defineConfig } from 'vite'
-import { themeReloadPlugin, providePageData } from './vite.plugins.ts'
-
+import { coverImgTransform, providePageData } from './vite.plugins.ts'
+import { pagefindPlugin } from 'vitepress-plugin-pagefind'
 export const viteConfig: any = {
     resolve: {
         alias: [
@@ -15,8 +14,9 @@ export const viteConfig: any = {
         ]
     },
     plugins: [
-        // themeReloadPlugin({ docsDir: "./blog" }),
+        coverImgTransform(),
         providePageData(),
+        pagefindPlugin(),
         UnoCSS({
             configFile: "./vite.uno.mts",
         })

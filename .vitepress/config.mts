@@ -1,8 +1,8 @@
 import { defineConfigWithTheme, defineConfig } from 'vitepress'
 import { viteConfig } from "./vite.mts"
 import { Theme } from "./theme/types"
-import { sidebar } from "./config.doc.mts"
-import { blogTheme } from "./config.blog.mts"
+import { sidebar } from "./config.sidebar.mts"
+import { blogTheme } from "./config.navs.mts"
 // https://vitepress.dev/reference/site-config
 export default defineConfigWithTheme<Theme.Config>({
   vite: viteConfig,

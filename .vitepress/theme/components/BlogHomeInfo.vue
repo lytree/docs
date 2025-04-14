@@ -10,7 +10,7 @@ import BlogHomeTags from './BlogHomeTags.vue'
     <BlogHomeOverview />
 
     <!-- 置顶的一些文章 -->
-    <BlogHotArticle />
+    <!-- <BlogHotArticle /> -->
 
     <!-- 标签 -->
     <BlogHomeTags />
