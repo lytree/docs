@@ -1,8 +1,11 @@
 import { defineConfigWithTheme, defineConfig } from 'vitepress'
+import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
+import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import { viteConfig } from "./vite.mts"
 import { Theme } from "./theme/types"
 import { sidebar } from "./config.sidebar.mts"
 import { blogTheme } from "./config.navs.mts"
+
 // https://vitepress.dev/reference/site-config
 export default defineConfigWithTheme<Theme.Config>({
   vite: viteConfig,
@@ -11,7 +14,11 @@ export default defineConfigWithTheme<Theme.Config>({
   description: "exam",
   head: [['link', { rel: 'icon', href: '/favicon/favicon32.png' }]],
   markdown: {
-    math: true
+    math: true,
+    config(md) {
+      md.use(groupIconMdPlugin)
+      md.use(tabsMarkdownPlugin)
+    },
   },
   themeConfig: {
     blog: blogTheme,
@@ -22,3 +29,5 @@ export default defineConfigWithTheme<Theme.Config>({
     }
   }
 })
+
+

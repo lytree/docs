@@ -2,6 +2,7 @@ import UnoCSS from 'unocss/vite'
 import { fileURLToPath, URL } from 'node:url'
 import { coverImgTransform, providePageData } from './vite.plugins.ts'
 import { pagefindPlugin } from 'vitepress-plugin-pagefind'
+import { groupIconVitePlugin } from 'vitepress-plugin-group-icons'
 export const viteConfig: any = {
     resolve: {
         alias: [
@@ -14,6 +15,7 @@ export const viteConfig: any = {
         ]
     },
     plugins: [
+        groupIconVitePlugin(),
         coverImgTransform(),
         providePageData(),
         pagefindPlugin(),
