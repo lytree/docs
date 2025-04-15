@@ -3,6 +3,7 @@ router: blog
 title: Volatile
 date: 2022-10-30T13:27:45Z
 lastmod: 2023-05-27T18:46:40Z
+tags: [基础]
 ---
 
 # Volatile

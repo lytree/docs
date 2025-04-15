@@ -3,6 +3,7 @@ router: blog
 title: Queue
 date: 2022-10-30T13:22:56Z
 lastmod: 2023-05-27T15:51:10Z
+tags: [集合]
 ---
 
 # Queue

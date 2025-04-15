@@ -3,8 +3,12 @@ export const sidebar: any = {
         {
             text: 'Redis', collapsed: true, items: [
                 {
-                    text: "redis",
+                    text: "redis 基础",
                     link: '/docs/middleware/redis/1'
+                },
+                {
+                    text: "redis 进阶",
+                    link: '/docs/middleware/redis/2'
                 }
             ]
         }],
