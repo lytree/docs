@@ -3,9 +3,8 @@ router: blog
 title: Collection
 date: 2022-10-30T13:21:31Z
 lastmod: 2023-05-27T15:29:52Z
+tags: [集合]
 ---
-
-# Collection
 
 # Collection
 
@@ -85,9 +84,9 @@ lastmod: 2023-05-27T15:29:52Z
 
 　　**HashSet 底层就是基于 HashMap 实现的**
 
-|HashMap|HashSet|
-| ----------------------------------| ------------------------------------------------------------------------|
-|实现了 Map 接口|实现 Set 接口|
-|存储键值对|仅存储对象|
-|调用 put()向 map 中添加元素|调用 add()方法向 Set 中添加元素|
-|HashMap 使用键（Key）计算 Hashcode|HashSet 使用成员对象来计算 hashcode 值，对于两个对象来说 hashcode 可能相|
+| HashMap                            | HashSet                                                                  |
+| ---------------------------------- | ------------------------------------------------------------------------ |
+| 实现了 Map 接口                    | 实现 Set 接口                                                            |
+| 存储键值对                         | 仅存储对象                                                               |
+| 调用 put()向 map 中添加元素        | 调用 add()方法向 Set 中添加元素                                          |
+| HashMap 使用键（Key）计算 Hashcode | HashSet 使用成员对象来计算 hashcode 值，对于两个对象来说 hashcode 可能相 |

@@ -3,6 +3,7 @@ router: blog
 title: thread
 date: 2023-05-14T22:53:28Z
 lastmod: 2023-08-25T16:32:48Z
+tags: [多线程]
 ---
 
 # thread

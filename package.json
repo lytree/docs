@@ -18,10 +18,10 @@
     "vue": "^3.5.13"
   },
   "scripts": {
-    "docs:dev": "vitepress dev --host",
-    "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview",
-    "docs:create": "node scripts/new-post.js"
+    "dev": "vitepress dev --host",
+    "build": "vitepress build",
+    "preview": "vitepress preview",
+    "create": "node scripts/new-post.js"
   },
   "pnpm": {
     "ignoredBuiltDependencies": [

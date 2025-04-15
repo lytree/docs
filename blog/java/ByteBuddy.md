@@ -3,6 +3,7 @@ router: blog
 title: ByteBuddy
 date: 2023-06-19T22:23:00Z
 lastmod: 2023-07-08T13:54:37Z
+tags: [bytebuddy]
 ---
 
 # ByteBuddy

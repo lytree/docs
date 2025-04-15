@@ -3,6 +3,7 @@ router: blog
 title: JVM
 date: 2022-10-30T13:39:04Z
 lastmod: 2023-11-26T14:54:43Z
+tags: [JVM]
 ---
 
 # JVM

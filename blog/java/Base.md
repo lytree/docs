@@ -3,6 +3,7 @@ router: blog
 title: Base
 date: 2022-10-30T13:24:18Z
 lastmod: 2024-09-16T19:39:24Z
+tags: [基础]
 ---
 
 # Base
