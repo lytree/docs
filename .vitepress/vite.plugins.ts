@@ -7,29 +7,6 @@ import { getArticles } from './theme/utils/node/theme'
 import { joinPath } from './theme/utils/node/fs'
 
 
-export function registerVitePlugins(vpCfg: any, plugins: any[]) {
-  vpCfg.vite = {
-    plugins,
-    ...vpCfg.vite,
-  }
-}
-
-export function inlineInjectMermaidClient() {
-  return {
-    name: '@sugarat/theme-plugin-inline-inject-mermaid-client',
-    enforce: 'pre',
-    transform(code, id) {
-      if (id.endsWith('src/index.ts') && code.startsWith('// @sugarat/theme index')) {
-        return code
-          .replace('// replace-mermaid-import-code', 'import Mermaid from \'vitepress-plugin-mermaid/Mermaid.vue\'')
-          .replace('// replace-mermaid-mounted-code', 'if (!ctx.app.component(\'Mermaid\')) { ctx.app.component(\'Mermaid\', Mermaid as any) }')
-      }
-      return code
-    },
-  } as PluginOption
-}
-
-
 // 支持frontmatter中的相对路径图片自动处理
 export function coverImgTransform() {
   let blogConfig: Theme.BlogConfig
