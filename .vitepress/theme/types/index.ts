@@ -206,9 +206,6 @@ export namespace Theme {
         tags?: string[]
         top?: number
     }
-    // export type SearchConfig =
-    //   | false
-    //   | PagefindConfig
 
     export interface UserWorks {
         title: string
