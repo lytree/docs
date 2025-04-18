@@ -11,7 +11,6 @@ export default defineConfig({
     presetWind3(),
     presetTypography(),
     presetIcons(),
-    presetFlowbite()
   ],
   shortcuts: [{
     'expand-animation': 'relative before:ease-out before:transition active:bg-none hover:before:bg-[var(--btn-plain-bg-hover)] active:before:bg-[var(--btn-plain-bg-active)] z-0 before:absolute before:rounded-[inherit] before:inset-0 before:scale-[0.85] hover:before:scale-100 before:-z-10'

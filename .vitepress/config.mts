@@ -2,12 +2,11 @@ import { defineConfigWithTheme, defineConfig } from 'vitepress'
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons'
 import { tabsMarkdownPlugin } from 'vitepress-plugin-tabs'
 import { viteConfig } from "./vite.mts"
-import { Theme } from "./theme/types"
 import { sidebar } from "./config.sidebar.mts"
-import { blogTheme } from "./config.navs.mts"
+import { nav } from "./config.nav.mts"
 
 // https://vitepress.dev/reference/site-config
-export default defineConfigWithTheme<Theme.Config>({
+export default defineConfig({
   vite: viteConfig,
   lang: "zh-cn",
   title: "杨柳",
@@ -21,7 +20,7 @@ export default defineConfigWithTheme<Theme.Config>({
     },
   },
   themeConfig: {
-    blog: blogTheme,
+    nav: nav,
     sidebar: sidebar,
     search: {
       provider: 'local'
