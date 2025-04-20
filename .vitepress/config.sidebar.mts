@@ -561,7 +561,7 @@ export const sidebar: any = {
         {
             text: '言语', collapsed: true, items: [
                 {
-                    text: "言语1",
+                    text: "成语积累",
                     link: '/official/lalognosis/1'
                 }
             ]
