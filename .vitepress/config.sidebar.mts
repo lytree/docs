@@ -563,13 +563,17 @@ export const sidebar: any = {
                 {
                     text: "成语积累",
                     link: '/official/lalognosis/1'
+                },
+                {
+                    text: "言语",
+                    link: '/official/lalognosis/2'
                 }
             ]
         },
         {
             text: '判断', collapsed: true, items: [
                 {
-                    text: "资料分析1",
+                    text: "图推",
                     link: '/official/inferring/1'
                 }
             ]
@@ -577,7 +581,7 @@ export const sidebar: any = {
         {
             text: '资料', collapsed: true, items: [
                 {
-                    text: "资料分析1",
+                    text: "资料分析",
                     link: '/official/dataanalysis/1'
                 }
             ]
@@ -593,16 +597,28 @@ export const sidebar: any = {
         {
             text: '常识', collapsed: true, items: [
                 {
-                    text: "常识",
+                    text: "法律",
                     link: '/official/commonsense/1'
+                },
+                {
+                    text: "常识",
+                    link: '/official/commonsense/2'
+                },
+                {
+                    text: "人文地理",
+                    link: '/official/commonsense/3'
                 }
             ]
         },
         {
             text: '政治', collapsed: true, items: [
                 {
-                    text: "常识",
+                    text: "新思想",
                     link: '/official/political/1'
+                },
+                {
+                    text: "时政",
+                    link: '/official/political/2'
                 }
             ]
         },
