@@ -19,8 +19,7 @@
   "scripts": {
     "docs:dev": "vitepress dev --host",
     "docs:build": "vitepress build",
-    "docs:preview": "vitepress preview",
-    "docs:create": "node scripts/new-post.js"
+    "docs:preview": "vitepress preview"
   },
   "pnpm": {
     "ignoredBuiltDependencies": [
