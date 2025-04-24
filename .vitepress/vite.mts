@@ -6,6 +6,15 @@ export const viteConfig: any = {
 
         ]
     },
+    css: {
+        preprocessorOptions: {
+          scss: {
+            api: 'modern',
+            // additionalData: `@use "@/style/global.scss" as *;`,
+            silenceDeprecations: ["legacy-js-api"],
+          },
+        },
+      },
     plugins: [
         groupIconVitePlugin(),
         UnoCSS({

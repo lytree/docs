@@ -1,10 +1,9 @@
 ---
 layout: home
-
 hero:
   name: 学习文档
-  text: 日常学习文档记录
-  # tagline: 
+  text: 
+  tagline: 日常学习文档记录
   # actions:
   #   - theme: brand
   #     text: 什么是 VitePress?
@@ -18,9 +17,18 @@ hero:
   # image:
   #     src: /heroimg.webp
   #     alt: VitePress
-
 features:
-  # - icon: 📝
-  #   title: 专注内容
-  #   details: 只需 Markdown 即可轻松创建美观的文档站点。
+  - icon: 📝
+    title: 中间件
+    details: 中间件学习文档
+    link: /middleware/1
+  - icon: 📝
+    title: Dotnet
+    details: dotnte 学习文档
+    link: /script/dotnet/1
+  - icon: 📝
+    title: Java
+    details: java 学习文档
+    link: /script/java/1
 ---
+<HomePage />
