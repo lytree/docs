@@ -575,6 +575,15 @@ export const sidebar: any = {
                 {
                     text: "图推",
                     link: '/official/inferring/1'
+                },                {
+                    text: "逻辑论证",
+                    link: '/official/inferring/2'
+                },                {
+                    text: "推理论证",
+                    link: '/official/inferring/3'
+                },                {
+                    text: "定义判断和类比推理",
+                    link: '/official/inferring/4'
                 }
             ]
         },
