@@ -7,6 +7,7 @@ export const nav: any = [
         text: '语言', items: [
             { text: 'java', link: '/script/java/1' },
             { text: 'dotnet', link: '/script/dotnet/1' },
+            { text: '其他', link: '/script/other/1' },
         ]
     },
     {
