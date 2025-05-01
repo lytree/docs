@@ -3,6 +3,10 @@ export const sidebar: any = {
         {
             text: 'Redis', collapsed: true, items: [
                 {
+                    text: "redis 编译安装",
+                    link: '/middleware/redis/3'
+                },
+                {
                     text: "redis 基础",
                     link: '/middleware/redis/1'
                 },
@@ -557,6 +561,22 @@ export const sidebar: any = {
             }
         ]
     }],
+    "/script/other": [{
+        text: 'JS', collapsed: true, items: [
+            {
+                text: "代码片段",
+                link: '/script/js/1'
+            }
+        ]
+    },
+    {
+        text: '正则', collapsed: true, items: [
+            {
+                text: "常用正则",
+                link: '/script/regular/1'
+            }
+        ]
+    }],
     "/official/": [
         {
             text: '言语', collapsed: true, items: [
@@ -575,13 +595,13 @@ export const sidebar: any = {
                 {
                     text: "图推",
                     link: '/official/inferring/1'
-                },                {
+                }, {
                     text: "逻辑论证",
                     link: '/official/inferring/2'
-                },                {
+                }, {
                     text: "推理论证",
                     link: '/official/inferring/3'
-                },                {
+                }, {
                     text: "定义判断和类比推理",
                     link: '/official/inferring/4'
                 }
