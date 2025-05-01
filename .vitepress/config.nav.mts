@@ -1,8 +1,8 @@
 export const nav: any = [
     { text: '首页', link: '/' },
-    // {
-    //     text: '公考', link: '/official'
-    // },
+    {
+        text: '公考', link: '/official'
+    },
     {
         text: '语言', items: [
             { text: 'java', link: '/script/java/1' },
