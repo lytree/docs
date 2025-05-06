@@ -14,6 +14,7 @@ export default defineConfig({
   head: [['link', { rel: 'icon', href: '/favicon/favicon32.png' }]],
   markdown: {
     math: true,
+    lineNumbers: true,
     config(md) {
       md.use(groupIconMdPlugin)
       md.use(tabsMarkdownPlugin)
