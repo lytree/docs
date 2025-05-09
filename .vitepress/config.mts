@@ -8,7 +8,7 @@ import { nav } from "./config.nav.mts"
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
   vite: viteConfig,
-  lang: "zh-cn",
+  lang: "zh-CN",
   title: "杨柳",
   description: "exam",
   head: [['link', { rel: 'icon', href: '/favicon/favicon32.png' }]],

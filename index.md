@@ -31,4 +31,4 @@ features:
     details: java 学习文档
     link: /script/java/1
 ---
-<HomePage />
+<!-- <HomePage /> -->
