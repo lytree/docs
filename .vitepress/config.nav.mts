@@ -1,7 +1,7 @@
 export const nav: any = [
     { text: '首页', link: '/' },
     {
-        text: '公考', items: [
+        text: '学习', items: [
             { text: '言语', link: '/official/lalognosis/' },
             { text: '判断', link: '/official/inferring/' },
             { text: '资料', link: '/official/dataanalysis/' },
