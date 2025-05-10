@@ -563,15 +563,19 @@ export const sidebar: any = {
         text: 'JS', collapsed: true, items: [
             {
                 text: "代码片段",
-                link: '/script/js/1'
+                link: '/script/other/js/1'
             }
         ]
     },
     {
-        text: '正则', collapsed: true, items: [
+        text: '其他', collapsed: false, items: [
             {
                 text: "常用正则",
-                link: '/script/regular/1'
+                link: '/script/other/regular/1'
+            },
+            {
+                text: "mathjax",
+                link: '/script/other/mathjax/1'
             }
         ]
     }],
