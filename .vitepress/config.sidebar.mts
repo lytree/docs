@@ -602,12 +602,7 @@ export const sidebar: any = {
         ]
     }],
     "/official/dataanalysis": [{
-        text: '资料', collapsed: true, items: [
-            {
-                text: "资料分析",
-                link: '/official/dataanalysis/1'
-            }
-        ]
+        text: '比重', link: '/official/dataanalysis/1'
     }],
     "/official/quantity": [{
         text: '数量', collapsed: true, items: [
