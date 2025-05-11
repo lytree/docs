@@ -52,6 +52,13 @@ function createFenMd(dir) {
     if (!fs.existsSync(path.join(dir, datePath))) {
         fs.mkdirSync(path.join(dir, datePath))
     }
+    const fenbi =
+        `---
+title:  总结
+date: ${date}
+---
+# 总结
+`
     const fenbi1 =
         `---
 title:  政治
@@ -126,6 +133,8 @@ date: ${date}
 ---
 # 数量
 `
+    fs.writeFileSync(path.join(dir, datePath, "index.md"), fenbi)
+    fs.writeFileSync(path.join(dir, datePath, "1.md"), fenbi1)
     fs.writeFileSync(path.join(dir, datePath, "1.md"), fenbi1)
     fs.writeFileSync(path.join(dir, datePath, "2.md"), fenbi2)
     fs.writeFileSync(path.join(dir, datePath, "3.md"), fenbi3)
@@ -138,12 +147,16 @@ function createFenSider(dir) {
     var files = getFiles(path.join(dir, datePath))
     console.log(files)
     var json = `
-        text: '${datePath}', collapsed: true, items: [
+        text: '${datePath}',link: "${dir}.split(path.sep).join('/')", collapsed: true, items: [
         ${files.map((item) => {
-        var text = String.raw`{
+        var text = "";
+        if (!item.includes("index.md")) {
+            var text = String.raw`{
                 text: "${matter(fs.readFileSync(item)).data.title}",
                 link: "${item.split(path.sep).join('/')}"
             }`;
+        }
+
         return text;
 
     })}

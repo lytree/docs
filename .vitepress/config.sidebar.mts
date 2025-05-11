@@ -1,3 +1,5 @@
+import { link } from "fs";
+
 export const sidebar: any = {
     "/middleware": [{
         text: 'Redis', collapsed: true, items: [
@@ -645,7 +647,7 @@ export const sidebar: any = {
         ]
     }],
     "/official/fenbi/": [{
-        text: '20250511', collapsed: true, items: [
+        text: '20250511', link: "official/fenbi/20250511", collapsed: true, items: [
             {
                 text: "政治",
                 link: "official/fenbi/20250511/1.md"

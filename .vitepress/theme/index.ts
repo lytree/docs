@@ -4,7 +4,10 @@ import './styles.scss'
 
 import 'virtual:uno.css'
 import 'virtual:group-icons.css'
+// if you just want to import css
+import 'element-plus/theme-chalk/dark/css-vars.css'
 import mediumZoom from 'medium-zoom'
+import TreeTable from './component/TreeTable.vue'
 import { useRoute, type Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
@@ -13,7 +16,7 @@ export default {
   extends: DefaultTheme,
   Layout: Layout,
   enhanceApp({ app, router, siteData }) {
-    // ...
+    app.component('TreeTable', TreeTable)
   },
   setup() {
     const route = useRoute()
