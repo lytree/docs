@@ -8,6 +8,7 @@ export const nav: any = [
             { text: '数量', link: '/official/quantity/' },
             { text: '常识', link: '/official/commonsense/' },
             { text: '政治', link: '/official/political/' },
+            { text: "模考", link: "/official/fenbi/" }
         ]
     },
     {

@@ -11,6 +11,7 @@ export default defineConfig({
   lang: "zh-CN",
   title: "杨柳",
   description: "exam",
+  
   head: [['link', { rel: 'icon', href: '/favicon/favicon32.png' }]],
   markdown: {
     math: true,
