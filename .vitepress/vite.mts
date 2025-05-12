@@ -7,6 +7,7 @@ export const viteConfig: any = {
 
     ]
   },
+  ssr: { noExternal: ['element-plus'] },
   css: {
     preprocessorOptions: {
       scss: {
