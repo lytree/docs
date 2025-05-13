@@ -609,6 +609,8 @@ export const sidebar: any = {
     }],
     "/official/dataanalysis": [{
         text: '比重', link: '/official/dataanalysis/1'
+    }, {
+        text: '速算', link: '/official/dataanalysis/3'
     }],
     "/official/quantity": [{
         text: '数量', collapsed: true, items: [
