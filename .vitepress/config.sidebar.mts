@@ -670,6 +670,29 @@ export const sidebar: any = {
                 link: "official/fenbi/20250511/6.md"
             }
 
+        ],
+    }, {
+        text: '20250518', link: "official/fenbi/20250518", collapsed: true, items: [
+            {
+                text: "政治",
+                link: "official/fenbi/20250518/1.md"
+            }, {
+                text: "常识",
+                link: "official/fenbi/20250518/2.md"
+            }, {
+                text: "言语",
+                link: "official/fenbi/20250518/3.md"
+            }, {
+                text: "判断",
+                link: "official/fenbi/20250518/4.md"
+            }, {
+                text: "资料",
+                link: "official/fenbi/20250518/5.md"
+            }, {
+                text: "数量",
+                link: "official/fenbi/20250518/6.md"
+            },
+
         ]
     }],
 }

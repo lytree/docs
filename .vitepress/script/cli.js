@@ -147,7 +147,7 @@ function createFenSider(dir) {
     var files = getFiles(path.join(dir, datePath))
     console.log(files)
     var json = `
-        text: '${datePath}',link: "${dir}.split(path.sep).join('/')", collapsed: true, items: [
+        text: '${datePath}',link: "${dir.split(path.sep).join('/')}/${datePath}", collapsed: true, items: [
         ${files.map((item) => {
         var text = "";
         if (!item.includes("index.md")) {
