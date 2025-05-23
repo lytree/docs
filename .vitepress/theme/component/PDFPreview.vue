@@ -12,7 +12,7 @@
 
 import { watch, onMounted, ref, computed, onUnmounted } from "vue";
 import { ElPagination } from 'element-plus'
-import * as pdfJS from "pdfjs-dist";
+
 const props = defineProps({
     url: String
 });
@@ -114,20 +114,23 @@ const removeEventListeners = () => {
 };
 
 onMounted(async () => {
-    pdfJS.GlobalWorkerOptions.workerSrc = new URL(
-        'pdfjs-dist/legacy/build/pdf.worker.min.mjs',
-        import.meta.url,
-    ).toString();
-    loadingTask = pdfJS.getDocument({
-        url: props.url
-    });
-    if (await initPdfLoader(loadingTask)) {
-        renderPage(1);
-    }
+    import("pdfjs-dist").then(async (pdfjs) => {
+        pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+            'pdfjs-dist/legacy/build/pdf.worker.min.mjs',
+            import.meta.url,
+        ).toString();
+        loadingTask = pdfjs.getDocument({
+            url: props.url
+        });
+        if (await initPdfLoader(loadingTask)) {
+            renderPage(1);
+        }
 
-    pdfContainerRef.value?.addEventListener("scroll", () => {
-        lazyRenderPdf();
+        pdfContainerRef.value?.addEventListener("scroll", () => {
+            lazyRenderPdf();
+        });
     });
+
 });
 
 onUnmounted(() => {

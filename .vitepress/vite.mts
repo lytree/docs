@@ -29,5 +29,12 @@ export const viteConfig: any = {
   optimizeDeps: {
     include: ['pdf'], // 将pdf文件添加到include数组中
     exclude: [], // 排除其他不需要优化的文件类型
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: `assets/[name].[ext]`,
+      }
+    }
   }
 }
