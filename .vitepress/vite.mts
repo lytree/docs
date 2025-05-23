@@ -25,5 +25,9 @@ export const viteConfig: any = {
     UnoCSS({
       configFile: "./vite.uno.mts",
     })
-  ]
+  ],
+  optimizeDeps: {
+    include: ['pdf'], // 将pdf文件添加到include数组中
+    exclude: [], // 排除其他不需要优化的文件类型
+  }
 }

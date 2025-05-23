@@ -8,6 +8,7 @@ import 'virtual:group-icons.css'
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import mediumZoom from 'medium-zoom'
 import TreeTable from './component/TreeTable.vue'
+import PDFPreview from './component/PDFPreview.vue'
 import { useRoute, type Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
@@ -17,6 +18,7 @@ export default {
   Layout: Layout,
   enhanceApp({ app, router, siteData }) {
     app.component('TreeTable', TreeTable)
+    app.component('PDFPreview', PDFPreview)
   },
   setup() {
     const route = useRoute()

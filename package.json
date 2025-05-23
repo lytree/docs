@@ -1,9 +1,9 @@
 {
   "devDependencies": {
-    "@iconify/json": "^2.2.339",
+    "@iconify/json": "^2.2.340",
     "@iconify/vue": "^4.3.0",
     "@types/cross-spawn": "^6.0.6",
-    "@types/node": "^22.15.18",
+    "@types/node": "^22.15.21",
     "commander": "^13.1.0",
     "cross-spawn": "^7.0.6",
     "dayjs": "^1.11.13",
@@ -30,6 +30,8 @@
     ],
     "onlyBuiltDependencies": [
       "@parcel/watcher",
+      "canvas",
+      "core-js",
       "vue-demi"
     ]
   },
@@ -37,9 +39,12 @@
     "@mdit-vue/shared": "^2.1.4",
     "@vueuse/core": "^11.3.0",
     "medium-zoom": "^1.1.0",
-    "swiper": "^11.2.6",
+    "pdfjs-dist": "^5.2.133",
+    "swiper": "^11.2.7",
     "vitepress-markdown-timeline": "^1.2.2",
     "vitepress-plugin-group-icons": "^1.5.5",
-    "vitepress-plugin-tabs": "0.2.0"
+    "vitepress-plugin-tabs": "0.2.0",
+    "vue-pdf-embed": "^2.1.2",
+    "vue-resize-sensor": "^2.0.0"
   }
 }

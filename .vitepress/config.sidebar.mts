@@ -590,6 +590,9 @@ export const sidebar: any = {
             {
                 text: "言语",
                 link: '/official/lalognosis/2'
+            }, {
+                text: "花生成语700讲解版",
+                link: '/official/lalognosis/4'
             }
         ]
     }],
