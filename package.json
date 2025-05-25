@@ -1,13 +1,13 @@
 {
   "devDependencies": {
-    "@iconify/json": "^2.2.340",
+    "@iconify/json": "^2.2.341",
     "@iconify/vue": "^4.3.0",
     "@types/cross-spawn": "^6.0.6",
     "@types/node": "^22.15.21",
     "commander": "^13.1.0",
     "cross-spawn": "^7.0.6",
     "dayjs": "^1.11.13",
-    "element-plus": "^2.9.10",
+    "element-plus": "^2.9.11",
     "gray-matter": "^4.0.3",
     "markdown-it-mathjax3": "^4.3.2",
     "mini-svg-data-uri": "^1.4.4",
@@ -40,11 +40,10 @@
     "@vueuse/core": "^11.3.0",
     "medium-zoom": "^1.1.0",
     "pdfjs-dist": "^5.2.133",
-    "swiper": "^11.2.7",
+    "swiper": "^11.2.8",
     "vitepress-markdown-timeline": "^1.2.2",
     "vitepress-plugin-group-icons": "^1.5.5",
     "vitepress-plugin-tabs": "0.2.0",
-    "vue-pdf-embed": "^2.1.2",
     "vue-resize-sensor": "^2.0.0"
   }
 }

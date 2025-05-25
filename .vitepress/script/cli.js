@@ -146,7 +146,7 @@ date: ${date}
 function createFenSider(dir) {
     var files = getFiles(path.join(dir, datePath))
     console.log(files)
-    var json = `
+    var json = `{
         text: '${datePath}',link: "${dir.split(path.sep).join('/')}/${datePath}", collapsed: true, items: [
         ${files.map((item) => {
         var text = "";
@@ -161,7 +161,7 @@ function createFenSider(dir) {
 
     })}
             
-        ]
+]}
 `
     console.log(json)
 }
