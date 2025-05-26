@@ -721,5 +721,5 @@ export const sidebar: any = {
             },
 
         ],
-    }
+    }]
 }
