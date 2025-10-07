@@ -12,8 +12,6 @@ export const viteConfig: any = {
     preprocessorOptions: {
       scss: {
         api: 'modern',
-        // additionalData: `@use "@/style/global.scss" as *;`,
-        silenceDeprecations: ["legacy-js-api"],
       },
     },
   },

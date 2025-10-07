@@ -1,13 +1,26 @@
 <template>
-    <DefaultTheme.Layout></DefaultTheme.Layout>
+    <div v-if="frontmatter.layout !== false">
+        <div v-if="frontmatter.layout === 'home'">
+            <LHome></LHome>
+        </div>
+        <div v-else-if="frontmatter.layout && frontmatter.layout === 'page'">
+            <slot></slot>
+        </div>
+        <div v-else>
+            <LDoc>
+            </LDoc>
+        </div>
+    </div>
+    <Content v-else />
 </template>
 <script setup lang="ts">
+
+
 import { useData } from 'vitepress'
-import DefaultTheme from 'vitepress/theme'
-import { nextTick, provide } from 'vue'
-
-const { isDark } = useData()
-
+import { nextTick, provide, onMounted } from 'vue'
+import LDoc from './component/LDoc.vue'
+import LHome from './component/LHome.vue'
+const { isDark, frontmatter, page } = useData()
 const enableTransitions = () =>
     'startViewTransition' in document &&
     window.matchMedia('(prefers-reduced-motion: no-preference)').matches
@@ -40,6 +53,7 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
         }
     )
 })
+
 </script>
 <style lang="scss">
 ::view-transition-old(root),
@@ -56,5 +70,34 @@ provide('toggle-appearance', async ({ clientX: x, clientY: y }: MouseEvent) => {
 ::view-transition-new(root),
 .dark::view-transition-old(root) {
     z-index: 9999;
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+}
+
+::-webkit-scrollbar-track-piece {
+    background-color: rgba(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-thumb:vertical {
+    height: 4px;
+    border-radius: 4px;
+    background-color: var(--vp-c-brand-1);
+}
+
+::-webkit-scrollbar-thumb:horizontal {
+    width: 4px;
+    border-radius: 4px;
+    background-color: var(--vp-c-brand-1);
+}
+
+.medium-zoom-overlay {
+    z-index: 20;
+}
+
+.medium-zoom-image {
+    z-index: 21;
 }
 </style>
