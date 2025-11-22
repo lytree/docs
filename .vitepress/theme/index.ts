@@ -13,6 +13,7 @@ import { useRoute, type Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
 import { nextTick, onMounted, watch } from 'vue'
+import { TransformContext } from "vitepress"
 export default {
   extends: DefaultTheme,
   Layout: Layout,
@@ -33,5 +34,23 @@ export default {
       () => route.path,
       () => nextTick(() => initZoom())
     )
+  },
+  async transformHead(context: TransformContext) {
+    // 相应地调整正则表达式以匹配字体
+    const fontFile = context.assets.find((file: string) => /font-name\.[\w-]+\.woff2/.test(file))
+    if (fontFile) {
+      return [
+        [
+          'link',
+          {
+            rel: 'preload',
+            href: fontFile,
+            as: 'font',
+            type: 'font/woff2',
+            crossorigin: ''
+          }
+        ]
+      ]
+    }
   },
 } satisfies Theme
