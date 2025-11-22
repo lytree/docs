@@ -8,8 +8,7 @@
 <template>
     <section ref="coverRef">
         <figure class="cover-image" :style="{
-            backgroundImage: `url(${props.background?.src()})`,
-            height: '100vh',
+
         }">
             <div class="cover-focus-info">
                 <h1 :data-text="props.title" v-if="props.title !== ''">
@@ -48,7 +47,7 @@
 </template>
 
 <script setup lang='ts'>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { onMounted } from 'vue';
 import Typed from 'typed.js';
 import LFooter from './LFooter.vue'
@@ -152,7 +151,7 @@ const matchIcon = (icon?: string | { svg: string; }) => {
     return icon;
 
 }
-
+const imageUrl = computed(() => `url(${props.background?.src()})`)
 const spaceHandle = () => {
     if (coverRef.value) {
         document.documentElement.scrollTop = coverRef.value.clientHeight
@@ -172,7 +171,7 @@ onMounted(() => {
 })
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 @use "../styles/variable.scss";
 @use "../styles/animate.scss";
 
@@ -185,10 +184,14 @@ section {
         padding: 0;
         margin: 0;
         width: 100%;
+        height: 100vh;
         background-position: top center;
         background-repeat: no-repeat;
         background-size: cover;
         background-attachment: scroll;
+        background-image: v-bind(imageUrl);
+        backdrop-filter: brightness(0.6);
+        /* 模糊背后的背景图 */
 
         .cover-focus-info {
             position: relative;
@@ -205,7 +208,7 @@ section {
                 clear: both;
                 margin: auto;
                 font-size: 90px;
-                color: white;
+                // color: white;
                 transition: all 0.8s ease;
                 mix-blend-mode: lighten;
                 text-transform: none;
@@ -217,7 +220,7 @@ section {
                     margin-top: initial;
                     width: 100%;
                     height: initial;
-                    background: rgb(0 0 0 / 0%);
+                    // background: rgb(0 0 0 / 0%);
                     visibility: visible;
                     text-shadow: 1px 0 #ff3f1a;
                     content: attr(data-text);
@@ -229,7 +232,7 @@ section {
                     top: 0;
                     left: 1px;
                     width: 100%;
-                    background: rgb(0 0 0 / 0%);
+                    // background: rgb(0 0 0 / 0%);
                     text-shadow: -1px 0 #00a7e0;
                     content: attr(data-text);
                     clip: rect(0, 0, 0, 0);

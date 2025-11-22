@@ -1,14 +1,14 @@
-// https://vitepress.dev/guide/custom-theme
-import "./styles/base.scss"
-import 'virtual:uno.css'
-import 'virtual:group-icons.css'
+
 // if you just want to import css
 import 'element-plus/theme-chalk/dark/css-vars.css'
 import mediumZoom from 'medium-zoom'
 import TreeTable from './component/TreeTable.vue'
 import PDFPreview from './component/PDFPreview.vue'
 import LNavLinks from './component/LNavLinks.vue'
-
+// https://vitepress.dev/guide/custom-theme
+import "./styles/base.scss"
+import 'virtual:uno.css'
+import 'virtual:group-icons.css'
 import { useRoute, type Theme } from 'vitepress'
 import DefaultTheme from 'vitepress/theme'
 import Layout from './Layout.vue'
