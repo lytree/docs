@@ -1,8 +1,19 @@
 @use "./variable.scss" as variable;
+@use "./blur.scss" as blur;
+@use "./animate.scss" as animate;
 
 :root {
-    --vp-font-family-base: jxp, Moe-Mashiro
-        /* 普通文本字体 */
+    --vp-font-family-base: jxp, Moe-Mashiro;
+    /* 普通文本字体 */
+    --vp-home-hero-name-color: transparent;
+    --vp-home-hero-name-background: -webkit-linear-gradient(120deg,
+            var(--vp-c-brand-1) 30%,
+            var(--vp-c-brand-next));
+    --vp-home-hero-image-background-image: linear-gradient(-45deg,
+            var(--vp-c-brand-1) 30%,
+            var(--vp-c-brand-next));
+    --vp-home-hero-image-filter: blur(80px);
+
 }
 
 * {
@@ -26,10 +37,18 @@ html {
     scroll-behavior: smooth;
 }
 
+html,
+body,
+#app {
+    width: 100%;
+    height: 100%;
+}
+
 body {
     padding: 0;
     margin: 0;
     font-size: 15px;
+
     /* stylelint-disable-next-line font-family-no-missing-generic-family-keyword */
     font-family: jxp, Moe-Mashiro;
     color: variable.$theme-skin;
@@ -67,4 +86,16 @@ body {
         clear: both;
     }
 
+}
+
+@media (min-width: 640px) {
+    :root {
+        --vp-home-hero-image-filter: blur(120px);
+    }
+}
+
+@media (min-width: 960px) {
+    :root {
+        --vp-home-hero-image-filter: blur(120px);
+    }
 }

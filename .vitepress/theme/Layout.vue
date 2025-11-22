@@ -1,17 +1,9 @@
 <template>
-    <div v-if="frontmatter.layout !== false">
-        <div v-if="frontmatter.layout === 'home'">
-            <LHome></LHome>
-        </div>
-        <div v-else-if="frontmatter.layout && frontmatter.layout === 'page'">
-            <slot></slot>
-        </div>
-        <div v-else>
-            <LDoc>
-            </LDoc>
-        </div>
-    </div>
-    <Content v-else />
+
+    <LHome v-if="frontmatter.layout && frontmatter.layout === 'home'"></LHome>
+    <slot v-else-if="frontmatter.layout && frontmatter.layout === 'page'"></slot>
+    <LDoc v-else="frontmatter.layout"></LDoc>
+    <!-- <Content v-else>1</Content> -->
 </template>
 <script setup lang="ts">
 
