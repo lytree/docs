@@ -9,7 +9,7 @@ import { nav } from "./config.nav.mts"
 export default defineConfig({
   vite: viteConfig,
   lang: "zh-CN",
-  title: "杨柳",
+  title: "杨 ◦ 柳",
   description: "exam",
   
   head: [['link', { rel: 'icon', href: '/favicon/favicon32.png' }]],
