@@ -1,6 +1,4 @@
 import { defineConfig, presetAttributify, presetWind3, presetTypography, presetIcons, transformerVariantGroup, transformerDirectives } from 'unocss'
-import svgToDataUri from 'mini-svg-data-uri'
-import type { Preset } from 'unocss'
 export default defineConfig({
   transformers: [
     transformerVariantGroup(),
