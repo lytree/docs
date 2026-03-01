@@ -10,7 +10,7 @@ export default defineConfig({
   vite: viteConfig,
   lang: "zh-CN",
   title: "杨 ◦ 柳",
-  description: "exam",
+  description: "docs",
   
   head: [['link', { rel: 'icon', href: '/favicon/favicon32.png' }]],
   markdown: {
