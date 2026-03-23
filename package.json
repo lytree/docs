@@ -1,13 +1,13 @@
 {
   "devDependencies": {
-    "@iconify/json": "^2.2.452",
+    "@iconify/json": "^2.2.453",
     "@iconify/vue": "^5.0.0",
     "@types/cross-spawn": "^6.0.6",
     "@types/node": "^22.19.15",
     "commander": "^14.0.3",
     "cross-spawn": "^7.0.6",
     "dayjs": "^1.11.20",
-    "element-plus": "^2.13.5",
+    "element-plus": "^2.13.6",
     "gray-matter": "^4.0.3",
     "markdown-it": "^14.1.1",
     "markdown-it-mathjax3": "^4.3.2",
