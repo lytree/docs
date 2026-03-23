@@ -564,14 +564,14 @@ export const sidebar: any = {
         text: 'MySQL', collapsed: true, items: [
             {
                 text: "语法",
-                link: '/mysql/1'
+                link: '/db/mysql/'
             }
         ]
     }, {
         text: 'PostgreSQL', collapsed: true, items: [
             {
                 text: "语法",
-                link: '/dotnet/1'
+                link: '/db/pgsql/'
             }
         ]
     }],
