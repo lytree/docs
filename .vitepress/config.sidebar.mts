@@ -551,7 +551,127 @@ export const sidebar: any = {
                 text: '90. 考虑用序列化代理代替序列化实例'
             },
         ]
+
+    }, {
+        text: 'Java 基础',
+        collapsed: true,
+        items: [
+            {
+                link: 'java/base/JavaStream',
+                text: 'Java Stream API'
+            },
+            {
+                link: 'java/base/ThreadLocal',
+                text: 'ThreadLocal 原理与应用'
+            },
+            {
+                link: 'java/base/Volatile',
+                text: 'Volatile 关键字详解'
+            }
+        ]
+    }, {
+        text: '集合框架',
+        collapsed: true,
+        items: [
+            {
+                link: 'java/collection',
+                text: '集合框架概述'
+            },
+            {
+                link: 'java/collection/List',
+                text: 'List 接口与实现'
+            },
+            {
+                link: 'java/collection/Map',
+                text: 'Map 接口与实现'
+            },
+            {
+                link: 'java/collection/Queue',
+                text: 'Queue 接口与实现'
+            },
+            {
+                link: 'java/collection/Set',
+                text: 'Set 接口与实现'
+            }
+        ]
+    }, {
+        text: 'JVM 虚拟机',
+        collapsed: true,
+        items: [
+            {
+                link: 'java/jvm/JVM',
+                text: 'JVM 概述'
+            },
+            {
+                link: 'java/jvm/虚拟机运行时数据区域',
+                text: '虚拟机运行时数据区域'
+            },
+            {
+                link: 'java/jvm/虚拟机中的对象',
+                text: '虚拟机中的对象'
+            },
+            {
+                link: 'java/jvm/Java 虚拟机栈栈帧',
+                text: 'Java 虚拟机栈栈帧'
+            },
+            {
+                link: 'java/jvm/垃圾回收和内存分配',
+                text: '垃圾回收和内存分配'
+            }
+        ]
+    }, {
+        text: 'Netty',
+        collapsed: true,
+        items: [
+            {
+                link: 'java/netty/7',
+                text: 'Netty 核心组件'
+            },
+            {
+                link: 'java/netty/8',
+                text: 'Netty 高级特性'
+            }
+        ]
+    },      // ==================== Spring ====================
+    {
+        text: 'Spring',
+        collapsed: true,
+        items: [
+            {
+                link: 'java/spring/1',
+                text: 'Spring 核心原理'
+            }
+        ]
+    },
+
+    // ==================== Thread 多线程 ====================
+    {
+        text: '并发编程',
+        collapsed: true,
+        items: [
+            {
+                link: 'java/thread',
+                text: '多线程概述'
+            },
+            {
+                link: 'java/thread/并发处理',
+                text: '并发处理'
+            },
+            {
+                link: 'java/thread/并发锁',
+                text: '并发锁'
+            },
+            {
+                link: 'java/thread/线程池',
+                text: '线程池'
+            },
+            {
+                link: 'java/thread/线程间通讯',
+                text: '线程间通讯'
+            }
+        ]
     }],
+
     "/dotnet": [{
         text: '语法', collapsed: true, items: [
             {
