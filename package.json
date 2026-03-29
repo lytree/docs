@@ -15,10 +15,11 @@
     "unocss": "^66.6.7",
     "unplugin-element-plus": "^0.11.2",
     "vite": "^6.4.1",
-    "vitepress": "^1.6.4",
+    "vitepress": "2.0.0-alpha.17",
     "vue": "^3.5.30"
   },
   "scripts": {
+    "dev": "vitepress dev --host",
     "docs:dev": "vitepress dev --host",
     "docs:build": "vitepress build",
     "docs:preview": "vitepress preview"

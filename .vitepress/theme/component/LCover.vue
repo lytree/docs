@@ -40,8 +40,6 @@
             </ul>
         </div>
     </figure>
-    <!-- <LFooter></LFooter> -->
-    <!-- </section> -->
 </template>
 
 <script setup lang='ts'>

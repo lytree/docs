@@ -3,7 +3,6 @@
 </template>
 <script lang="ts" setup>
 import DefaultTheme from 'vitepress/theme'
-import { onMounted } from 'vue';
 
 const { Layout } = DefaultTheme
 
@@ -11,6 +10,4 @@ const { Layout } = DefaultTheme
 <style lang="scss" scoped>
 @use "../styles/variable.scss";
 @use "../styles/animate.scss";
-
-
 </style>
