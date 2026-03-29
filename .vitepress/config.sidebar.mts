@@ -599,23 +599,23 @@ export const sidebar: any = {
         collapsed: true,
         items: [
             {
-                link: 'java/jvm/JVM',
+                link: 'java/jvm/1',
                 text: 'JVM 概述'
             },
             {
-                link: 'java/jvm/虚拟机运行时数据区域',
+                link: 'java/jvm/2',
                 text: '虚拟机运行时数据区域'
             },
             {
-                link: 'java/jvm/虚拟机中的对象',
+                link: 'java/jvm/5',
                 text: '虚拟机中的对象'
             },
             {
-                link: 'java/jvm/Java 虚拟机栈栈帧',
+                link: 'java/jvm/3',
                 text: 'Java 虚拟机栈栈帧'
             },
             {
-                link: 'java/jvm/垃圾回收和内存分配',
+                link: 'java/jvm/4',
                 text: '垃圾回收和内存分配'
             }
         ]
