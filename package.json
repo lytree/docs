@@ -17,10 +17,13 @@
     "fumadocs-mdx": "14.3.1",
     "fumadocs-ui": "16.8.1",
     "isbot": "^5.1.39",
+    "katex": "^0.16.45",
     "lucide-react": "^1.8.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
     "react-router": "^7.14.1",
+    "rehype-katex": "^7.0.1",
+    "remark-math": "^6.0.0",
     "tailwind-merge": "^3.5.0"
   },
   "devDependencies": {

@@ -8,6 +8,7 @@ export function baseOptions(): BaseLayoutProps {
         <span className=" font-medium in-[.uwu]:hidden">{appName}</span>
       </>),
       url: '/',
+      transparentMode: "always",
     },
     links: [
       { text: 'java', url: '/docs/java/' },
