@@ -68,11 +68,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { path, pageTree, imagePath, markdownUrl } = useFumadocsLoader(loaderData);
   return (
-    <DocsLayout sidebar={{
-      enabled: true,
-      defaultOpenLevel: 1, // 默认展开层级
-      collapsible: true, // 是否允许折叠
-    }} {...baseOptions()} tree={pageTree}>
+    <DocsLayout nav={baseOptions().nav} tree={pageTree}>
       {clientLoader.useContent(path, { markdownUrl, path, imagePath })}
     </DocsLayout>
   );

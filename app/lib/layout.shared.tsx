@@ -1,6 +1,5 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { appName, gitConfig } from './shared';
-import type { DocsLayoutProps } from 'fumadocs-ui/layouts/docs';
 
 export function baseOptions(): BaseLayoutProps {
   return {
@@ -27,11 +26,3 @@ export function baseOptions(): BaseLayoutProps {
 
 }
 
-export const docsOptions: DocsLayoutProps = {
-  ...baseOptions,
-  sidebar: {
-    defaultOpenLevel: 1, // 默认展开层级
-    collapsible: true, // 是否允许折叠
-  },
-  tree: undefined
-};
