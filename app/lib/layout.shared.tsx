@@ -21,8 +21,6 @@ export function baseOptions(): BaseLayoutProps {
       { text: '其他', url: '/docs/other/' },
       { text: '日记', url: 'https://blog.prideyang.top/', external: true },
     ],
-    githubUrl: `https://github.com/${gitConfig.user}/${gitConfig.repo}`,
-
   };
 
 }
