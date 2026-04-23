@@ -7,7 +7,8 @@ export function baseOptions(): BaseLayoutProps {
     nav: {
       title: (<>
         <span className=" font-medium in-[.uwu]:hidden">{appName}</span>
-      </>), url: '/',
+      </>),
+      url: '/',
     },
     links: [
       { text: 'java', url: '/docs/java/' },

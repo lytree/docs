@@ -11,14 +11,18 @@ export function meta({ }: Route.MetaArgs) {
 
 export default function Home() {
   return (
-    <HomeLayout {...baseOptions()}>
-      <div className="relative w-full flex-1">
-        <img
-          src="/bg.jpeg"
-          alt="Hero background"
-          className="w-full h-full object-cover absolute inset-0"
-        />
-      </div>
-    </HomeLayout>
+    <div className="fixed inset-0 flex flex-col">
+      <img
+        src="/bg.jpeg"
+        alt="Hero background"
+        className="w-full h-full object-cover absolute inset-0"
+      />
+      <HomeLayout {...baseOptions()}>
+        <div className="flex-1" />
+        <footer className="py-4 text-center text-sm text-fd-muted-foreground bg-white/70 dark:bg-black/70 backdrop-blur">
+          © 2026 lytree. All rights reserved.
+        </footer>
+      </HomeLayout>
+    </div>
   );
 }
