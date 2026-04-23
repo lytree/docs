@@ -1,3 +1,9 @@
 {
-  "pages": ["index", "..."]
+  "title": "其他",
+  "description": "其他",
+  "root": true,
+  "pages": [
+    "index",
+    "..."
+  ]
 }

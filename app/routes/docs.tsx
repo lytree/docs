@@ -10,7 +10,7 @@ import {
 } from 'fumadocs-ui/layouts/docs/page';
 import { getPageMarkdownUrl, source } from '@/lib/source';
 import browserCollections from 'collections/browser';
-import { docsOptions } from '@/lib/layout.shared';
+import { baseOptions } from '@/lib/layout.shared';
 import { gitConfig } from '@/lib/shared';
 import { useFumadocsLoader } from 'fumadocs-core/source/client';
 import { getPageImagePath } from '@/lib/og';
@@ -67,23 +67,12 @@ const clientLoader = browserCollections.docs.createClientLoader({
 
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { path, pageTree, imagePath, markdownUrl } = useFumadocsLoader(loaderData);
-  // --- 隔离逻辑开始 ---
-  // 1. 获取当前的一级路径名 (例如: /docs/vsc-plugin/... -> vsc-plugin)
-  // path 通常是 "/docs/vsc-plugin/index" 这种格式
-  const segments = path.split('/').filter(Boolean); // ["docs", "vsc-plugin", "index"]
-  const rootDirName = segments[1]; // 获取 "vsc-plugin"
-
-  // 2. 从完整的 pageTree 中找到对应的子文件夹树
-  const filteredTree = rootDirName
-    ? pageTree.children.find(
-      (item) => item.type === 'folder' && item.name === rootDirName
-    ) ?? pageTree
-    : pageTree;
-  // --- 隔离逻辑结束 ---
   return (
     <DocsLayout sidebar={{
       enabled: true,
-    }} {...docsOptions} tree={filteredTree}>
+      defaultOpenLevel: 1, // 默认展开层级
+      collapsible: true, // 是否允许折叠
+    }} {...baseOptions()} tree={pageTree}>
       {clientLoader.useContent(path, { markdownUrl, path, imagePath })}
     </DocsLayout>
   );

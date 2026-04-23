@@ -1,3 +1,9 @@
 {
-  "pages": ["index", "..."]
+  "title": "中间件",
+  "description": "中间件",
+  "root": true,
+  "pages": [
+    "index",
+    "..."
+  ]
 }

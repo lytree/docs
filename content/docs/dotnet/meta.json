@@ -1,3 +1,9 @@
 {
-  "pages": ["index", "..."]
+  "title": "dotnet",
+  "description": "dotnet",
+  "root": true,
+  "pages": [
+    "index",
+    "..."
+  ]
 }
