@@ -1,6 +1,7 @@
 import { defineConfig, defineDocs } from 'fumadocs-mdx/config';
 import rehypeKatex from 'rehype-katex';
 import remarkMath from 'remark-math';
+import remarkGfm from 'remark-gfm';
 export const docs = defineDocs({
   dir: 'content/docs',
   docs: {
@@ -12,7 +13,7 @@ export const docs = defineDocs({
 
 export default defineConfig({
   mdxOptions: {
-    remarkPlugins: [remarkMath],
+    remarkPlugins: [remarkGfm,remarkMath],
     rehypePlugins: (v) => [
       rehypeKatex,
       ...v, // Fumadocs 默认的插件（包含 Shiki）会在这里执行
