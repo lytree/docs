@@ -13,8 +13,9 @@ export const docs = defineDocs({
 export default defineConfig({
   mdxOptions: {
     remarkPlugins: [remarkMath],
-    // Place it at first, it should be executed before the syntax highlighter
-    rehypePlugins: (v) => [rehypeKatex, ...v],
-
+    rehypePlugins: (v) => [
+      rehypeKatex,
+      ...v, // Fumadocs 默认的插件（包含 Shiki）会在这里执行
+    ],
   },
 });
