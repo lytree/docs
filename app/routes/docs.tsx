@@ -68,7 +68,7 @@ const clientLoader = browserCollections.docs.createClientLoader({
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { path, pageTree, imagePath, markdownUrl } = useFumadocsLoader(loaderData);
   return (
-    <DocsLayout nav={baseOptions().nav} tree={pageTree}>
+    <DocsLayout sidebar={{ prefetch: false }} nav={baseOptions().nav} tree={pageTree}>
       {clientLoader.useContent(path, { markdownUrl, path, imagePath })}
     </DocsLayout>
   );
