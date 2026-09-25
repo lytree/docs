@@ -1,0 +1,36 @@
+
+.tree {
+  --at-apply: flex flex-col gap-0.5;
+}
+
+.treeBtn {
+  --at-apply: flex w-full items-center justify-between rounded-md px-2 py-1.5 text-left text-sm font-medium text-fg hover:bg-accent;
+}
+
+.treeCaret {
+  --at-apply: text-xs text-muted-fg;
+}
+
+.treeChildren {
+  --at-apply: ml-3 border-l border-border pl-2;
+}
+
+.treeLink {
+  --at-apply: block rounded-md px-2 py-1.5 text-sm text-muted-fg transition-colors hover:bg-accent hover:text-fg;
+}
+
+.treeLinkActive {
+  --at-apply: bg-accent font-medium text-primary;
+}
+
+.treeSep {
+  --at-apply: my-4 border-border;
+}
+
+.treeSepLabel {
+  --at-apply: mb-1 mt-5 px-2 text-xs font-semibold uppercase tracking-wide text-muted-fg;
+}
+
+.treeIcon {
+  --at-apply: mr-1.5 inline-block w-5 text-center;
+}

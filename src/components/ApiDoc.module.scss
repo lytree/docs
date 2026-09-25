@@ -1,0 +1,92 @@
+
+.kindBadge {
+  --at-apply: mb-4 inline-block rounded-md border border-border bg-muted px-2 py-0.5 text-xs font-medium text-muted-fg;
+}
+
+.kindClass {
+  --at-apply: border-primary/40 text-primary;
+}
+
+.heritage {
+  --at-apply: mb-4 text-sm text-muted-fg;
+}
+
+.summary {
+  --at-apply: mb-4 text-base leading-relaxed;
+}
+
+.section {
+  --at-apply: mt-10 scroll-mt-24;
+}
+
+.subSection {
+  --at-apply: mt-6 scroll-mt-24;
+}
+
+.typeParams {
+  --at-apply: mb-4 text-sm text-muted-fg;
+}
+
+.code {
+  --at-apply: mb-4 overflow-x-auto rounded-lg border border-border bg-muted p-3 text-sm leading-relaxed;
+
+  code {
+    --at-apply: font-mono;
+  }
+}
+
+.inlineCode {
+  --at-apply: rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-primary;
+}
+
+.table {
+  --at-apply: mb-4 w-full border-collapse text-sm;
+
+  th {
+    --at-apply: border-b border-border px-3 py-2 text-left font-medium;
+  }
+
+  td {
+    --at-apply: border-b border-border px-3 py-2 align-top;
+  }
+
+  td:first-child {
+    --at-apply: font-mono whitespace-nowrap;
+  }
+}
+
+.optional {
+  --at-apply: text-xs text-muted-fg;
+}
+
+.defaultVal {
+  --at-apply: font-mono text-xs text-muted-fg;
+}
+
+.memberHeader {
+  --at-apply: flex flex-wrap items-center gap-2;
+}
+
+.memberBadges {
+  --at-apply: flex gap-1;
+}
+
+.badge {
+  --at-apply: rounded border border-border px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-muted-fg;
+}
+
+.returns {
+  --at-apply: mb-4 text-sm;
+
+  strong {
+    --at-apply: font-medium;
+  }
+}
+
+.source {
+  --at-apply: mt-10 border-t border-border pt-4 text-sm text-muted-fg;
+}
+
+.sourceLink {
+  --at-apply: font-mono hover:text-fg;
+}

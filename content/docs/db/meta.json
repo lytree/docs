@@ -1,6 +1,7 @@
 {
   "title": "数据库",
-  "description": "数据库",
+  "description": "数据库笔记（MySQL / PostgreSQL / etc.）",
+  "icon": "🗄️",
   "root": true,
   "pages": [
     "index",

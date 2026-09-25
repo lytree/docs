@@ -1,0 +1,24 @@
+
+.toc {
+  --at-apply: fixed right-8 top-24 hidden w-56 max-h-[calc(100vh-8rem)] overflow-y-auto xl:block;
+}
+
+.tocTitle {
+  --at-apply: mb-3 text-sm font-semibold;
+}
+
+.tocNav {
+  --at-apply: flex flex-col gap-1 border-l border-border text-sm;
+}
+
+.tocLink {
+  --at-apply: -ml-px block border-l border-transparent pl-4 text-muted-fg transition-colors hover:text-fg;
+}
+
+.tocLinkL3 {
+  --at-apply: pl-7;
+}
+
+.tocLinkActive {
+  --at-apply: border-primary font-medium text-primary;
+}

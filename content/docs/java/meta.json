@@ -1,6 +1,7 @@
 {
   "title": "Java",
-  "description": "Java",
+  "description": "Java / JVM / 并发 / 框架笔记",
+  "icon": "☕",
   "root": true,
   "pages": [
     "index",

@@ -1,0 +1,52 @@
+
+.searchOverlay {
+  --at-apply: fixed inset-0 z-50;
+}
+
+.searchBackdrop {
+  --at-apply: absolute inset-0 bg-black/40 backdrop-blur-sm;
+}
+
+.searchPanel {
+  --at-apply: absolute left-1/2 top-[12vh] w-[90vw] max-w-xl -translate-x-1/2 overflow-hidden rounded-xl border border-border bg-card shadow-2xl;
+}
+
+.searchBar {
+  --at-apply: flex items-center gap-2 border-b border-border px-4;
+}
+
+.searchIcon {
+  --at-apply: text-muted-fg;
+}
+
+.searchInput {
+  --at-apply: w-full bg-transparent py-3 text-sm outline-none placeholder:text-muted-fg;
+}
+
+.searchEsc {
+  --at-apply: rounded border border-border px-1.5 py-0.5 text-xs text-muted-fg;
+}
+
+.searchList {
+  --at-apply: max-h-[50vh] overflow-y-auto p-2;
+}
+
+.searchEmpty {
+  --at-apply: px-3 py-6 text-center text-sm text-muted-fg;
+}
+
+.searchHit {
+  --at-apply: flex w-full flex-col items-start gap-0.5 rounded-lg px-3 py-2 text-left text-sm text-fg hover:bg-accent;
+
+  mark {
+    --at-apply: bg-transparent font-bold text-primary;
+  }
+}
+
+.searchHitActive {
+  --at-apply: bg-accent;
+}
+
+.searchHitMeta {
+  --at-apply: w-full truncate text-xs text-muted-fg;
+}

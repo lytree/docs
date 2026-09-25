@@ -1,6 +1,7 @@
 {
   "title": "dotnet",
-  "description": "dotnet",
+  "description": ".NET / LINQ 相关笔记",
+  "icon": "🟣",
   "root": true,
   "pages": [
     "index",

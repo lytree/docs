@@ -1,0 +1,180 @@
+// global layer: runtime theming, prose, shiki — things that cannot be
+// CSS modules (constructed dynamically by MDX / Shiki / theme switch)
+@import 'katex/dist/katex.min.css';
+
+:root {
+  --bg: #ffffff;
+  --fg: #0b0b0f;
+  --muted: #f6f6f9;
+  --muted-fg: #6f6f7a;
+  --border: #ebebef;
+  --primary: #2f6feb;
+  --primary-contrast: #ffffff;
+  --accent: #f3f4f8;
+  --card: #ffffff;
+  --overlay: rgba(0, 0, 0, 0.4);
+
+  &.dark {
+    --bg: #0b0b10;
+    --fg: #ededf2;
+    --muted: #16161d;
+    --muted-fg: #9b9ba6;
+    --border: #23232c;
+    --primary: #5c9bff;
+    --accent: #1b1b24;
+    --card: #121218;
+    --overlay: rgba(0, 0, 0, 0.5);
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
+    'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+}
+
+// ---------------- prose ----------------
+.fd-prose {
+  line-height: 1.75;
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin: 0.5rem 0 1.25rem;
+  }
+
+  h2 {
+    font-size: 1.45rem;
+    font-weight: 650;
+    margin: 2.25rem 0 1rem;
+    padding-bottom: 0.4rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-size: 1.15rem;
+    font-weight: 600;
+    margin: 1.75rem 0 0.75rem;
+  }
+
+  p {
+    margin: 0.85rem 0;
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  ul {
+    list-style: disc;
+    padding-left: 1.4rem;
+    margin: 0.85rem 0;
+  }
+
+  ol {
+    list-style: decimal;
+    padding-left: 1.4rem;
+    margin: 0.85rem 0;
+  }
+
+  li {
+    margin: 0.3rem 0;
+  }
+
+  blockquote {
+    border-left: 3px solid var(--primary);
+    padding: 0.1rem 0 0.1rem 1rem;
+    margin: 1.25rem 0;
+    color: var(--muted-fg);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.25rem 0;
+    font-size: 0.9rem;
+    display: block;
+    overflow-x: auto;
+
+    th,
+    td {
+      border: 1px solid var(--border);
+      padding: 0.5rem 0.85rem;
+      text-align: left;
+    }
+
+    th {
+      background: var(--muted);
+      font-weight: 600;
+    }
+  }
+
+  :not(pre) > code {
+    background: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 0.3rem;
+    padding: 0.15rem 0.35rem;
+    font-size: 0.85em;
+    font-family: ui-monospace, Consolas, monospace;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 2rem 0;
+  }
+
+  img {
+    max-width: 100%;
+    border-radius: 0.5rem;
+  }
+}
+
+// heading anchors (rendered inside MDX content)
+.fd-heading {
+  position: relative;
+  scroll-margin-top: 5.5rem;
+
+  .fd-anchor {
+    opacity: 0;
+    margin-left: 0.5rem;
+    color: var(--muted-fg);
+    text-decoration: none !important;
+    font-weight: 400;
+  }
+
+  &:hover .fd-anchor {
+    opacity: 1;
+  }
+}
+
+// ---------------- shiki code blocks ----------------
+pre.shiki {
+  margin: 0;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+
+  .line.highlighted {
+    background: color-mix(in srgb, var(--primary) 12%, transparent);
+    display: inline-block;
+    width: 100%;
+  }
+}
+
+.dark pre.shiki,
+.dark pre.shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+}

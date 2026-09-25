@@ -1,11 +1,12 @@
 {
   "title": "其他",
-  "description": "其他",
+  "description": "杂项笔记",
+  "icon": "📚",
   "root": true,
   "pages": [
     "index",
-    "---",
-    "js",
+    "---参考资源---",
+    { "js": { "icon": "🟨" } },
     "math",
     "regular",
     "uv"

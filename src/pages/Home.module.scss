@@ -1,0 +1,48 @@
+
+.home {
+  --at-apply: flex min-h-screen flex-col;
+}
+
+.homeHeader {
+  --at-apply: border-b border-border;
+}
+
+.homeHeaderInner {
+  --at-apply: mx-auto flex h-14 max-w-5xl items-center justify-between px-4;
+}
+
+.homeBrand {
+  --at-apply: font-bold;
+}
+
+.homeCta {
+  --at-apply: rounded-lg bg-primary px-4 py-1.5 text-sm font-medium text-primary-contrast hover:opacity-90;
+}
+
+.homeMain {
+  --at-apply: flex flex-1 flex-col items-center justify-center px-4 text-center;
+}
+
+.homeTitle {
+  --at-apply: mb-4 text-5xl font-bold tracking-tight;
+}
+
+.homeDesc {
+  --at-apply: mb-8 max-w-xl text-lg text-muted-fg;
+}
+
+.homeLinks {
+  --at-apply: flex flex-wrap justify-center gap-3;
+}
+
+.homeLink {
+  --at-apply: flex items-center gap-2 rounded-lg border border-border px-5 py-2.5 transition-colors hover:bg-accent;
+}
+
+.homeLinkIcon {
+  --at-apply: text-base;
+}
+
+.homeFooter {
+  --at-apply: border-t border-border py-6 text-center text-sm text-muted-fg;
+}

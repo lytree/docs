@@ -1,0 +1,32 @@
+
+.docTitle {
+  --at-apply: mb-2;
+}
+
+.docDesc {
+  --at-apply: mb-6 text-lg text-muted-fg;
+}
+
+.doc404 {
+  --at-apply: py-24 text-center;
+}
+
+.doc404Code {
+  --at-apply: mb-2 text-4xl font-bold;
+}
+
+.doc404Text {
+  --at-apply: text-muted-fg;
+}
+
+.docLoading {
+  --at-apply: py-20 text-center text-muted-fg;
+}
+
+.docFooter {
+  --at-apply: mt-12 flex items-center justify-between border-t border-border pt-4 text-sm text-muted-fg;
+}
+
+.docFooterEdit {
+  --at-apply: hover:text-primary;
+}

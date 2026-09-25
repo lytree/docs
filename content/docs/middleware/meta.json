@@ -1,6 +1,7 @@
 {
   "title": "中间件",
-  "description": "中间件",
+  "description": "Redis / MQ 等中间件",
+  "icon": "🧩",
   "root": true,
   "pages": [
     "index",
