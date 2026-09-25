@@ -1,0 +1,7 @@
+# keep the deployment artifact lean
+node_modules
+dist
+.playwright-cli
+*.log
+screenshots
+FEASIBILITY.md
