@@ -1,133 +1,174 @@
+.shell {
+  --at-apply: flex min-h-screen flex-col;
+}
 
-// ---- top header ----
+// ---------- top header ----------
 .appHeader {
-  --at-apply: fixed inset-x-0 top-0 z-40 border-b border-border backdrop-blur-sm;
-  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  --at-apply: sticky top-0 z-40 border-b border-fd-border bg-fd-background/80 backdrop-blur;
 }
 
 .appHeaderInner {
-  --at-apply: mx-auto flex h-14 max-w-[90rem] items-center gap-4 px-4;
+  --at-apply: mx-auto flex h-14 max-w-[var(--fd-layout-width,90rem)] items-center gap-2 px-4;
+}
+
+.brand {
+  --at-apply: flex shrink-0 items-center gap-2 text-fg;
+  text-decoration: none;
+}
+
+.brandMark {
+  --at-apply: inline-flex h-7 w-7 items-center justify-center rounded-md bg-fd-primary text-sm font-bold text-fd-primary-fg;
+}
+
+.brandName {
+  --at-apply: hidden text-sm font-semibold sm:inline;
+}
+
+.appTabs {
+  --at-apply: flex min-w-0 items-center gap-1 overflow-x-auto text-sm;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.appTab {
+  --at-apply: flex shrink-0 items-center gap-1.5 rounded-md px-3 py-1.5 text-fg-muted transition-colors;
+  text-decoration: none;
+  &:hover {
+    --at-apply: text-fg;
+  }
+}
+
+.appTabActive {
+  --at-apply: bg-fd-accent font-medium text-fd-fg;
+}
+
+.appTabIcon {
+  --at-apply: text-base;
 }
 
 .appHeaderSpacer {
   --at-apply: flex-1;
 }
 
-.menuBtn {
-  --at-apply: text-lg md:hidden;
-}
-
-.brand {
-  --at-apply: text-base font-bold text-fg;
-}
-
-.appTabs {
-  --at-apply: hidden items-center gap-1 text-sm md:flex;
-}
-
-.appTab {
-  --at-apply: rounded-md px-2.5 py-1.5 text-muted-fg transition-colors hover:bg-accent hover:text-fg;
-}
-
-.appTabActive {
-  --at-apply: bg-accent font-medium text-fg;
-}
-
 .langSwitch {
-  --at-apply: hidden items-center gap-1 text-sm md:flex;
+  --at-apply: hidden items-center text-sm sm:flex;
 }
 
 .langLink {
-  --at-apply: rounded-md px-2 py-1.5 text-muted-fg transition-colors hover:bg-accent hover:text-fg;
+  --at-apply: rounded-md px-2 py-1 text-fg-muted transition-colors hover:text-fg;
+  text-decoration: none;
 }
 
 .searchBtn {
-  --at-apply: flex items-center gap-2 rounded-lg border border-border bg-muted px-3 py-1.5 text-sm text-muted-fg hover:text-fg;
+  --at-apply: flex items-center gap-2 rounded-md border border-fd-border bg-fd-muted px-2.5 py-1.5 text-sm text-fg-muted transition-colors hover:text-fg;
+}
 
-  kbd {
-    --at-apply: rounded border border-border px-1.5 font-sans text-xs;
-  }
+.searchLabel {
+  --at-apply: hidden sm:inline;
+}
+
+.kbd {
+  --at-apply: hidden rounded border border-fd-border px-1.5 text-xs sm:inline-block;
 }
 
 .themeBtn {
-  --at-apply: rounded-md px-2 py-1.5 hover:bg-accent;
+  --at-apply: flex h-8 w-8 items-center justify-center rounded-md text-fg-muted transition-colors hover:bg-fd-accent hover:text-fg;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
 }
 
-// ---- sidebar ----
+// ---------- body layout ----------
+.body {
+  --at-apply: relative mx-auto flex w-full max-w-[var(--fd-layout-width,90rem)] flex-1;
+}
+
+// ---------- sidebar ----------
 .sidebar {
-  --at-apply: fixed bottom-0 left-0 top-14 z-30 w-64 -translate-x-full overflow-y-auto border-r border-border bg-bg px-3 py-4 transition-transform md:translate-x-0;
+  --at-apply: sticky top-14 hidden h-[calc(100vh-3.5rem)] w-64 shrink-0 overflow-y-auto border-r border-fd-border bg-fd-background p-0 md:block;
 }
 
 .sidebarOpen {
-  --at-apply: translate-x-0;
+  --at-apply: fixed inset-y-14 left-0 z-40 block w-72;
 }
 
-.sidebarScrim {
-  --at-apply: fixed inset-0 top-14 z-20 bg-black/30 md:hidden;
+.scrim {
+  --at-apply: fixed inset-0 top-14 z-20 bg-black/40 md:hidden;
 }
 
-// ---- docs main column ----
+// ---------- docs main column ----------
 .docsMain {
-  --at-apply: mx-auto max-w-[90rem] px-4 pt-14;
+  --at-apply: min-w-0 flex-1 px-4 pt-6 md:px-8 md:pl-8 md:pr-6 md:pt-10;
 }
 
 .docsMainWithToc {
-  --at-apply: xl:mr-64;
+  --at-apply: xl:pr-72;
 }
 
-.docsMainInner {
-  --at-apply: md:ml-64 md:border-l md:border-border;
-}
-
-.docsMainBody {
-  --at-apply: mx-auto max-w-3xl px-6 py-8;
-}
-
-// full-page mode (frontmatter full: true): no sidebar column, wider body
 .docsMainFull {
-  .docsMainInner {
-    --at-apply: md:ml-0 md:border-l-0;
-  }
-
-  .docsMainBody {
-    --at-apply: max-w-5xl;
-  }
+  --at-apply: mx-auto max-w-3xl;
 }
 
-.appTabIcon {
-  --at-apply: mr-1;
+.docsArticle {
+  --at-apply: mx-auto max-w-3xl;
 }
 
-// ---- breadcrumb ----
+// ---------- breadcrumb ----------
 .crumbs {
-  --at-apply: mb-6 flex items-center gap-1.5 text-sm text-muted-fg;
+  --at-apply: mb-4 flex flex-wrap items-center gap-1 text-sm text-fg-muted;
+}
+
+.crumbsItem {
+  --at-apply: flex items-center gap-1;
+}
+
+.crumbsSep {
+  --at-apply: text-fg-muted/60;
 }
 
 .crumbsLink {
-  --at-apply: hover:text-fg;
+  --at-apply: rounded transition-colors hover:text-fg;
+  text-decoration: none;
 }
 
-// ---- pagination ----
+// ---------- mobile menu ----------
+.mobileMenu {
+  --at-apply: mb-4 inline-flex items-center gap-2 rounded-md border border-fd-border bg-fd-muted px-3 py-1.5 text-sm text-fg-muted md:hidden;
+  background: transparent;
+  cursor: pointer;
+}
+
+// ---------- pager ----------
 .pager {
-  --at-apply: mt-12 grid grid-cols-2 gap-4 border-t border-border pt-6;
+  --at-apply: mt-12 grid grid-cols-1 gap-3 border-t border-fd-border pt-6 sm:grid-cols-2;
 }
 
 .pagerCard {
-  --at-apply: block rounded-lg border border-border p-4 text-fg hover:bg-accent;
+  --at-apply: flex flex-col gap-1 rounded-lg border border-fd-border bg-fd-card p-4 text-fg transition-colors hover:bg-fd-accent;
+  text-decoration: none;
 }
 
-.pagerCardRight {
-  --at-apply: text-right;
+.pagerCardPlaceholder {
+  --at-apply: hidden sm:block;
+}
+
+.pagerPrev {
+  --at-apply: text-left;
+}
+
+.pagerNext {
+  --at-apply: text-left sm:text-right;
 }
 
 .pagerLabel {
-  --at-apply: m-0 text-xs text-muted-fg;
+  --at-apply: text-xs text-fg-muted;
 }
 
 .pagerTitle {
-  --at-apply: m-0 font-medium;
-
-  .pagerCard:hover & {
-    --at-apply: text-primary;
+  --at-apply: text-sm font-medium;
+  &:hover {
+    --at-apply: text-fd-primary;
   }
 }

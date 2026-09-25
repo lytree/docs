@@ -81,7 +81,7 @@ export function makeHeading(level: 1 | 2 | 3 | 4 | 5 | 6) {
             default: () => [
               ...flattenChildren(slots.default?.()).map((v) => v),
               id
-                ? h('a', { href: `#${id}`, class: 'fd-anchor', 'aria-label': 'Link' }, '#')
+                ? h('a', { href: `#${id}`, class: 'fd-anchor', 'aria-label': 'Anchor' }, '#')
                 : null,
             ],
           },
@@ -121,13 +121,15 @@ export const Pre = defineComponent({
 
       return (
         <div class={s.codeblock}>
-          <div class={s.codeblockHead}>
-            <span class={s.codeblockLang}>{dataTitle ?? lang}</span>
-            <button class={s.codeblockCopy} onClick={copy}>
-              {copied.value ? '✓ 已复制' : '复制'}
-            </button>
-          </div>
-          <div>{slots.default?.()}</div>
+          {(dataTitle || lang) && (
+            <div class={s.codeblockHead}>
+              <span class={s.codeblockLang}>{dataTitle ?? lang}</span>
+              <button type="button" class={s.codeblockCopy} onClick={copy}>
+                {copied.value ? '✓ 已复制' : '复制'}
+              </button>
+            </div>
+          )}
+          <div class={s.codeblockBody}>{slots.default?.()}</div>
         </div>
       )
     }
@@ -138,29 +140,48 @@ export const Pre = defineComponent({
 // Callout
 // ---------------------------------------------------------------------------
 
-const CALLOUT_CLASS: Record<string, string> = {
-  info: s.calloutInfo,
-  note: s.calloutNote,
-  tip: s.calloutTip,
-  warn: s.calloutWarn,
-  error: s.calloutError,
+const CALLOUT_TITLE: Record<string, string> = {
+  info: 'Info',
+  note: 'Note',
+  tip: 'Tip',
+  warn: 'Warning',
+  warning: 'Warning',
+  error: 'Error',
+  danger: 'Danger',
+}
+
+const CALLOUT_ICON: Record<string, string> = {
+  info: 'ℹ',
+  note: '📝',
+  tip: '💡',
+  warn: '⚠',
+  warning: '⚠',
+  error: '✕',
+  danger: '✕',
 }
 
 export const Callout = defineComponent({
   name: 'FdCallout',
   setup(props, { slots }) {
     return () => (
-      <div class={[s.callout, CALLOUT_CLASS[props.type] ?? s.calloutInfo]}>
-        <p class={s.calloutTitle}>{`${props.icon ?? 'ℹ️'} ${props.title ?? props.type}`}</p>
+      <div class={[s.callout, s[`callout_${props.type}`] ?? s.callout_info]}>
+        <p class={s.calloutTitle}>
+          <span class={s.calloutIcon}>{props.icon ?? CALLOUT_ICON[props.type] ?? 'ℹ'}</span>
+          <span>{props.title ?? CALLOUT_TITLE[props.type] ?? props.type}</span>
+        </p>
         <div class={s.calloutBody}>{renderChildren(slots.default?.())}</div>
       </div>
     )
   },
-  props: { type: { type: String, default: 'info' }, title: String, icon: String },
+  props: {
+    type: { type: String, default: 'info' },
+    title: String,
+    icon: String,
+  },
 })
 
 // ---------------------------------------------------------------------------
-// Cards
+// Cards / Card
 // ---------------------------------------------------------------------------
 
 export const Cards = defineComponent({
@@ -174,18 +195,21 @@ export const Card = defineComponent({
   name: 'FdCard',
   setup(props, { slots }) {
     return () => {
-      const body = (
-        <div class={s.card}>
-          <p class={s.cardTitle}>{[props.icon ? `${props.icon} ` : '', props.title]}</p>
+      const inner = (
+        <div class={s.cardInner}>
+          <p class={s.cardTitle}>
+            {props.icon && <span class={s.cardIcon}>{props.icon}</span>}
+            <span>{props.title}</span>
+          </p>
           <div class={s.cardDesc}>{renderChildren(slots.default?.())}</div>
         </div>
       )
       return props.href ? (
-        <RouterLink to={props.href} style={{ display: 'contents' }}>
-          {body}
+        <RouterLink to={props.href} class={s.cardLink}>
+          {inner}
         </RouterLink>
       ) : (
-        body
+        <div class={s.cardStatic}>{inner}</div>
       )
     }
   },
@@ -201,7 +225,7 @@ export const Tab = defineComponent({
   setup(_props, { slots }) {
     return () => renderChildren(slots.default?.())
   },
-  props: { value: String },
+  props: { value: String, label: String },
 })
 
 export const Tabs = defineComponent({
@@ -210,15 +234,17 @@ export const Tabs = defineComponent({
     const active = ref(0)
     return () => {
       const tabVnodes = flattenChildren(slots.default?.())
-      const values = props.items ?? tabVnodes.map((v) => (v.props?.value as string) ?? '')
+      const labels = props.items ?? tabVnodes.map((v) => (v.props?.value as string) ?? '')
       const current = tabVnodes[active.value]
       return (
         <div class={s.tabs}>
           <div class={s.tabsBar} role="tablist">
-            {values.map((label, i) => (
+            {labels.map((label, i) => (
               <button
+                type="button"
                 key={`${label}-${i}`}
                 role="tab"
+                aria-selected={i === active.value}
                 class={[s.tab, i === active.value && s.tabActive]}
                 onClick={() => (active.value = i)}
               >
@@ -226,7 +252,9 @@ export const Tabs = defineComponent({
               </button>
             ))}
           </div>
-          <div class={s.tabsPanel}>{current ? renderChildren(current.children) : null}</div>
+          <div class={s.tabsPanel} role="tabpanel">
+            {current ? renderChildren(current.children) : null}
+          </div>
         </div>
       )
     }
@@ -243,7 +271,7 @@ export const AccordionItem = defineComponent({
   setup(_props, { slots }) {
     return () => renderChildren(slots.default?.())
   },
-  props: { title: String },
+  props: { title: String, value: String },
 })
 
 export const Accordion = defineComponent({
@@ -256,20 +284,23 @@ export const Accordion = defineComponent({
       )
       return (
         <div class={s.accordion}>
-          {items.map((item, i) => (
-            <div key={i}>
-              <button
-                class={s.accordionHead}
-                onClick={() => (open.value = open.value === i ? null : i)}
-              >
-                {(item.props?.title as string) ?? `Item ${i + 1}`}
-                <span class={s.accordionIcon}>{open.value === i ? '−' : '+'}</span>
-              </button>
-              {open.value === i ? (
-                <div class={s.accordionBody}>{renderChildren(item.children)}</div>
-              ) : null}
-            </div>
-          ))}
+          {items.map((item, i) => {
+            const expanded = open.value === i
+            return (
+              <div key={i} class={[s.accordionItem, expanded && s.accordionItemOpen]}>
+                <button
+                  type="button"
+                  class={s.accordionHead}
+                  aria-expanded={expanded}
+                  onClick={() => (open.value = expanded ? null : i)}
+                >
+                  <span>{(item.props?.title as string) ?? `Item ${i + 1}`}</span>
+                  <span class={s.accordionIcon}>{expanded ? '−' : '+'}</span>
+                </button>
+                {expanded && <div class={s.accordionBody}>{renderChildren(item.children)}</div>}
+              </div>
+            )
+          })}
         </div>
       )
     }
@@ -285,6 +316,7 @@ export const Step = defineComponent({
   setup(_props, { slots }) {
     return () => renderChildren(slots.default?.())
   },
+  props: { title: String },
 })
 
 export const Steps = defineComponent({
@@ -297,7 +329,7 @@ export const Steps = defineComponent({
           {items.map((item, i) => (
             <div key={i} class={s.step}>
               <span class={s.stepBadge}>{i + 1}</span>
-              <div>{renderChildren(item.children)}</div>
+              <div class={s.stepBody}>{renderChildren(item.children)}</div>
             </div>
           ))}
         </div>

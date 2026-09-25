@@ -1,122 +1,177 @@
-
 // ---- code block wrapper (shiki <pre> is styled globally) ----
 .codeblock {
-  --at-apply: relative my-4 overflow-hidden rounded-lg border border-border;
+  --at-apply: relative my-5 overflow-hidden rounded-lg border border-fd-border bg-fd-muted;
 }
 
 .codeblockHead {
-  --at-apply: flex items-center justify-between border-b border-border bg-muted px-3 py-1.5 text-xs;
+  --at-apply: flex items-center justify-between border-b border-fd-border bg-fd-background px-3 py-1.5 text-xs;
 }
 
 .codeblockLang {
-  --at-apply: text-muted-fg;
-  font-family: var(--font-mono, ui-monospace, Consolas, monospace);
+  --at-apply: font-mono text-fg-muted;
 }
 
 .codeblockCopy {
-  --at-apply: border-none bg-transparent text-muted-fg transition-colors hover:text-fg;
+  --at-apply: cursor-pointer rounded border-none bg-transparent text-fg-muted transition-colors hover:text-fg;
+}
+
+.codeblockBody {
+  pre.shiki {
+    margin: 0;
+    background: transparent !important;
+  }
 }
 
 // ---- callout ----
 .callout {
-  --at-apply: my-4 rounded-lg px-4 py-3 text-sm;
-  border-left: 3px solid var(--callout-color, var(--primary));
-  background: var(--callout-bg, rgba(47, 111, 235, 0.08));
-
-  &.calloutInfo,
-  &.calloutNote {
-    --callout-color: #2f6feb;
-    --callout-bg: rgba(47, 111, 235, 0.08);
-  }
-
-  &.calloutTip {
-    --callout-color: #12a594;
-    --callout-bg: rgba(18, 165, 148, 0.08);
-  }
-
-  &.calloutWarn {
-    --callout-color: #f59e0b;
-    --callout-bg: rgba(245, 158, 11, 0.1);
-  }
-
-  &.calloutError {
-    --callout-color: #ef4444;
-    --callout-bg: rgba(239, 68, 68, 0.08);
-  }
+  --at-apply: my-5 rounded-lg border p-4 text-sm;
+  border-left-width: 3px;
 }
 
 .calloutTitle {
-  --at-apply: mb-1 font-semibold;
+  --at-apply: mb-2 flex items-center gap-2 font-medium;
+}
+
+.calloutIcon {
+  --at-apply: inline-flex;
 }
 
 .calloutBody {
-  p {
-    --at-apply: m-0;
+  > :first-child {
+    margin-top: 0;
   }
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.callout_info {
+  border-color: color-mix(in srgb, hsl(221 83% 53%) 25%, var(--fd-border));
+  border-left-color: hsl(221 83% 53%);
+  background: color-mix(in srgb, hsl(221 83% 53%) 7%, transparent);
+}
+.callout_note {
+  border-color: color-mix(in srgb, hsl(221 83% 53%) 25%, var(--fd-border));
+  border-left-color: hsl(221 83% 53%);
+  background: color-mix(in srgb, hsl(221 83% 53%) 7%, transparent);
+}
+.callout_tip {
+  border-color: color-mix(in srgb, hsl(173 80% 40%) 25%, var(--fd-border));
+  border-left-color: hsl(173 80% 40%);
+  background: color-mix(in srgb, hsl(173 80% 40%) 7%, transparent);
+}
+.callout_warn,
+.callout_warning {
+  border-color: color-mix(in srgb, hsl(35 92% 50%) 25%, var(--fd-border));
+  border-left-color: hsl(35 92% 50%);
+  background: color-mix(in srgb, hsl(35 92% 50%) 8%, transparent);
+}
+.callout_error,
+.callout_danger {
+  border-color: color-mix(in srgb, hsl(0 72% 51%) 25%, var(--fd-border));
+  border-left-color: hsl(0 72% 51%);
+  background: color-mix(in srgb, hsl(0 72% 51%) 7%, transparent);
 }
 
 // ---- cards ----
 .cards {
-  --at-apply: my-4 grid gap-3 sm:grid-cols-2;
+  --at-apply: my-6 grid gap-3 sm:grid-cols-2;
 }
 
-.card {
-  --at-apply: block h-full rounded-lg border border-border bg-card p-4 text-fg no-underline transition-colors hover:bg-accent;
+.cardLink {
+  --at-apply: block rounded-xl border border-fd-border bg-fd-card p-4 text-fg no-underline transition-colors hover:border-fd-primary/40 hover:bg-fd-accent;
+}
+
+.cardStatic {
+  --at-apply: rounded-xl border border-fd-border bg-fd-card p-4;
+}
+
+.cardInner {
+  --at-apply: flex h-full flex-col gap-1;
+}
+
+.cardIcon {
+  --at-apply: text-base;
 }
 
 .cardTitle {
-  --at-apply: mb-1 font-semibold;
+  --at-apply: flex items-center gap-2 text-sm font-semibold;
+  margin: 0;
 }
 
 .cardDesc {
-  --at-apply: text-sm text-muted-fg;
-
-  p {
-    --at-apply: m-0;
+  --at-apply: text-sm text-fg-muted;
+  > :first-child {
+    margin-top: 0;
+  }
+  > :last-child {
+    margin-bottom: 0;
   }
 }
 
 // ---- tabs ----
 .tabs {
-  --at-apply: my-4;
+  --at-apply: my-5 overflow-hidden rounded-lg border border-fd-border;
 }
 
 .tabsBar {
-  --at-apply: -mb-px flex gap-1 overflow-x-auto border-b border-border;
+  --at-apply: flex gap-1 overflow-x-auto border-b border-fd-border bg-fd-muted px-2;
 }
 
 .tab {
-  --at-apply: whitespace-nowrap border-b-2 border-transparent px-3 py-1.5 text-sm text-muted-fg transition-colors hover:text-fg;
+  --at-apply: cursor-pointer whitespace-nowrap border-b-2 border-transparent px-3 py-2 text-sm text-fg-muted transition-colors hover:text-fg;
+  background: transparent;
+  &:focus-visible {
+    --at-apply: outline-none ring-2 ring-fd-ring;
+  }
 }
 
 .tabActive {
-  --at-apply: border-primary font-medium text-fg;
+  --at-apply: border-fd-primary font-medium text-fd-fg;
 }
 
 .tabsPanel {
-  --at-apply: pt-3;
+  --at-apply: px-4 py-3;
+  > :first-child {
+    margin-top: 0;
+  }
+  > :last-child {
+    margin-bottom: 0;
+  }
 }
 
 // ---- accordion ----
 .accordion {
-  --at-apply: my-4 divide-y divide-border rounded-lg border border-border;
+  --at-apply: my-5 divide-y divide-fd-border rounded-lg border border-fd-border;
+}
+
+.accordionItem {
+  --at-apply: px-4;
 }
 
 .accordionHead {
-  --at-apply: flex w-full items-center justify-between px-4 py-3 text-left text-sm font-medium text-fg hover:bg-accent;
+  --at-apply: flex w-full cursor-pointer items-center justify-between py-3 text-left text-sm font-medium text-fg hover:bg-fd-accent;
+  background: transparent;
+  border: none;
 }
 
 .accordionIcon {
-  --at-apply: text-muted-fg;
+  --at-apply: ml-2 text-fg-muted;
 }
 
 .accordionBody {
-  --at-apply: px-4 pb-4 text-sm;
+  --at-apply: pb-4 text-sm;
+  > :first-child {
+    margin-top: 0;
+  }
+  > :last-child {
+    margin-bottom: 0;
+  }
 }
 
 // ---- steps ----
 .steps {
-  --at-apply: relative my-4 ml-3 space-y-6 border-l border-border pl-6;
+  --at-apply: relative my-6 ml-3 space-y-6 border-l border-fd-border pl-6;
 }
 
 .step {
@@ -124,5 +179,14 @@
 }
 
 .stepBadge {
-  --at-apply: absolute -left-[2.35rem] top-0 flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-semibold text-primary-contrast;
+  --at-apply: absolute -left-[2.35rem] top-0 flex h-6 w-6 items-center justify-center rounded-full border-2 border-fd-background bg-fd-primary text-xs font-semibold text-fd-primary-foreground;
+}
+
+.stepBody {
+  > :first-child {
+    margin-top: 0;
+  }
+  > :last-child {
+    margin-bottom: 0;
+  }
 }

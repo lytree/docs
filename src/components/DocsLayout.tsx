@@ -20,6 +20,11 @@ import s from './DocsLayout.module.scss'
 
 type PageNode = PageTreeNode & { type: 'page' }
 
+function isTabActive(folderUrl: string | undefined, currentUrl: string): boolean {
+  if (!folderUrl) return false
+  return currentUrl === folderUrl || currentUrl.startsWith(folderUrl + '/')
+}
+
 export const DocsLayout = defineComponent({
   name: 'DocsLayout',
   setup(_props, { slots }) {
@@ -28,16 +33,17 @@ export const DocsLayout = defineComponent({
     const sidebarOpen = ref(false)
     const { theme, toggle } = useTheme()
 
-    const currentSlug = () =>
+    const currentSlug = computed(() =>
       route.path.startsWith('/docs')
         ? route.path.replace(/^\/docs\/?/, '').replace(/\/$/, '')
-        : ''
+        : '',
+    )
 
-    const locale = computed(() => localeOfSlug(currentSlug()))
+    const locale = computed(() => localeOfSlug(currentSlug.value))
     const localeTree = computed(() => dataFor(locale.value).tree)
     const rootFolders = computed(() => localeTree.value.filter((n) => n.type === 'folder' && n.root))
-    const crumbs = computed(() => breadcrumb(currentSlug(), localeTree.value))
-    const currentUrl = computed(() => urlBySlug(currentSlug()))
+    const crumbs = computed(() => breadcrumb(currentSlug.value, localeTree.value))
+    const currentUrl = computed(() => urlBySlug(currentSlug.value))
 
     const pageNodes = computed(
       () => flattenTree(localeTree.value).filter((n) => n.type === 'page') as PageNode[],
@@ -53,12 +59,10 @@ export const DocsLayout = defineComponent({
     const toc = computed(
       () => (route.meta as { toc?: { title: string; url: string; depth: number }[] }).toc,
     )
-    /** frontmatter full: true — hide sidebar + toc, widen content */
     const full = computed(() => (route.meta as { full?: boolean }).full === true)
 
-    /** url of the same page under another locale */
     const localeSwitchUrl = (code: string): string => {
-      const bare = stripLocale(currentSlug())
+      const bare = stripLocale(currentSlug.value)
       if (code === defaultLocale) return bare ? `/docs/${bare}` : '/docs'
       return `/docs/${code}${bare ? `/${bare}` : ''}`
     }
@@ -74,113 +78,158 @@ export const DocsLayout = defineComponent({
     onUnmounted(() => window.removeEventListener('keydown', onKey))
 
     return () => (
-      <>
-        {/* top nav */}
+      <div class={s.shell}>
+        {/* top nav — always visible, scrolls horizontally on small screens */}
         <header class={s.appHeader}>
           <div class={s.appHeaderInner}>
-            {!full.value && (
-              <button
-                class={s.menuBtn}
-                aria-label="menu"
-                onClick={() => (sidebarOpen.value = !sidebarOpen.value)}
-              >
-                ☰
-              </button>
-            )}
             <RouterLink to="/" class={s.brand}>
-              {site.title}
+              <span class={s.brandMark}>◦</span>
+              <span class={s.brandName}>{site.title}</span>
             </RouterLink>
-            <nav class={s.appTabs}>
+
+            <nav class={s.appTabs} aria-label="主题">
               {rootFolders.value.map((folder) => (
                 <RouterLink
                   key={folder.name}
                   to={folder.url ?? '/docs'}
                   class={[
                     s.appTab,
-                    currentUrl.value.startsWith(folder.url ?? '/docs/__never') &&
-                      s.appTabActive,
+                    isTabActive(folder.url, currentUrl.value) && s.appTabActive,
                   ]}
                 >
                   {folder.icon && <span class={s.appTabIcon}>{folder.icon}</span>}
-                  {folder.title ?? folder.name}
+                  <span>{folder.title ?? folder.name}</span>
                 </RouterLink>
               ))}
             </nav>
+
             <div class={s.appHeaderSpacer} />
-            <nav class={s.langSwitch}>
+
+            <nav class={s.langSwitch} aria-label="语言">
               {otherLocales.value.map((l) => (
                 <RouterLink key={l.code} to={localeSwitchUrl(l.code)} class={s.langLink}>
                   {l.name}
                 </RouterLink>
               ))}
             </nav>
-            <button class={s.searchBtn} onClick={() => (searchOpen.value = true)}>
-              <span>⌕ 搜索</span>
-              <kbd>Ctrl K</kbd>
+
+            <button
+              type="button"
+              class={s.searchBtn}
+              onClick={() => (searchOpen.value = true)}
+              aria-label="搜索"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="11" cy="11" r="7" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+              <span class={s.searchLabel}>搜索</span>
+              <kbd class={s.kbd}>Ctrl K</kbd>
             </button>
-            <button class={s.themeBtn} onClick={toggle}>
-              {theme.value === 'dark' ? '☀️' : '🌙'}
+
+            <button
+              type="button"
+              class={s.themeBtn}
+              onClick={toggle}
+              aria-label="切换主题"
+            >
+              {theme.value === 'dark' ? (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4" />
+                  <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                </svg>
+              ) : (
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                </svg>
+              )}
             </button>
           </div>
         </header>
 
-        {/* sidebar */}
-        {!full.value && (
-          <aside class={[s.sidebar, sidebarOpen.value && s.sidebarOpen]}>
-            <Sidebar />
-          </aside>
-        )}
-        {!full.value && sidebarOpen.value && (
-          <div class={s.sidebarScrim} onClick={() => (sidebarOpen.value = false)} />
-        )}
+        <div class={s.body}>
+          {/* sidebar */}
+          {!full.value && (
+            <aside class={[s.sidebar, sidebarOpen.value && s.sidebarOpen]}>
+              <Sidebar />
+            </aside>
+          )}
 
-        {/* content */}
-        <main class={[s.docsMain, !full.value && toc.value?.length && s.docsMainWithToc, full.value && s.docsMainFull]}>
-          <div class={s.docsMainInner}>
-            <div class={s.docsMainBody}>
-              {/* breadcrumb */}
-              <div class={s.crumbs}>
-                {crumbs.value.map((c, i) => (
-                  <>
-                    {i > 0 && <span>/</span>}
-                    {c.url ? (
-                      <RouterLink to={c.url} class={s.crumbsLink}>
-                        {c.title}
-                      </RouterLink>
-                    ) : (
-                      <span>{c.title}</span>
-                    )}
-                  </>
-                ))}
-              </div>
+          {/* content */}
+          <main
+            class={[
+              s.docsMain,
+              !full.value && toc.value?.length && s.docsMainWithToc,
+              full.value && s.docsMainFull,
+            ]}
+          >
+            <article class={s.docsArticle}>
+              {!full.value && (
+                <div class={s.crumbs}>
+                  {crumbs.value.map((c, i) => (
+                    <span class={s.crumbsItem}>
+                      {i > 0 && <span class={s.crumbsSep}>/</span>}
+                      {c.url ? (
+                        <RouterLink to={c.url} class={s.crumbsLink}>
+                          {c.title}
+                        </RouterLink>
+                      ) : (
+                        <span>{c.title}</span>
+                      )}
+                    </span>
+                  ))}
+                </div>
+              )}
+
+              <button
+                type="button"
+                class={s.mobileMenu}
+                onClick={() => (sidebarOpen.value = !sidebarOpen.value)}
+                aria-label="目录"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </svg>
+                <span>目录</span>
+              </button>
+
               {slots.default?.()}
-              {/* pagination */}
-              <div class={s.pager}>
-                {prev.value ? (
-                  <a href={prev.value.url} class={s.pagerCard}>
-                    <p class={s.pagerLabel}>← 上一篇</p>
-                    <p class={s.pagerTitle}>{prev.value.title}</p>
-                  </a>
-                ) : (
-                  <div />
-                )}
-                {next.value ? (
-                  <a href={next.value.url} class={[s.pagerCard, s.pagerCardRight]}>
-                    <p class={s.pagerLabel}>下一篇 →</p>
-                    <p class={s.pagerTitle}>{next.value.title}</p>
-                  </a>
-                ) : (
-                  <div />
-                )}
-              </div>
-            </div>
-          </div>
-        </main>
 
-        {!full.value && toc.value?.length ? <Toc toc={toc.value} path={route.path} /> : null}
+              {!full.value && (prev.value || next.value) && (
+                <div class={s.pager}>
+                  {prev.value?.url ? (
+                    <RouterLink to={prev.value.url} class={[s.pagerCard, s.pagerPrev]}>
+                      <span class={s.pagerLabel}>← 上一篇</span>
+                      <span class={s.pagerTitle}>{prev.value.title}</span>
+                    </RouterLink>
+                  ) : (
+                    <span class={s.pagerCardPlaceholder} />
+                  )}
+                  {next.value?.url ? (
+                    <RouterLink to={next.value.url} class={[s.pagerCard, s.pagerNext]}>
+                      <span class={s.pagerLabel}>下一篇 →</span>
+                      <span class={s.pagerTitle}>{next.value.title}</span>
+                    </RouterLink>
+                  ) : (
+                    <span class={s.pagerCardPlaceholder} />
+                  )}
+                </div>
+              )}
+            </article>
+          </main>
+
+          {!full.value && toc.value?.length ? <Toc toc={toc.value} path={route.path} /> : null}
+        </div>
+
+        {/* mobile sidebar scrim */}
+        {!full.value && sidebarOpen.value && (
+          <div class={s.scrim} onClick={() => (sidebarOpen.value = false)} />
+        )}
 
         <SearchDialog open={searchOpen.value} onClose={() => (searchOpen.value = false)} />
-      </>
+      </div>
     )
   },
 })

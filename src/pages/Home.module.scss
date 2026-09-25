@@ -1,48 +1,120 @@
-
 .home {
-  --at-apply: flex min-h-screen flex-col;
+  --at-apply: flex min-h-screen flex-col bg-fd-background text-fd-foreground;
 }
 
-.homeHeader {
-  --at-apply: border-b border-border;
+.header {
+  --at-apply: sticky top-0 z-30 border-b border-fd-border bg-fd-background/80 backdrop-blur;
 }
 
-.homeHeaderInner {
-  --at-apply: mx-auto flex h-14 max-w-5xl items-center justify-between px-4;
+.headerInner {
+  --at-apply: mx-auto flex h-14 max-w-[var(--fd-container,1280px)] items-center justify-between px-6;
 }
 
-.homeBrand {
-  --at-apply: font-bold;
+.brand {
+  --at-apply: flex items-center gap-2 text-fg no-underline;
 }
 
-.homeCta {
-  --at-apply: rounded-lg bg-primary px-4 py-1.5 text-sm font-medium text-primary-contrast hover:opacity-90;
+.brandMark {
+  --at-apply: inline-flex h-7 w-7 items-center justify-center rounded-md bg-fd-primary text-sm font-bold text-fd-primary-foreground;
 }
 
-.homeMain {
-  --at-apply: flex flex-1 flex-col items-center justify-center px-4 text-center;
+.brandName {
+  --at-apply: text-sm font-semibold;
 }
 
-.homeTitle {
-  --at-apply: mb-4 text-5xl font-bold tracking-tight;
+.nav {
+  --at-apply: flex items-center gap-2 text-sm;
 }
 
-.homeDesc {
-  --at-apply: mb-8 max-w-xl text-lg text-muted-fg;
+.navLink {
+  --at-apply: rounded-md px-2 py-1 text-fg-muted transition-colors hover:text-fg no-underline;
 }
 
-.homeLinks {
-  --at-apply: flex flex-wrap justify-center gap-3;
+.navCta {
+  --at-apply: rounded-md bg-fd-primary px-3 py-1.5 text-sm font-medium text-fd-primary-foreground transition-opacity hover:opacity-90 no-underline;
 }
 
-.homeLink {
-  --at-apply: flex items-center gap-2 rounded-lg border border-border px-5 py-2.5 transition-colors hover:bg-accent;
+.main {
+  --at-apply: mx-auto w-full max-w-[var(--fd-container,1280px)] flex-1 px-6 py-12;
 }
 
-.homeLinkIcon {
-  --at-apply: text-base;
+// ---- hero ----
+.hero {
+  --at-apply: border-b border-fd-border pb-10 text-center;
 }
 
-.homeFooter {
-  --at-apply: border-t border-border py-6 text-center text-sm text-muted-fg;
+.heroTitle {
+  --at-apply: mb-4 text-balance text-4xl font-bold tracking-tight sm:text-5xl;
+  background: linear-gradient(135deg, var(--fd-foreground), color-mix(in srgb, var(--fd-primary) 50%, var(--fd-foreground)));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.heroDesc {
+  --at-apply: mx-auto max-w-2xl text-balance text-base text-fg-muted sm:text-lg;
+}
+
+// ---- cards ----
+.cards {
+  --at-apply: py-10;
+}
+
+.cardsTitle {
+  --at-apply: mb-6 text-2xl font-semibold;
+}
+
+.cardsGrid {
+  --at-apply: grid gap-4 sm:grid-cols-2 lg:grid-cols-3;
+}
+
+.card {
+  --at-apply: flex flex-col gap-2 rounded-xl border border-fd-border bg-fd-card p-5 no-underline transition-all;
+  color: var(--fd-foreground);
+  &:hover {
+    --at-apply: -translate-y-0.5 border-fd-primary/40 shadow-sm;
+  }
+}
+
+.cardIcon {
+  --at-apply: text-3xl;
+}
+
+.cardTitle {
+  --at-apply: text-base font-semibold;
+}
+
+.cardDesc {
+  --at-apply: text-sm text-fg-muted;
+}
+
+// ---- about ----
+.about {
+  --at-apply: border-t border-fd-border py-10;
+}
+
+.aboutTitle {
+  --at-apply: mb-4 text-2xl font-semibold;
+}
+
+.aboutList {
+  --at-apply: ml-5 list-disc space-y-1 text-sm text-fg-muted;
+  > li {
+    --at-apply: leading-relaxed;
+  }
+  code {
+    background: var(--fd-muted);
+    padding: 0.1rem 0.35rem;
+    border-radius: 0.3rem;
+    font-size: 0.85em;
+  }
+  a {
+    --at-apply: text-fd-primary;
+    text-decoration: underline;
+  }
+}
+
+// ---- footer ----
+.footer {
+  --at-apply: mt-12 flex items-center justify-between border-t border-fd-border px-6 py-5 text-xs text-fg-muted;
 }

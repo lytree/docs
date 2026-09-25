@@ -104,7 +104,7 @@ export const DocPage = defineComponent({
             {(page.value.lastModified || editUrl.value) && (
               <footer class={s.docFooter}>
                 {page.value.lastModified && (
-                  <span class={s.docFooterTime}>最后更新于 {fmtDate(page.value.lastModified)}</span>
+                  <span>最后更新于 {fmtDate(page.value.lastModified)}</span>
                 )}
                 {editUrl.value && (
                   <a class={s.docFooterEdit} href={editUrl.value} target="_blank" rel="noopener">

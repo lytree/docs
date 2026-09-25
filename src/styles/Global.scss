@@ -2,100 +2,151 @@
 // CSS modules (constructed dynamically by MDX / Shiki / theme switch)
 @import 'katex/dist/katex.min.css';
 
+/* fumadocs-style design tokens.
+   light = shadcn-like; dark = neutral-cool.
+   All components read from these variables, so dark mode is just a
+   `.dark` class swap on the root element. */
 :root {
-  --bg: #ffffff;
-  --fg: #0b0b0f;
-  --muted: #f6f6f9;
-  --muted-fg: #6f6f7a;
-  --border: #ebebef;
-  --primary: #2f6feb;
-  --primary-contrast: #ffffff;
-  --accent: #f3f4f8;
-  --card: #ffffff;
-  --overlay: rgba(0, 0, 0, 0.4);
+  --fd-background: hsl(0 0% 100%);
+  --fd-foreground: hsl(222 47% 11%);
 
-  &.dark {
-    --bg: #0b0b10;
-    --fg: #ededf2;
-    --muted: #16161d;
-    --muted-fg: #9b9ba6;
-    --border: #23232c;
-    --primary: #5c9bff;
-    --accent: #1b1b24;
-    --card: #121218;
-    --overlay: rgba(0, 0, 0, 0.5);
-  }
+  --fd-card: hsl(0 0% 100%);
+  --fd-card-foreground: hsl(222 47% 11%);
+
+  --fd-muted: hsl(220 14% 96%);
+  --fd-muted-foreground: hsl(220 9% 46%);
+
+  --fd-border: hsl(220 13% 91%);
+  --fd-accent: hsl(220 14% 96%);
+  --fd-accent-foreground: hsl(222 47% 11%);
+
+  --fd-primary: hsl(221 83% 53%);
+  --fd-primary-foreground: hsl(0 0% 100%);
+
+  --fd-ring: hsl(221 83% 53% / 0.5);
+  --fd-overlay: rgba(0, 0, 0, 0.4);
+
+  --fd-layout-width: 90rem;
+  --fd-container: 1280px;
+
+  color-scheme: light;
+}
+
+:root.dark {
+  --fd-background: hsl(222 47% 6%);
+  --fd-foreground: hsl(210 40% 98%);
+
+  --fd-card: hsl(222 47% 8%);
+  --fd-card-foreground: hsl(210 40% 98%);
+
+  --fd-muted: hsl(217 33% 12%);
+  --fd-muted-foreground: hsl(215 20% 65%);
+
+  --fd-border: hsl(217 33% 17%);
+  --fd-accent: hsl(217 33% 14%);
+  --fd-accent-foreground: hsl(210 40% 98%);
+
+  --fd-primary: hsl(217 91% 60%);
+  --fd-primary-foreground: hsl(222 47% 11%);
+
+  --fd-ring: hsl(217 91% 60% / 0.5);
+  --fd-overlay: rgba(0, 0, 0, 0.5);
+
+  color-scheme: dark;
 }
 
 html {
   scroll-behavior: smooth;
+  scrollbar-gutter: auto;
 }
 
 body {
-  background: var(--bg);
-  color: var(--fg);
+  background: var(--fd-background);
+  color: var(--fd-foreground);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC',
     'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
 }
 
-// ---------------- prose ----------------
+/* ---------------- prose ---------------- */
 .fd-prose {
-  line-height: 1.75;
+  line-height: 1.7;
+  color: var(--fd-foreground);
 
-  h1 {
+  > h1 {
     font-size: 2rem;
     font-weight: 700;
-    margin: 0.5rem 0 1.25rem;
+    letter-spacing: -0.01em;
+    margin: 0.5rem 0 1rem;
   }
 
-  h2 {
-    font-size: 1.45rem;
+  > h2 {
+    font-size: 1.5rem;
     font-weight: 650;
-    margin: 2.25rem 0 1rem;
+    margin: 2.5rem 0 1rem;
     padding-bottom: 0.4rem;
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--fd-border);
+    scroll-margin-top: 5rem;
   }
 
-  h3 {
-    font-size: 1.15rem;
+  > h3 {
+    font-size: 1.2rem;
     font-weight: 600;
     margin: 1.75rem 0 0.75rem;
+    scroll-margin-top: 5rem;
   }
 
-  p {
+  > h4 {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin: 1.5rem 0 0.5rem;
+    scroll-margin-top: 5rem;
+  }
+
+  > p {
     margin: 0.85rem 0;
   }
 
-  a {
-    color: var(--primary);
+  > a {
+    color: var(--fd-primary);
     text-decoration: underline;
     text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    text-decoration-color: color-mix(in srgb, var(--fd-primary) 40%, transparent);
+    transition: text-decoration-color 0.15s;
+    &:hover {
+      text-decoration-color: var(--fd-primary);
+    }
   }
 
-  ul {
+  > ul,
+  > ol {
+    margin: 0.85rem 0;
+    padding-left: 1.5rem;
+  }
+  > ul {
     list-style: disc;
-    padding-left: 1.4rem;
-    margin: 0.85rem 0;
   }
-
-  ol {
+  > ol {
     list-style: decimal;
-    padding-left: 1.4rem;
-    margin: 0.85rem 0;
+  }
+  > li {
+    margin: 0.35rem 0;
+    > p {
+      margin: 0.25rem 0;
+    }
   }
 
-  li {
-    margin: 0.3rem 0;
-  }
-
-  blockquote {
-    border-left: 3px solid var(--primary);
-    padding: 0.1rem 0 0.1rem 1rem;
+  > blockquote {
+    border-left: 3px solid var(--fd-primary);
+    padding: 0.4rem 0 0.4rem 1rem;
     margin: 1.25rem 0;
-    color: var(--muted-fg);
+    color: var(--fd-muted-foreground);
+    background: var(--fd-muted);
+    border-radius: 0 0.375rem 0.375rem 0;
   }
 
-  table {
+  > table {
     width: 100%;
     border-collapse: collapse;
     margin: 1.25rem 0;
@@ -105,39 +156,44 @@ body {
 
     th,
     td {
-      border: 1px solid var(--border);
+      border: 1px solid var(--fd-border);
       padding: 0.5rem 0.85rem;
       text-align: left;
     }
 
     th {
-      background: var(--muted);
+      background: var(--fd-muted);
       font-weight: 600;
     }
   }
 
-  :not(pre) > code {
-    background: var(--muted);
-    border: 1px solid var(--border);
+  > :not(pre) > code {
+    background: var(--fd-muted);
+    border: 1px solid var(--fd-border);
     border-radius: 0.3rem;
-    padding: 0.15rem 0.35rem;
+    padding: 0.1rem 0.35rem;
     font-size: 0.85em;
     font-family: ui-monospace, Consolas, monospace;
   }
 
-  hr {
+  > hr {
     border: none;
-    border-top: 1px solid var(--border);
+    border-top: 1px solid var(--fd-border);
     margin: 2rem 0;
   }
 
-  img {
+  > img {
     max-width: 100%;
     border-radius: 0.5rem;
+    border: 1px solid var(--fd-border);
+  }
+
+  > ul > li > input[type='checkbox'] {
+    margin-right: 0.5rem;
   }
 }
 
-// heading anchors (rendered inside MDX content)
+/* ---------------- heading anchors (rendered inside MDX content) ---------------- */
 .fd-heading {
   position: relative;
   scroll-margin-top: 5.5rem;
@@ -145,7 +201,7 @@ body {
   .fd-anchor {
     opacity: 0;
     margin-left: 0.5rem;
-    color: var(--muted-fg);
+    color: var(--fd-muted-foreground);
     text-decoration: none !important;
     font-weight: 400;
   }
@@ -155,7 +211,7 @@ body {
   }
 }
 
-// ---------------- shiki code blocks ----------------
+/* ---------------- shiki code blocks ---------------- */
 pre.shiki {
   margin: 0;
   padding: 1rem 1.25rem;
@@ -163,18 +219,30 @@ pre.shiki {
   font-size: 0.85rem;
   line-height: 1.7;
   font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+  background: var(--fd-muted) !important;
 
   .line.highlighted {
-    background: color-mix(in srgb, var(--primary) 12%, transparent);
+    background: color-mix(in srgb, var(--fd-primary) 12%, transparent);
     display: inline-block;
     width: 100%;
   }
 }
 
-.dark pre.shiki,
-.dark pre.shiki span {
+:root.dark pre.shiki,
+:root.dark pre.shiki span {
   color: var(--shiki-dark) !important;
   background-color: var(--shiki-dark-bg) !important;
   font-style: var(--shiki-dark-font-style) !important;
   font-weight: var(--shiki-dark-font-weight) !important;
+}
+
+/* kbd */
+kbd {
+  background: var(--fd-muted);
+  border: 1px solid var(--fd-border);
+  border-bottom-width: 2px;
+  border-radius: 0.3rem;
+  padding: 0 0.35rem;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.85em;
 }

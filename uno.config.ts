@@ -17,19 +17,20 @@ export default defineConfig({
   ],
   theme: {
     colors: {
-      // semantic palette backed by CSS custom properties defined in
-      // Global.scss (:root / :root.dark) — dark mode keeps working with
-      // pure class switching, no duplicated utilities needed
-      bg: 'var(--bg)',
-      fg: 'var(--fg)',
-      muted: 'var(--muted)',
-      'muted-fg': 'var(--muted-fg)',
-      border: 'var(--border)',
-      primary: 'var(--primary)',
-      'primary-contrast': 'var(--primary-contrast)',
-      accent: 'var(--accent)',
-      card: 'var(--card)',
-      overlay: 'var(--overlay)',
+      // raw tokens (also exposed as CSS variables in Global.scss)
+      bg: 'var(--fd-background)',
+      card: 'var(--fd-card)',
+      'card-fg': 'var(--fd-card-foreground)',
+      fg: 'var(--fd-foreground)',
+      'fg-muted': 'var(--fd-muted-foreground)',
+      muted: 'var(--fd-muted)',
+      border: 'var(--fd-border)',
+      primary: 'var(--fd-primary)',
+      'primary-fg': 'var(--fd-primary-foreground)',
+      accent: 'var(--fd-accent)',
+      'accent-fg': 'var(--fd-accent-foreground)',
+      ring: 'var(--fd-ring)',
+      overlay: 'var(--fd-overlay)',
     },
   },
   content: {

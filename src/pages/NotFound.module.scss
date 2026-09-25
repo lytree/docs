@@ -1,16 +1,15 @@
-
 .nf {
-  --at-apply: flex min-h-screen flex-col items-center justify-center gap-3;
+  --at-apply: flex min-h-[calc(100vh-3.5rem)] flex-col items-center justify-center gap-3 p-6 text-center;
 }
 
 .nfCode {
-  --at-apply: m-0 text-6xl font-bold;
+  --at-apply: m-0 text-6xl font-bold text-fd-foreground;
 }
 
 .nfText {
-  --at-apply: m-0 text-muted-fg;
+  --at-apply: m-0 text-fg-muted;
 }
 
 .nfLink {
-  --at-apply: text-primary underline underline-offset-4;
+  --at-apply: mt-4 inline-flex rounded-md border border-fd-border px-4 py-1.5 text-sm text-fg transition-colors hover:bg-fd-accent no-underline;
 }

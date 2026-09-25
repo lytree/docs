@@ -393,6 +393,7 @@ function buildFolderChildren(ctx: ScanContext, dir: string, locale: string): Pag
     const folderIndexPage = fs.existsSync(path.join(absFolder, 'index.md'))
       ? scanPage(ctx, path.join(absFolder, 'index.md'), locale)
       : undefined
+    const isRoot = override?.root ?? subMeta?.root
     return {
       type: 'folder',
       name,
@@ -400,8 +401,10 @@ function buildFolderChildren(ctx: ScanContext, dir: string, locale: string): Pag
       title: override?.title ?? subMeta?.title ?? prettify(name),
       description: override?.description ?? subMeta?.description,
       icon: override?.icon ?? subMeta?.icon,
-      root: override?.root ?? subMeta?.root,
-      defaultOpen: override?.defaultOpen ?? subMeta?.defaultOpen ?? true,
+      root: isRoot,
+      // root folders default to open; everything else defaults to closed so
+      // sidebar tree stays compact (user can still expand per-folder).
+      defaultOpen: override?.defaultOpen ?? subMeta?.defaultOpen ?? (isRoot === true),
       children,
       index: folderIndexPage?.slug ?? (indexChild as { url?: string } | undefined)?.url?.replace('/docs/', ''),
     }
@@ -419,7 +422,7 @@ function buildFolderChildren(ctx: ScanContext, dir: string, locale: string): Pag
       description: override.description,
       icon: override.icon,
       root: override.root,
-      defaultOpen: override.defaultOpen ?? true,
+      defaultOpen: override.defaultOpen ?? (override.root === true),
       children,
     }
   }

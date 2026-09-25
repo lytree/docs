@@ -1,32 +1,31 @@
-
 .docTitle {
-  --at-apply: mb-2;
+  --at-apply: mb-2 text-3xl font-bold tracking-tight;
 }
 
 .docDesc {
-  --at-apply: mb-6 text-lg text-muted-fg;
+  --at-apply: mb-6 text-lg text-fg-muted;
 }
 
 .doc404 {
-  --at-apply: py-24 text-center;
+  --at-apply: py-20 text-center;
 }
 
 .doc404Code {
-  --at-apply: mb-2 text-4xl font-bold;
+  --at-apply: mb-2 text-5xl font-bold;
 }
 
 .doc404Text {
-  --at-apply: text-muted-fg;
+  --at-apply: text-fg-muted;
 }
 
 .docLoading {
-  --at-apply: py-20 text-center text-muted-fg;
+  --at-apply: py-20 text-center text-fg-muted;
 }
 
 .docFooter {
-  --at-apply: mt-12 flex items-center justify-between border-t border-border pt-4 text-sm text-muted-fg;
+  --at-apply: mt-12 flex flex-wrap items-center justify-between gap-2 border-t border-fd-border pt-4 text-sm text-fg-muted;
 }
 
 .docFooterEdit {
-  --at-apply: hover:text-primary;
+  --at-apply: text-fd-primary transition-colors hover:underline;
 }
