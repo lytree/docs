@@ -1,31 +1,82 @@
+/* ============================================================
+   DocPage — article-level layout
+   ============================================================ */
+
+/* page title row inside the article */
 .docTitle {
-  --at-apply: mb-2 text-3xl font-bold tracking-tight;
+  margin: 0 0 0.5rem;
+  font-size: 2.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+  color: var(--fd-foreground);
 }
 
 .docDesc {
-  --at-apply: mb-6 text-lg text-fg-muted;
+  margin: 0 0 2rem;
+  font-size: 1.05rem;
+  color: var(--fd-muted-foreground);
+  line-height: 1.6;
 }
 
 .doc404 {
-  --at-apply: py-20 text-center;
+  padding: 5rem 0;
+  text-align: center;
 }
 
 .doc404Code {
-  --at-apply: mb-2 text-5xl font-bold;
+  margin: 0 0 0.5rem;
+  font-size: 4rem;
+  font-weight: 700;
+  color: var(--fd-foreground);
+  letter-spacing: -0.04em;
 }
 
 .doc404Text {
-  --at-apply: text-fg-muted;
+  margin: 0;
+  color: var(--fd-muted-foreground);
+}
+
+.doc404Back {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--fd-border);
+  border-radius: 0.5rem;
+  text-decoration: none;
+  color: var(--fd-foreground);
+  transition: background-color 0.15s;
+
+  &:hover {
+    background: var(--fd-accent);
+  }
 }
 
 .docLoading {
-  --at-apply: py-20 text-center text-fg-muted;
+  padding: 5rem 0;
+  text-align: center;
+  color: var(--fd-muted-foreground);
 }
 
 .docFooter {
-  --at-apply: mt-12 flex flex-wrap items-center justify-between gap-2 border-t border-fd-border pt-4 text-sm text-fg-muted;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--fd-border);
+  font-size: 0.8125rem;
+  color: var(--fd-muted-foreground);
 }
 
 .docFooterEdit {
-  --at-apply: text-fd-primary transition-colors hover:underline;
+  color: var(--fd-foreground);
+  text-decoration: none;
+  border-radius: 0.25rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

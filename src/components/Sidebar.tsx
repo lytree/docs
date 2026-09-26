@@ -1,4 +1,4 @@
-import { defineComponent, ref, computed, watch } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { sidebarRoot, type PageTreeNode } from '../lib/Source'
 import s from './Sidebar.module.scss'
@@ -17,7 +17,8 @@ const TreeItem = defineComponent({
     depth: { type: Number, default: 0 },
     openSet: { type: Object as () => Set<string>, required: true },
   },
-  setup(props) {
+  emits: ['navigate'],
+  setup(props, { emit }) {
     const route = useRoute()
     // user-controlled open state (collapsed/expanded)
     const userOpen = ref<boolean | null>(null)
@@ -33,7 +34,11 @@ const TreeItem = defineComponent({
     const autoExpanded = props.depth === 0 || containsActive(props.node)
     const isOpen = computed(() => {
       if (userOpen.value !== null) return userOpen.value
-      return props.openSet.has(props.node.url ?? props.node.name) || autoExpanded || (props.node.defaultOpen ?? false)
+      return (
+        props.openSet.has(props.node.url ?? props.node.name) ||
+        autoExpanded ||
+        (props.node.defaultOpen ?? false)
+      )
     })
 
     const toggle = () => {
@@ -53,22 +58,42 @@ const TreeItem = defineComponent({
 
       if (node.type === 'folder') {
         const open = isOpen.value
+        const folderActive = isActive(node.url)
         return (
           <div class={s.folder}>
-            <button
-              type="button"
-              class={[s.folderBtn, open && s.folderBtnOpen]}
-              onClick={toggle}
-              aria-expanded={open}
+            <div
+              class={[s.folderRow, folderActive && s.folderRowActive]}
+              data-open={open}
             >
-              <span class={[s.caret, open && s.caretOpen]}>
-                <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
-                  <path d="M3 1l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </span>
-              {node.icon && <span class={s.icon}>{node.icon}</span>}
-              <span class={s.label}>{node.title ?? node.name}</span>
-            </button>
+              <button
+                type="button"
+                class={s.folderBtn}
+                onClick={toggle}
+                aria-expanded={open}
+                aria-label={open ? '折叠' : '展开'}
+              >
+                <span class={[s.caret, open && s.caretOpen]}>
+                  <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+                    <path
+                      d="M3 1l4 4-4 4"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <RouterLink
+                to={node.url ?? route.path}
+                class={[s.folderLabel, folderActive && s.folderLabelActive]}
+                onClick={() => emit('navigate')}
+              >
+                {node.icon && <span class={s.icon}>{node.icon}</span>}
+                <span class={s.label}>{node.title ?? node.name}</span>
+              </RouterLink>
+            </div>
             {open && (
               <div class={s.children}>
                 {(node.children ?? []).map((child) => (
@@ -77,6 +102,7 @@ const TreeItem = defineComponent({
                     node={child}
                     depth={(props.depth ?? 0) + 1}
                     openSet={props.openSet}
+                    onNavigate={() => emit('navigate')}
                   />
                 ))}
               </div>
@@ -92,8 +118,9 @@ const TreeItem = defineComponent({
           to={node.url ?? '#'}
           class={[s.link, active && s.linkActive]}
           aria-current={active ? 'page' : undefined}
+          onClick={() => emit('navigate')}
         >
-          <span class={s.caretPlaceholder} />
+          <span class={s.caretSpacer} />
           {node.icon && <span class={s.icon}>{node.icon}</span>}
           <span class={s.label}>{node.title ?? node.name}</span>
         </RouterLink>
@@ -125,7 +152,8 @@ function buildOpenSet(nodes: PageTreeNode[], currentUrl: string): Set<string> {
 
 export const Sidebar = defineComponent({
   name: 'FdSidebar',
-  setup() {
+  emits: ['navigate'],
+  setup(_props, { emit }) {
     const route = useRoute()
 
     const slug = computed(() =>
@@ -160,6 +188,7 @@ export const Sidebar = defineComponent({
               node={node}
               depth={0}
               openSet={openSet.value}
+              onNavigate={() => emit('navigate')}
             />
           ))
         )}

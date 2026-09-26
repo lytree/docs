@@ -1,23 +1,55 @@
+/* ============================================================
+   Toc — fumadocs-ui v16 "On this page"
+   ============================================================ */
 .toc {
-  --at-apply: sticky top-14 hidden h-[calc(100vh-3.5rem)] w-56 shrink-0 overflow-y-auto py-8 pl-6 text-sm xl:block;
+  font-size: 0.8125rem;
 }
 
-.tocTitle {
-  --at-apply: mb-3 text-sm font-semibold;
+.title {
+  margin: 0 0 0.5rem;
+  padding-left: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fd-foreground);
 }
 
-.tocNav {
-  --at-apply: flex flex-col gap-1 border-l border-fd-border text-fg-muted;
+.nav {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid var(--fd-border);
 }
 
-.tocLink {
-  --at-apply: -ml-px block border-l border-transparent pl-4 py-1 transition-colors hover:text-fg;
+.link {
+  display: block;
+  padding: 0.3rem 0 0.3rem 0.75rem;
+  border-left: 1px solid transparent;
+  margin-left: -1px;
+  color: var(--fd-muted-foreground);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  line-height: 1.4;
+  transition: color 0.15s, border-color 0.15s;
+
+  &:hover {
+    color: var(--fd-foreground);
+  }
 }
 
-.tocLinkL3 {
-  --at-apply: pl-7;
+.linkL3 {
+  padding-left: 1.5rem;
+  font-size: 0.75rem;
 }
 
-.tocLinkActive {
-  --at-apply: border-fd-primary font-medium text-fd-primary;
+.linkActive {
+  color: var(--fd-foreground);
+  font-weight: 500;
+  border-left-color: var(--fd-foreground);
+}
+
+.empty {
+  padding-left: 0.75rem;
+  color: var(--fd-muted-foreground);
+  font-size: 0.8125rem;
 }

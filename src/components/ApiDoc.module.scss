@@ -1,92 +1,156 @@
-
+/* ============================================================
+   ApiDoc — TypeDoc-style API reference
+   ============================================================ */
 .kindBadge {
-  --at-apply: mb-4 inline-block rounded-md border border-border bg-muted px-2 py-0.5 text-xs font-medium text-muted-fg;
+  display: inline-block;
+  margin-bottom: 1rem;
+  border-radius: 0.375rem;
+  border: 1px solid var(--fd-border);
+  background: var(--fd-muted);
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--fd-muted-foreground);
 }
 
 .kindClass {
-  --at-apply: border-primary/40 text-primary;
+  border-color: color-mix(in oklab, var(--fd-info) 40%, var(--fd-border));
+  color: var(--fd-info);
 }
 
 .heritage {
-  --at-apply: mb-4 text-sm text-muted-fg;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--fd-muted-foreground);
 }
 
 .summary {
-  --at-apply: mb-4 text-base leading-relaxed;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
 .section {
-  --at-apply: mt-10 scroll-mt-24;
+  margin-top: 2.5rem;
+  scroll-margin-top: calc(var(--fd-nav-height) + 1rem);
 }
 
 .subSection {
-  --at-apply: mt-6 scroll-mt-24;
+  margin-top: 1.5rem;
+  scroll-margin-top: calc(var(--fd-nav-height) + 1rem);
 }
 
 .typeParams {
-  --at-apply: mb-4 text-sm text-muted-fg;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
+  color: var(--fd-muted-foreground);
 }
 
 .code {
-  --at-apply: mb-4 overflow-x-auto rounded-lg border border-border bg-muted p-3 text-sm leading-relaxed;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  border: 1px solid var(--fd-border);
+  background: var(--fd-muted);
+  padding: 0.75rem 1rem;
+  font-size: 0.8125rem;
+  line-height: 1.6;
 
   code {
-    --at-apply: font-mono;
+    font-family: ui-monospace, Consolas, monospace;
   }
 }
 
 .inlineCode {
-  --at-apply: rounded bg-muted px-1.5 py-0.5 font-mono text-sm text-primary;
+  border-radius: 0.3rem;
+  background: var(--fd-muted);
+  padding: 0.05rem 0.35rem;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.85em;
+  color: var(--fd-foreground);
 }
 
 .table {
-  --at-apply: mb-4 w-full border-collapse text-sm;
+  margin-bottom: 1rem;
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
 
   th {
-    --at-apply: border-b border-border px-3 py-2 text-left font-medium;
+    border-bottom: 1px solid var(--fd-border);
+    padding: 0.5rem 0.75rem;
+    text-align: left;
+    font-weight: 600;
   }
 
   td {
-    --at-apply: border-b border-border px-3 py-2 align-top;
+    border-bottom: 1px solid var(--fd-border);
+    padding: 0.5rem 0.75rem;
+    vertical-align: top;
   }
 
   td:first-child {
-    --at-apply: font-mono whitespace-nowrap;
+    font-family: ui-monospace, Consolas, monospace;
+    white-space: nowrap;
   }
 }
 
 .optional {
-  --at-apply: text-xs text-muted-fg;
+  font-size: 0.75rem;
+  color: var(--fd-muted-foreground);
 }
 
 .defaultVal {
-  --at-apply: font-mono text-xs text-muted-fg;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--fd-muted-foreground);
 }
 
 .memberHeader {
-  --at-apply: flex flex-wrap items-center gap-2;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .memberBadges {
-  --at-apply: flex gap-1;
+  display: flex;
+  gap: 0.25rem;
 }
 
 .badge {
-  --at-apply: rounded border border-border px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-muted-fg;
+  border: 1px solid var(--fd-border);
+  border-radius: 0.25rem;
+  padding: 0.05rem 0.375rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--fd-muted-foreground);
 }
 
 .returns {
-  --at-apply: mb-4 text-sm;
+  margin-bottom: 1rem;
+  font-size: 0.875rem;
 
   strong {
-    --at-apply: font-medium;
+    font-weight: 600;
   }
 }
 
 .source {
-  --at-apply: mt-10 border-t border-border pt-4 text-sm text-muted-fg;
+  margin-top: 2.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--fd-border);
+  font-size: 0.875rem;
+  color: var(--fd-muted-foreground);
 }
 
 .sourceLink {
-  --at-apply: font-mono hover:text-fg;
+  font-family: ui-monospace, Consolas, monospace;
+  color: var(--fd-foreground);
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }

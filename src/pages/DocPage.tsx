@@ -1,5 +1,5 @@
 import { defineComponent, computed, ref, watch, h, type Component } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, RouterLink } from 'vue-router'
 import { DocsLayout } from '../components/DocsLayout'
 import { ApiDoc } from '../components/ApiDoc'
 import { pageBySlug, site, type PageData } from '../lib/Source'
@@ -85,6 +85,9 @@ export const DocPage = defineComponent({
           <div class={s.doc404}>
             <p class={s.doc404Code}>404</p>
             <p class={s.doc404Text}>该页面不存在</p>
+            <RouterLink to="/docs" class={s.doc404Back}>
+              返回文档
+            </RouterLink>
           </div>
         ) : page.value ? (
           <article class="fd-prose">
@@ -96,10 +99,8 @@ export const DocPage = defineComponent({
               <ApiDoc data={page.value.api} />
             ) : MdxContent.value ? (
               h(MdxContent.value as Component, { components: mdxComponents })
-            ) : notFound.value ? (
-              <p class={s.docLoading}>加载失败</p>
             ) : (
-              <p>加载中…</p>
+              <p class={s.docLoading}>加载中…</p>
             )}
             {(page.value.lastModified || editUrl.value) && (
               <footer class={s.docFooter}>

@@ -9,20 +9,28 @@ interface Hit extends SearchEntry {
 
 const TYPE_LABEL: Record<string, string> = {
   page: '页面',
-  heading: '标题',
-  text: '内容',
+  heading: '章节',
+  text: '正文',
 }
 
-function highlight(text: string, query: string) {
+const TYPE_ICON: Record<string, string> = {
+  page: '📄',
+  heading: '#',
+  text: '¶',
+}
+
+function highlight(text: string, query: string): { plain: boolean; parts: string[] } {
   const q = query.trim().toLowerCase()
-  if (!q) return [text]
+  if (!q) return { plain: true, parts: [text] }
   const lower = text.toLowerCase()
   const idx = lower.indexOf(q)
-  if (idx < 0) return [text]
-  return [text.slice(0, idx), text.slice(idx, idx + q.length), text.slice(idx + q.length)]
+  if (idx < 0) return { plain: true, parts: [text] }
+  return {
+    plain: false,
+    parts: [text.slice(0, idx), text.slice(idx, idx + q.length), text.slice(idx + q.length)],
+  }
 }
 
-/** show the context around the first term match instead of a fixed prefix */
 function snippet(text: string, terms: string[]): string {
   if (!text) return text
   const lower = text.toLowerCase()
@@ -34,7 +42,20 @@ function snippet(text: string, terms: string[]): string {
   }
   if (idx < 0) return text.slice(0, 110)
   const start = Math.max(0, idx - 30)
-  return `${start > 0 ? '…' : ''}${text.slice(start, start + 110)}`
+  const end = Math.min(text.length, start + 110)
+  return `${start > 0 ? '…' : ''}${text.slice(start, end)}${end < text.length ? '…' : ''}`
+}
+
+const renderHL = (text: string, q: string) => {
+  const r = highlight(text, q)
+  if (r.plain) return text
+  return (
+    <>
+      {r.parts[0]}
+      <mark>{r.parts[1]}</mark>
+      {r.parts[2]}
+    </>
+  )
 }
 
 export const SearchDialog = defineComponent({
@@ -45,6 +66,7 @@ export const SearchDialog = defineComponent({
     const query = ref('')
     const active = ref(0)
     const inputRef = ref<HTMLInputElement | null>(null)
+    const listRef = ref<HTMLDivElement | null>(null)
     const router = useRouter()
     const route = useRoute()
 
@@ -104,71 +126,129 @@ export const SearchDialog = defineComponent({
 
     const onKey = (e: KeyboardEvent) => {
       if (!props.open) return
-      if (e.key === 'Escape') emit('close')
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        emit('close')
+      }
       if (e.key === 'ArrowDown') {
         e.preventDefault()
         active.value = Math.min(active.value + 1, hits.value.length - 1)
+        scrollActiveIntoView()
       }
       if (e.key === 'ArrowUp') {
         e.preventDefault()
         active.value = Math.max(active.value - 1, 0)
+        scrollActiveIntoView()
       }
-      if (e.key === 'Enter' && hits.value[active.value]) go(hits.value[active.value])
+      if (e.key === 'Enter' && hits.value[active.value]) {
+        e.preventDefault()
+        go(hits.value[active.value])
+      }
+    }
+
+    const scrollActiveIntoView = () => {
+      nextTick(() => {
+        const el = listRef.value?.querySelector<HTMLElement>(`[data-active="true"]`)
+        el?.scrollIntoView({ block: 'nearest' })
+      })
     }
 
     onMounted(() => window.addEventListener('keydown', onKey))
     onUnmounted(() => window.removeEventListener('keydown', onKey))
 
-    const renderHitText = (text: string) =>
-      highlight(text, query.value).map((part, j, arr) =>
-        arr.length === 3 && j === 1 ? <mark>{part}</mark> : part,
-      )
-
-    const renderMetaText = (text: string) =>
-      highlight(snippet(text, query.value.trim().toLowerCase().split(/\s+/)), query.value).map((part, j, arr) =>
-        arr.length === 3 && j === 1 ? <mark>{part}</mark> : part,
-      )
-
     return () => (
       <>
         {props.open && (
-          <div class={s.searchOverlay}>
-            <div class={s.searchBackdrop} onClick={() => emit('close')} />
-            <div class={s.searchPanel}>
-              <div class={s.searchBar}>
-                <span class={s.searchIcon}>⌕</span>
+          <div class={s.overlay}>
+            <div class={s.backdrop} onClick={() => emit('close')} />
+            <div class={s.panel} role="dialog" aria-label="搜索文档">
+              <div class={s.bar}>
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class={s.icon}
+                  aria-hidden="true"
+                >
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="m21 21-4.3-4.3" />
+                </svg>
                 <input
                   ref={inputRef}
-                  class={s.searchInput}
+                  class={s.input}
                   placeholder="搜索文档…"
                   value={query.value}
                   onInput={(e) => (query.value = (e.target as HTMLInputElement).value)}
                 />
-                <kbd class={s.searchEsc}>ESC</kbd>
+                <kbd class={s.kbd}>ESC</kbd>
               </div>
-              <div class={s.searchList}>
+              <div class={s.list} ref={listRef}>
                 {hits.value.length === 0 ? (
-                  <p class={s.searchEmpty}>
-                    {query.value ? '没有匹配的结果' : '输入关键词开始搜索'}
+                  <p class={s.empty}>
+                    {query.value ? `没有匹配 “${query.value}” 的结果` : '输入关键词开始搜索'}
                   </p>
                 ) : (
-                  hits.value.map((hit, i) => (
-                    <button
-                      key={hit.id}
-                      class={[s.searchHit, i === active.value && s.searchHitActive]}
-                      onMouseenter={() => (active.value = i)}
-                      onClick={() => go(hit)}
-                    >
-                      <span>{renderHitText(hit.title)}</span>
-                      <span class={s.searchHitMeta}>
-                        {`${TYPE_LABEL[hit.type]}${hit.heading ? ` · ${hit.heading}` : ''}${
-                          hit.content ? ' — ' : ''
-                        }`}
-                        {hit.content && renderMetaText(hit.content)}
-                      </span>
-                    </button>
-                  ))
+                  <div class={s.group}>
+                    {hits.value.map((hit, i) => (
+                      <button
+                        key={hit.id}
+                        class={[s.hit, i === active.value && s.hitActive]}
+                        data-active={i === active.value}
+                        onMouseenter={() => (active.value = i)}
+                        onClick={() => go(hit)}
+                      >
+                        <span class={s.hitIcon}>{TYPE_ICON[hit.type] ?? '•'}</span>
+                        <span class={s.hitBody}>
+                          <span class={s.hitTitle}>{renderHL(hit.title, query.value)}</span>
+                          {hit.content && (
+                            <span class={s.hitMeta}>
+                              {hit.heading ? `${hit.heading} · ` : `${TYPE_LABEL[hit.type]} · `}
+                              {renderHL(snippet(hit.content, query.value.trim().toLowerCase().split(/\s+/)), query.value)}
+                            </span>
+                          )}
+                          {!hit.content && hit.heading && (
+                            <span class={s.hitMeta}>{hit.heading}</span>
+                          )}
+                        </span>
+                        <svg
+                          width="14"
+                          height="14"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class={s.hitArrow}
+                          aria-hidden="true"
+                        >
+                          <path d="M5 12h14" />
+                          <path d="m12 5 7 7-7 7" />
+                        </svg>
+                      </button>
+                    ))}
+                  </div>
                 )}
+              </div>
+              <div class={s.footer}>
+                <span class={s.footerHint}>
+                  <kbd class={s.kbd}>↑</kbd>
+                  <kbd class={s.kbd}>↓</kbd>
+                  浏览
+                </span>
+                <span class={s.footerHint}>
+                  <kbd class={s.kbd}>↵</kbd>
+                  打开
+                </span>
+                <span class={s.footerHint}>
+                  <kbd class={s.kbd}>ESC</kbd>
+                  关闭
+                </span>
               </div>
             </div>
           </div>
