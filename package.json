@@ -9,6 +9,7 @@
     "prerender": "node scripts/Prerender.mjs",
     "build:full": "pnpm build && pnpm prerender",
     "preview": "vite preview",
+    "new:mdx": "node scripts/NewMdx.mjs",
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {

@@ -6,7 +6,11 @@
   "pages": [
     "index",
     "---参考资源---",
-    { "js": { "icon": "🟨" } },
+    {
+      "js": {
+        "icon": "🟨"
+      }
+    },
     "math",
     "regular",
     "uv"
