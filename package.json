@@ -10,6 +10,7 @@
     "build:full": "pnpm build && pnpm prerender",
     "preview": "vite preview",
     "new:mdx": "node scripts/NewMdx.mjs",
+    "new:c": "node scripts/NewComponent.mjs",
     "typecheck": "vue-tsc --noEmit"
   },
   "dependencies": {
