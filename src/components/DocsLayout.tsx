@@ -72,12 +72,10 @@ export const DocsLayout = defineComponent({
     const otherLocales = computed(() => locales.filter((l) => l.code !== locale.value))
 
     const onKey = (e: KeyboardEvent) => {
-      // cmd/ctrl-K opens search (skip when in form inputs — handled there too)
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault()
         searchOpen.value = true
       }
-      // "/" also opens search when not focused on input
       if (
         e.key === '/' &&
         !['INPUT', 'TEXTAREA', 'SELECT'].includes((e.target as HTMLElement)?.tagName)
@@ -94,11 +92,10 @@ export const DocsLayout = defineComponent({
         {/* ------------ top nav (always visible) ------------ */}
         <header class={s.nav}>
           <div class={s.navInner}>
-            <RouterLink to="/" class={s.brandLink}>
+            <RouterLink to="/" class={s.brandLink} aria-label="首页">
               <span class={s.brandIcon} aria-hidden="true">
                 Y
               </span>
-              <span class={s.brandName}>{site.title}</span>
             </RouterLink>
 
             {rootFolders.value.length > 0 && (
@@ -142,57 +139,19 @@ export const DocsLayout = defineComponent({
               <kbd class={s.searchTriggerKbd}>Ctrl K</kbd>
             </button>
 
-            <div class={s.themeSwitcher} role="group" aria-label="主题切换">
-              <div class={s.themeOptions}>
-                <button
-                  type="button"
-                  class={[s.themeOption, theme.value === 'light' && s.themeOptionActive]}
-                  onClick={() => theme.value !== 'light' && toggle()}
-                  aria-label="亮色主题"
-                  aria-pressed={theme.value === 'light'}
-                  title="亮色主题"
-                >
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <circle cx="12" cy="12" r="4" />
-                    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
-                  </svg>
-                  <span class={s.themeOptionLabel}>亮</span>
-                </button>
-                <button
-                  type="button"
-                  class={[s.themeOption, theme.value === 'dark' && s.themeOptionActive]}
-                  onClick={() => theme.value !== 'dark' && toggle()}
-                  aria-label="暗色主题"
-                  aria-pressed={theme.value === 'dark'}
-                  title="暗色主题"
-                >
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    aria-hidden="true"
-                  >
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-                  </svg>
-                  <span class={s.themeOptionLabel}>暗</span>
-                </button>
-              </div>
-            </div>
+            <button
+              type="button"
+              class={[s.themeIconBtn, theme.value === 'dark' && s.themeIconBtnActive]}
+              onClick={() => theme.value !== 'dark' && toggle()}
+              aria-label="主题切换"
+              title="主题切换"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4" />
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+                <path class={s.themeIconDark} d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+              </svg>
+            </button>
 
             <a
               href="https://github.com/lytree/docs"
@@ -207,6 +166,28 @@ export const DocsLayout = defineComponent({
               </svg>
             </a>
           </div>
+
+          {/* mobile-only secondary row: an accordion-style page selector */}
+          {!full.value && (
+            <button
+              type="button"
+              class={s.mobileBar}
+              onClick={() => (sidebarOpen.value = !sidebarOpen.value)}
+              aria-expanded={sidebarOpen.value}
+              aria-label="页面导航"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M12 7v5l3 2" />
+              </svg>
+              <span>{docTitle.value}</span>
+              <span class={[s.mobileBarChevron, sidebarOpen.value && s.mobileBarChevronOpen]}>
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </span>
+            </button>
+          )}
         </header>
 
         {/* ------------ body grid (sidebar / main / toc) ------------ */}
@@ -225,25 +206,6 @@ export const DocsLayout = defineComponent({
             {/* content */}
             <main class={s.main}>
               <article class={[s.article, full.value && s.articleFull]}>
-                {!full.value && (
-                  <div class={s.mobileBar}>
-                    <button
-                      type="button"
-                      class={s.mobileMenu}
-                      onClick={() => (sidebarOpen.value = !sidebarOpen.value)}
-                      aria-label="目录"
-                    >
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <line x1="3" y1="6" x2="21" y2="6" />
-                        <line x1="3" y1="12" x2="21" y2="12" />
-                        <line x1="3" y1="18" x2="21" y2="18" />
-                      </svg>
-                      <span>目录</span>
-                    </button>
-                    <span class={s.mobileTitle}>{docTitle.value}</span>
-                  </div>
-                )}
-
                 {!full.value && crumbs.value.length > 0 && (
                   <nav class={s.breadcrumb} aria-label="breadcrumb">
                     {crumbs.value.map((c, i) => (

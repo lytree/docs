@@ -44,13 +44,15 @@
   --fd-warning: hsl(35 92% 50%);
   --fd-danger: hsl(0 72% 51%);
 
-  /* layout widths */
+  /* layout widths — match fumadocs default */
   --fd-layout-width: 1440px;
   --fd-container: 1280px;
-  --fd-sidebar-width: 240px;
+  --fd-sidebar-width: 260px;
   --fd-toc-width: 220px;
   --fd-banner-height: 3rem;
-  --fd-nav-height: 56px;
+  --fd-nav-height: 64px;
+  --fd-sidebar-collapsed-width: 0px;
+  --fd-mobilebar-height: 2.5rem;
 
   --fd-overlay: rgba(0, 0, 0, 0.5);
 

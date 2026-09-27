@@ -6,13 +6,11 @@
 }
 
 .title {
-  margin: 0 0 0.5rem;
-  padding-left: 0.75rem;
+  margin: 0 0 0.625rem;
+  padding-left: 0.875rem;
   font-size: 0.75rem;
   font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--fd-foreground);
+  color: var(--fd-muted-foreground);
 }
 
 .nav {
@@ -23,13 +21,13 @@
 
 .link {
   display: block;
-  padding: 0.3rem 0 0.3rem 0.75rem;
+  padding: 0.25rem 0 0.25rem 0.875rem;
   border-left: 1px solid transparent;
   margin-left: -1px;
   color: var(--fd-muted-foreground);
   text-decoration: none;
   font-size: 0.8125rem;
-  line-height: 1.4;
+  line-height: 1.5;
   transition: color 0.15s, border-color 0.15s;
 
   &:hover {
@@ -38,7 +36,7 @@
 }
 
 .linkL3 {
-  padding-left: 1.5rem;
+  padding-left: 1.75rem;
   font-size: 0.75rem;
 }
 
@@ -49,7 +47,7 @@
 }
 
 .empty {
-  padding-left: 0.75rem;
+  padding-left: 0.875rem;
   color: var(--fd-muted-foreground);
   font-size: 0.8125rem;
 }
