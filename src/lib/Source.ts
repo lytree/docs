@@ -95,7 +95,7 @@ export function getPageTreePeers(slug: string, treeNodes?: PageTreeNode[]): Page
   }
 
   const folderChain = findFolder(nodes, [])
-  if (!folderChain) {
+  if (!folderChain || folderChain.length === 0) {
     // page lives at the content root — peers are the other root nodes
     return nodes.filter((n) => n.type !== 'separator' && !(n.type === 'page' && n.url === url))
   }
