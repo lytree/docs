@@ -43,8 +43,12 @@ export function jsx(
   props: Record<string, unknown> | null,
   key?: string | number | null,
 ): ReturnType<typeof h> {
-  const { children } = props ?? ({} as { children?: VNodeChild })
-  return h(type as never, { key: key ?? undefined, ...normalizeProps(props) }, children as never)
+  const { children, ...rest } = props ?? ({} as { children?: VNodeChild })
+  const normalized = normalizeProps(rest as Record<string, unknown>)
+  const slots = children == null
+    ? undefined
+    : { default: () => children as unknown }
+  return h(type as never, { key: key ?? undefined, ...normalized }, slots as never)
 }
 
 export const jsxs = jsx
