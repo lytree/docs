@@ -85,27 +85,28 @@ export const Toc = defineComponent({
 
     type AnchorClick = (e: MouseEvent) => void
 
-const renderLinks = (onItemClick?: AnchorClick) =>
+    const renderLinks = (onItemClick?: AnchorClick) =>
       props.toc.length === 0 ? (
         <p class={s.empty}>暂无章节</p>
       ) : (
         <nav class={s.nav} aria-label="On this page">
-          {props.toc.map((item) => (
-            <a
-              key={item.url}
-              href={item.url}
-              class={[
-                s.link,
-                item.depth >= 3 && s.linkL3,
-                activeId.value === item.url && s.linkActive,
-              ]}
-              {...({
-                onClick: onItemClick,
-              } as Record<string, unknown>)}
-            >
-              {item.title}
-            </a>
-          ))}
+          {props.toc.map((item) => {
+            const itemClick: ((e: MouseEvent) => void) | undefined = onItemClick
+            return (
+              <a
+                key={item.url}
+                href={item.url}
+                class={[
+                  s.link,
+                  item.depth >= 3 && s.linkL3,
+                  activeId.value === item.url && s.linkActive,
+                ]}
+                onClick={itemClick as never}
+              >
+                {item.title}
+              </a>
+            )
+          })}
         </nav>
       )
 
