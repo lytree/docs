@@ -20,6 +20,9 @@ importers:
       '@shikijs/transformers':
         specifier: ^3.23.0
         version: 3.23.0
+      '@vueuse/core':
+        specifier: ^15.0.0
+        version: 15.0.0(vue@3.6.0-rc.9(typescript@5.9.3))
       github-slugger:
         specifier: ^2.0.0
         version: 2.0.0
@@ -992,6 +995,9 @@ packages:
   '@types/unist@3.0.3':
     resolution: {integrity: sha512-ko/gIFJRv177XgZsZcBwnqJN5x/Gien8qNOn0D5bQU/zAzVf9Zt3BlcUiLqhV9y4ARk0GbT3tnUiPNgnTXzc/Q==}
 
+  '@types/web-bluetooth@0.0.21':
+    resolution: {integrity: sha512-oIQLCGWtcFZy2JW77j9k8nHzAOpqMHLQejDA48XXMWH6tjCQHz5RCFz1bzsmROyL6PUm+LLnUiI4BCn221inxA==}
+
   '@ungap/structured-clone@1.4.0':
     resolution: {integrity: sha512-1mEZtMKPM09vDmQt5y7YvmN2+DFTP7Tg0EWXdic8/C6VRnpb33e4ghisCIE3WZjsE2N8mf+QV1Zqh7ZFYLWInQ==}
 
@@ -1245,6 +1251,22 @@ packages:
 
   '@vue/shared@3.6.0-rc.9':
     resolution: {integrity: sha512-ZIVee+Qn/HLCV821JQ9p0N9De15S/y8ViGXD/JdEeaqgwg5PH1mLFenSEo1bY+omnu+yREFuC+hr2+IDoYRU1Q==}
+
+  '@vueuse/core@15.0.0':
+    resolution: {integrity: sha512-Zv67h5mrk7YHDJsRObx+DXaCBz6RKBUpxqLesJ+3xZNPG6yuQs7ja7kg3veFrrouYLWAqydQ7CwGEbLVxB43Ng==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      vue: ^3.5.0
+
+  '@vueuse/metadata@15.0.0':
+    resolution: {integrity: sha512-sfWE5LADAKJ0KnjtGliMdSN8Ij/L7uP6rXIZlgPloAI4zvvefbw6H5Lt7KJA6RqQOYgVqWF5Guj50HHMIzygBg==}
+    engines: {node: '>=22'}
+
+  '@vueuse/shared@15.0.0':
+    resolution: {integrity: sha512-vbNXhGrbV53xPOMSyOzMHQRvhMgZf7oNDw2RChUetVxwTIEkInQ1joZ9JbT0G3z2n2AJNjvmCWeM9ySYrnvogA==}
+    engines: {node: '>=22'}
+    peerDependencies:
+      vue: ^3.5.0
 
   acorn-jsx@5.3.2:
     resolution: {integrity: sha512-rq9s+JNhf0IChjtDXxllJ7g41oZk5SlXtp0LHwyA5cejwn7vKmKp4pPri6YEePv2PU65sAsegbXtIinmDFDXgQ==}
@@ -3077,6 +3099,8 @@ snapshots:
 
   '@types/unist@3.0.3': {}
 
+  '@types/web-bluetooth@0.0.21': {}
+
   '@ungap/structured-clone@1.4.0': {}
 
   '@unocss/cli@66.10.5':
@@ -3425,6 +3449,19 @@ snapshots:
   '@vue/shared@3.5.43': {}
 
   '@vue/shared@3.6.0-rc.9': {}
+
+  '@vueuse/core@15.0.0(vue@3.6.0-rc.9(typescript@5.9.3))':
+    dependencies:
+      '@types/web-bluetooth': 0.0.21
+      '@vueuse/metadata': 15.0.0
+      '@vueuse/shared': 15.0.0(vue@3.6.0-rc.9(typescript@5.9.3))
+      vue: 3.6.0-rc.9(typescript@5.9.3)
+
+  '@vueuse/metadata@15.0.0': {}
+
+  '@vueuse/shared@15.0.0(vue@3.6.0-rc.9(typescript@5.9.3))':
+    dependencies:
+      vue: 3.6.0-rc.9(typescript@5.9.3)
 
   acorn-jsx@5.3.2(acorn@8.18.0):
     dependencies:

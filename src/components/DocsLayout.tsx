@@ -142,7 +142,7 @@ export const DocsLayout = defineComponent({
             <button
               type="button"
               class={[s.themeIconBtn, theme.value === 'dark' && s.themeIconBtnActive]}
-              onClick={() => theme.value !== 'dark' && toggle()}
+              onClick={() => toggle()}
               aria-label="主题切换"
               title="主题切换"
             >

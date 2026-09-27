@@ -1,20 +1,31 @@
-import { ref, watchEffect } from 'vue'
+import { computed } from 'vue'
+import { useDark, useToggle } from '@vueuse/core'
 
-const theme = ref<'light' | 'dark'>(
-  document.documentElement.classList.contains('dark') ? 'dark' : 'light',
-)
+/**
+ * Reactive theme toggle backed by VueUse.
+ *
+ * - `isDark` is a `Ref<boolean>` that follows:
+ *   1. localStorage('vueuse-color-scheme') if present
+ *   2. otherwise the system `prefers-color-scheme: dark`
+ * - Writing to `isDark` (or calling `toggle()`) persists to localStorage
+ *   and reflects on <html class="dark"> + `color-scheme`.
+ */
+const isDark = useDark({
+  selector: 'html',
+  attribute: 'class',
+  valueDark: 'dark',
+  valueLight: '',
+  storageKey: 'fd-theme',
+})
+
+const toggleDark = useToggle(isDark)
 
 export function useTheme() {
-  const toggle = () => {
-    theme.value = theme.value === 'dark' ? 'light' : 'dark'
+  return {
+    theme: computed(() => (isDark.value ? 'dark' : 'light')),
+    isDark,
+    toggle: toggleDark,
   }
-  watchEffect(() => {
-    document.documentElement.classList.toggle('dark', theme.value === 'dark')
-    try {
-      localStorage.setItem('fd-theme', theme.value)
-    } catch {
-      /* ignore */
-    }
-  })
-  return { theme, toggle }
 }
+
+export default useTheme
