@@ -311,7 +311,7 @@
   }
 
   @media (min-width: 1024px) {
-    display: none;
+    display: none !important;
   }
 }
 
@@ -410,6 +410,24 @@
 
 .articleFull {
   max-width: none;
+}
+
+/* TOC: mobile/tablet popover container (visible <1280px) */
+.articleToc {
+  display: block;
+
+  @media (min-width: 1280px) {
+    display: none;
+  }
+}
+
+/* TOC: desktop sticky column wrapper (visible >=1280px) */
+.bodyToc {
+  display: none;
+
+  @media (min-width: 1280px) {
+    display: contents;
+  }
 }
 
 /* breadcrumb above title */

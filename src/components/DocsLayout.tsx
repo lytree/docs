@@ -223,6 +223,13 @@ export const DocsLayout = defineComponent({
                   </nav>
                 )}
 
+                {/* mobile/tablet TOC popover sits inside the article, above the body */}
+                {!full.value && toc.value?.length && (
+                  <div class={s.articleToc}>
+                    <Toc toc={toc.value} path={route.path} />
+                  </div>
+                )}
+
                 {slots.default?.()}
 
                 {!full.value && (prev.value || next.value) && (
@@ -248,7 +255,12 @@ export const DocsLayout = defineComponent({
               </article>
             </main>
 
-            {!full.value && toc.value?.length ? <Toc toc={toc.value} path={route.path} /> : null}
+            {/* desktop TOC sticky column — hidden on smaller screens (Toc renders popover instead) */}
+            {!full.value && toc.value?.length ? (
+              <div class={s.bodyToc}>
+                <Toc toc={toc.value} path={route.path} />
+              </div>
+            ) : null}
           </div>
         </div>
 

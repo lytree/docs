@@ -74,6 +74,37 @@ export function sidebarRoot(slug: string, treeNodes?: PageTreeNode[]): PageTreeN
   return nodes
 }
 
+/** find the parent folder of a slug and return its page children, skipping the slug itself.
+ *  Used by DocsCategory — index pages list their siblings as cards. */
+export function getPageTreePeers(slug: string, treeNodes?: PageTreeNode[]): PageTreeNode[] {
+  const nodes = treeNodes ?? dataFor(localeOfSlug(slug)).tree
+  const url = urlBySlug(slug)
+
+  const findFolder = (list: PageTreeNode[], chain: PageTreeNode[]): PageTreeNode[] | null => {
+    for (const n of list) {
+      if (n.type === 'separator') continue
+      if (n.type === 'folder') {
+        if (n.url === url) return [...chain, n]
+        const sub = n.children ? findFolder(n.children, [...chain, n]) : null
+        if (sub) return sub
+      } else if (n.type === 'page' && n.url === url) {
+        return chain
+      }
+    }
+    return null
+  }
+
+  const folderChain = findFolder(nodes, [])
+  if (!folderChain) {
+    // page lives at the content root — peers are the other root nodes
+    return nodes.filter((n) => n.type !== 'separator' && !(n.type === 'page' && n.url === url))
+  }
+  const parent = folderChain[folderChain.length - 1]
+  return (parent.children ?? []).filter(
+    (n) => n.type !== 'separator' && !(n.type === 'page' && n.url === url),
+  )
+}
+
 export function breadcrumb(slug: string, treeNodes?: PageTreeNode[]): { title: string; url?: string }[] {
   const nodes = treeNodes ?? dataFor(localeOfSlug(slug)).tree
   const url = urlBySlug(slug)
