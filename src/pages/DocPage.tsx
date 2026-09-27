@@ -92,6 +92,19 @@ export const DocPage = defineComponent({
     watch(MdxContent, (c) => {
       if (c) setMDXComponents(mdxComponents)
     })
+    // Tabs' `router.replace` (query-only) creates a fresh route whose meta is
+    // reset from the route record — re-apply the runtime meta of current page
+    // so TOC / InlineToc keep working after a tab switch.
+    watch(
+      () => route.fullPath,
+      () => {
+        const p = page.value
+        if (!p) return
+        route.meta.toc = p.toc
+        route.meta.title = p.title
+        route.meta.full = !!p.full
+      },
+    )
 
     /** fetch the canonical raw markdown for the current page (used by Copy / View as MD) */
     const fetchMarkdownUrl = async (): Promise<string | null> => {

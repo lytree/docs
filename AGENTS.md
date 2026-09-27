@@ -28,7 +28,8 @@ There is no automated test suite. Validate by running `pnpm dev` and visually in
 - Each MDX page uses YAML frontmatter: `title` (required), optional `description`, `icon`, `full` (boolean — hides sidebar and TOC for a wider page), `date`, `lastmod`.
 - The category directory's `meta.json` controls sidebar order and title. Set `"root": true` on top-level category files so they show up as tabs.
 - Root order is fixed by `content/docs/meta.json` `pages`; new top-level categories must be added there too.
-- MDX supports: `<Callout>`, `<Cards>` / `<Card>`, `<Tabs>` / `<Tab>`, `<Accordion>` / `<AccordionItem>`, `<Steps>` / `<Step>`, `<pre>` (Shiki, with `title="..."` and `{n-m}` line highlight markers), GFM tables, KaTeX math (`$...$` / `$$...$$`).
+- MDX supports: `<Callout>`, `<Cards>` / `<Card>`, `<Tabs>` / `<Tab>` (persisted to `?tab=`, props: `title` / `value` / `label`), `<Accordion>` / `<AccordionItem>` (`type="multiple"`, `defaultOpen`, `id` anchor), `<Files>` / `<Folder>` / `<File>` (collapsible file tree), `<TypeTable type={{...}}>`, `<InlineToc>`, `<Steps>` / `<Step>`, `<pre>` (Shiki dual-theme, with `title="..."`, `{n-m}` line highlight and `[!code highlight]` / `[!code ++]`–`--` notation/diff markers), GFM tables, KaTeX math (`$...$` / `$$...$$`). Images are click-to-zoom automatically.
+- All components are demonstrated in `content/docs/other/mdx-components.mdx` (「MDX 组件一览」) — use it as the live reference page.
 
 ## Coding Style & Naming Conventions
 
@@ -49,6 +50,8 @@ There is no automated test suite. Validate by running `pnpm dev` and visually in
 
 - Do not hand-edit `dist/` — it is generated.
 - When adding a new top-level docs category, update both `content/docs/meta.json` and the category's own `meta.json` with `"root": true`, plus an `icon`.
-- Site config (URL, title, edit-link repo) lives in `vite.config.ts` under `fumadocsSource({ site, editLink })`.
+- Site config (URL, title, edit-link repo, announcement banner) lives in `vite.config.ts` under `fumadocsSource({ site, editLink })`. The banner (`site.banner: { id, text, link?, variant? }`) persists dismissal to localStorage — change `id` to re-show it to everyone.
+- Search supports a `分类:` prefix (root folder name, e.g. `其他:`) to filter results by category.
+- `Tabs` persists its selection to the `?tab=` query param via `router.replace`; `DocPage` re-applies `route.meta` (toc/title/full) after query-only navigations — keep that watcher if you touch routing.
 - The content pipeline is recreated on every dev server start; editing MDX or `meta.json` triggers HMR automatically.
 - Keep MDX changes localized; do not refactor unrelated category structures.

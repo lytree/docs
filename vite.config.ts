@@ -4,7 +4,20 @@ import UnoCSS from 'unocss/vite'
 import mdx from '@mdx-js/rollup'
 import { fileURLToPath } from 'node:url'
 import { resolve } from 'node:path'
+import type { ShikiTransformer } from 'shiki'
 import { fumadocsSource } from './plugins/Source'
+
+/** fence meta `title="..."` — lift onto the pre element for <Pre/> to read */
+const fenceTitleTransformer: ShikiTransformer = {
+  name: 'fence-meta-title',
+  pre(node) {
+    // @shikijs/rehype passes meta as an object; the raw string from the
+    // fence lives under `__raw`
+    const meta = this.options.meta?.__raw ?? ''
+    const t = meta.match(/title="([^"]+)"/)
+    if (t) node.properties['data-title'] = t[1]
+  },
+}
 
 export default defineConfig({
   plugins: [
@@ -35,14 +48,7 @@ export default defineConfig({
               (await import('@shikijs/transformers')).transformerNotationDiff(),
               // fence meta `{1,3-5}` — add "highlighted" to those lines
               (await import('@shikijs/transformers')).transformerMetaHighlight(),
-              // fence meta `title="..."` — lift onto the pre element for <Pre/>
-              {
-                pre(node) {
-                  const meta = (this.options.meta as string) ?? ''
-                  const t = meta.match(/title="([^"]+)"/)
-                  if (t) node.properties['data-title'] = t[1]
-                },
-              },
+              fenceTitleTransformer,
             ],
           }],
           (await import('rehype-katex')).default,

@@ -47,7 +47,7 @@ export function jsx(
   const normalized = normalizeProps(rest as Record<string, unknown>)
   // Plain elements and fragments take children directly — Vue only accepts
   // slot objects for components, an element would render them as nothing.
-  if (typeof type === 'string' || type === Fragment) {
+  if (typeof type === 'string' || (type as unknown) === Fragment) {
     return h(
       type as never,
       { key: key ?? undefined, ...normalized },
