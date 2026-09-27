@@ -2,6 +2,7 @@ import { defineComponent, computed, onMounted } from 'vue'
 import { RouterLink } from 'vue-router'
 import { site, defaultLocale, dataFor } from '../lib/Source'
 import { applyHead } from '../lib/Seo'
+import { Banner } from '../components/Banner'
 import s from './Home.module.scss'
 
 export const Home = defineComponent({
@@ -28,6 +29,7 @@ export const Home = defineComponent({
 
     return () => (
       <div class={s.home}>
+        <Banner />
         <header class={s.header}>
           <div class={s.headerInner}>
             <RouterLink to="/" class={s.brand}>

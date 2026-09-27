@@ -112,7 +112,14 @@ export function breadcrumb(slug: string, treeNodes?: PageTreeNode[]): { title: s
   const walk = (list: PageTreeNode[], chain: { title: string; url?: string }[]): boolean => {
     for (const node of list) {
       if (node.type === 'separator') continue
-      const next = [...chain, { title: node.title ?? node.name, url: node.url }]
+      // folders without an index page have no url — they aren't clickable in
+      // the sidebar either, so including them in the breadcrumb just produces
+      // a dead label ("Uv" / "Regular") between the parent category and the
+      // page. Descend without adding them to the chain.
+      const next =
+        node.type === 'folder' && !node.url
+          ? chain
+          : [...chain, { title: node.title ?? node.name, url: node.url }]
       if (node.url === url) {
         crumbs.push(...next)
         return true

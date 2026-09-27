@@ -96,6 +96,13 @@ export interface SiteInfo {
   title: string
   description: string
   editLink?: { repo: string; branch?: string } // github repo, e.g. user/repo
+  /** site-wide announcement banner (fumadocs Banner) */
+  banner?: {
+    id: string // localStorage key suffix — change to re-show
+    text: string
+    variant?: 'normal' | 'rainbow'
+    link?: string
+  }
 }
 
 export interface SourceRoot {
@@ -577,6 +584,7 @@ function scanContent(cwd: string, opts: FumadocsSourceOptions): SourceRoot {
         opts.site?.description ??
         'Fumadocs re-implemented with Vue 3 + TSX — MDX, page tree, full-text search, code highlighting, dark mode.',
       editLink: opts.editLink,
+      banner: opts.site?.banner,
     },
     locales: [
       { code: defaultLocale, name: localeList.find((l) => l.code === defaultLocale)?.name ?? defaultLocale, isDefault: true },

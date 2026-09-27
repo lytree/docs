@@ -3,6 +3,7 @@ import { RouterLink, useRoute } from 'vue-router'
 import { Sidebar } from './Sidebar'
 import { SearchDialog } from './SearchDialog'
 import { Toc } from './Toc'
+import { Banner } from './Banner'
 import { useTheme } from '../lib/Theme'
 import {
   locales,
@@ -89,6 +90,7 @@ export const DocsLayout = defineComponent({
 
     return () => (
       <div class={s.shell}>
+        <Banner />
         {/* ------------ top nav (always visible) ------------ */}
         <header class={s.nav}>
           <div class={s.navInner}>
@@ -206,7 +208,7 @@ export const DocsLayout = defineComponent({
             {/* content */}
             <main class={s.main}>
               <article class={[s.article, full.value && s.articleFull]}>
-                {!full.value && crumbs.value.length > 0 && (
+                {!full.value && crumbs.value.length > 1 && (
                   <nav class={s.breadcrumb} aria-label="breadcrumb">
                     {crumbs.value.map((c, i) => (
                       <span key={i} style="display:inline-flex;align-items:center;gap:0.25rem">
@@ -224,7 +226,7 @@ export const DocsLayout = defineComponent({
                 )}
 
                 {/* mobile/tablet TOC popover sits inside the article, above the body */}
-                {!full.value && toc.value?.length && (
+                {!full.value && !!toc.value?.length && (
                   <div class={s.articleToc}>
                     <Toc toc={toc.value} path={route.path} />
                   </div>

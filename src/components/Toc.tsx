@@ -85,6 +85,25 @@ export const Toc = defineComponent({
 
     type AnchorClick = (e: MouseEvent) => void
 
+    const toTop = (e: MouseEvent) => {
+      if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) {
+        return
+      }
+      e.preventDefault()
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+      popoverOpen.value = false
+    }
+
+    const BackToTop = () => (
+      <a href="#" class={s.backToTop} onClick={toTop as never}>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 19V5" />
+          <path d="m5 12 7-7 7 7" />
+        </svg>
+        <span>回到顶部</span>
+      </a>
+    )
+
     const renderLinks = (onItemClick?: AnchorClick) =>
       props.toc.length === 0 ? (
         <p class={s.empty}>暂无章节</p>
@@ -119,6 +138,7 @@ export const Toc = defineComponent({
           <div class={s.toc}>
             <p class={s.title}>本页目录</p>
             {renderLinks()}
+            <BackToTop />
           </div>
         )
       }
@@ -154,6 +174,7 @@ export const Toc = defineComponent({
           {popoverOpen.value && (
             <div class={s.popoverPanel} id="fd-toc-popover">
               {renderLinks(onItemClick)}
+              <BackToTop />
             </div>
           )}
         </div>

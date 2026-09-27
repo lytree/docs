@@ -1,0 +1,98 @@
+/* fumadocs Banner — announcement bar above the navbar */
+
+.banner {
+  display: flex;
+  height: var(--fd-banner-height);
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  border-bottom: 1px solid var(--fd-border);
+  background: var(--fd-muted);
+  padding: 0 1rem;
+  font-size: 0.8125rem;
+  color: var(--fd-muted-foreground);
+  text-align: center;
+}
+
+.inner {
+  display: flex;
+  max-width: var(--fd-layout-width);
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.text {
+  margin: 0;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.link {
+  color: inherit;
+  font-weight: 500;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-color: color-mix(in oklab, currentColor 40%, transparent);
+
+  &:hover {
+    text-decoration-color: currentColor;
+  }
+}
+
+.close {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 1.375rem;
+  height: 1.375rem;
+  border-radius: 0.25rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s;
+
+  &:hover {
+    background: var(--fd-accent);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--fd-ring);
+    outline-offset: 1px;
+  }
+}
+
+/* rainbow — animated gradient (fumadocs rainbow variant) */
+.rainbow {
+  color: #fff;
+  border-bottom-color: transparent;
+  background: linear-gradient(60deg, #f79533, #f36661, #a341c8, #2f6feb, #2ff3d0, #f79533);
+  background-size: 300% 100%;
+  animation: fd-banner-rainbow 8s linear infinite;
+
+  .close:hover {
+    background: rgb(255 255 255 / 0.18);
+  }
+}
+
+@keyframes fd-banner-rainbow {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 300% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rainbow {
+    animation: none;
+  }
+}

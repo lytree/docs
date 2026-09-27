@@ -5,6 +5,7 @@
   "root": true,
   "pages": [
     "index",
+    "mdx-components",
     "---参考资源---",
     {
       "js": {

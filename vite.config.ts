@@ -24,9 +24,25 @@ export default defineConfig({
         rehypePlugins: [
           (await import('rehype-slug')).default,
           [(await import('@shikijs/rehype')).default, {
-            theme: 'github-light',
+            // dual theme — shiki emits inline `color` for light plus
+            // `--shiki-dark` CSS vars; Global.scss switches on `:root.dark`
+            themes: {
+              light: 'github-light',
+              dark: 'github-dark',
+            },
             transformers: [
               (await import('@shikijs/transformers')).transformerNotationHighlight(),
+              (await import('@shikijs/transformers')).transformerNotationDiff(),
+              // fence meta `{1,3-5}` — add "highlighted" to those lines
+              (await import('@shikijs/transformers')).transformerMetaHighlight(),
+              // fence meta `title="..."` — lift onto the pre element for <Pre/>
+              {
+                pre(node) {
+                  const meta = (this.options.meta as string) ?? ''
+                  const t = meta.match(/title="([^"]+)"/)
+                  if (t) node.properties['data-title'] = t[1]
+                },
+              },
             ],
           }],
           (await import('rehype-katex')).default,
@@ -42,6 +58,12 @@ export default defineConfig({
         title: '杨 ◦ 柳',
         description:
           '个人文档站 —— Java / dotnet / 数据库 / 中间件 等笔记。',
+        // site-wide announcement banner (fumadocs Banner); remove to hide
+        banner: {
+          id: '2026-fumadocs-parity',
+          text: '文档站已完成 Fumadocs 全功能复刻 — FileTree · TypeTable · Banner · ImageZoom · InlineToc',
+          link: 'https://github.com/lytree/docs',
+        },
       },
       i18n: {
         locales: [{ code: 'zh', name: '中文' }],

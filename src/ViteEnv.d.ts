@@ -99,6 +99,7 @@ declare module 'virtual:source' {
     title: string
     description: string
     editLink?: { repo: string; branch?: string }
+    banner?: { id: string; text: string; variant?: 'normal' | 'rainbow'; link?: string }
   }
   export const source: {
     site: SiteInfo

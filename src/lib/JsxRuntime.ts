@@ -45,9 +45,17 @@ export function jsx(
 ): ReturnType<typeof h> {
   const { children, ...rest } = props ?? ({} as { children?: VNodeChild })
   const normalized = normalizeProps(rest as Record<string, unknown>)
-  const slots = children == null
-    ? undefined
-    : { default: () => children as unknown }
+  // Plain elements and fragments take children directly — Vue only accepts
+  // slot objects for components, an element would render them as nothing.
+  if (typeof type === 'string' || type === Fragment) {
+    return h(
+      type as never,
+      { key: key ?? undefined, ...normalized },
+      (children ?? undefined) as never,
+    )
+  }
+  // Components receive children as the default slot (MDXProvider semantics).
+  const slots = children == null ? undefined : { default: () => children as unknown }
   return h(type as never, { key: key ?? undefined, ...normalized }, slots as never)
 }
 
