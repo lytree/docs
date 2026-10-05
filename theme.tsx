@@ -9,7 +9,6 @@
  *   vite.config.ts  →  纯数据（fumadocsSource）
  *   theme.tsx       →  组件与插槽（仅浏览器）
  */
-import { defineComponent, h } from 'vue'
 import { defineTheme } from './src/lib/Slots'
 
 // ---------------------------------------------------------------------------
@@ -33,40 +32,10 @@ import { defineTheme } from './src/lib/Slots'
  * 插槽内容可以是组件、渲染函数或字符串；渲染函数能拿到 ctx（path/slug/frontmatter…）。
  */
 
-// 示例：文章底部显示上一篇 / 下一篇之外的额外信息
-const DocTailNote = defineComponent({
-  name: 'DocTailNote',
-  setup() {
-    return () =>
-      h(
-        'p',
-        { style: { fontSize: '0.8125rem', opacity: '0.7', marginTop: '0' } },
-        '— 本文由 lytree/docs 的主题插槽渲染',
-      )
-  },
-})
-
 export default defineTheme({
   slots: {
-    /** 全站底部：静态版权信息（插槽演示） */
-    'layout-bottom': () =>
-      h(
-        'div',
-        {
-          class: 'fd-layout-bottom',
-          style: {
-            padding: '1rem',
-            textAlign: 'center',
-            fontSize: '0.75rem',
-            opacity: '0.6',
-            borderTop: '1px solid var(--fd-border)',
-          },
-        },
-        'Built with Vue 3 + TSX · 布局插槽由 theme.tsx 注入',
-      ),
-
-    /** 每篇文档正文底部 */
-    'doc-footer-before': DocTailNote,
+    // 目前没有自定义插槽。需要时在这里注册，例如：
+    //   'doc-after': () => h(MyChart)
   },
   components: {
     // 这里可以登记供插槽复用的组件，例如 { MyChart: MyChart }
