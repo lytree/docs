@@ -2,9 +2,9 @@ import { defineConfig, type UserConfig } from 'vite'
 import vueJsx from 'vue-jsx/vite'
 import UnoCSS from 'unocss/vite'
 import { fileURLToPath } from 'node:url'
-import { fumadocsSource } from './plugins/Source'
-import { markdownItPlugin } from './plugins/MarkdownIt'
-import { fileImportPlugin } from './plugins/FileImport'
+import { fumadocsSource } from './plugins/Source.ts'
+import { markdownItPlugin } from './plugins/MarkdownIt.ts'
+import { fileImportPlugin } from './plugins/FileImport.ts'
 
 /**
  * 站点配置全部收在这里，传给 `fumadocsSource()` —— 与 fumadocs 的用法一致。

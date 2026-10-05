@@ -84,8 +84,15 @@ function folderLanding(folder: PageTreeNode): string {
   return '/docs'
 }
 
-/** all top-level root folders of a locale, plus the one owning `slug`.
- *  Used by the sidebar category switcher (one-click directory jump). */
+/** 内容根目录下的 `index.md`（标题通常是「介绍」）。它在页面树里是个 page 节点而不是
+ *  folder，因此不会出现在 root folders 里，但它同样是一个分类入口 —— 收集进来，
+ *  排在最前面作为默认分类。 */
+function rootIndexCategory(nodes: PageTreeNode[]): PageTreeNode | undefined {
+  return nodes.find((n) => n.type === 'page' && n.url === '/docs')
+}
+
+/** all categories of a locale: the root `index.md` ("介绍") first, then the root
+ *  folders. Used by the sidebar category switcher (one-click directory jump). */
 export function rootFoldersOf(slug: string): {
   folders: { node: PageTreeNode; href: string }[]
   active?: PageTreeNode
@@ -94,11 +101,16 @@ export function rootFoldersOf(slug: string): {
   const url = urlBySlug(slug)
   const roots = nodes.filter((n) => n.type === 'folder' && n.root)
 
-  const folders = roots.map((node) => ({ node, href: folderLanding(node) }))
+  const index = rootIndexCategory(nodes)
+  const categories = index ? [index, ...roots] : roots
+
+  const folders = categories.map((node) => ({ node, href: folderLanding(node) }))
   const owns = (node: PageTreeNode) =>
     node.url === url || flattenTree(node.children ?? []).some((n) => n.url === url)
 
-  const active = roots.find(owns)
+  // 当前页不属于任何分类时（/docs 之外的散页、404 等）回落到第一个分类，
+  // 避免切换器停在「选择分类」这个空状态。
+  const active = categories.find(owns) ?? categories[0]
   return { folders, active }
 }
 

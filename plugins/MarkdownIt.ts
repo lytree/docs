@@ -22,9 +22,9 @@ import type { Plugin } from 'vite'
 import { createHighlighter, type Highlighter } from 'shiki'
 import type { ShikiTransformer, ShikiTransformerContext } from 'shiki'
 import container from 'markdown-it-container'
-import { katexWrapper, type KatexOptions } from './Katex'
-import { resolveFileImports } from './FileImport'
-import { fenceMetaTitle, parseFenceMeta } from './FenceMeta'
+import { katexWrapper, type KatexOptions } from './Katex.ts'
+import { resolveFileImports } from './FileImport.ts'
+import { fenceMetaTitle, parseFenceMeta } from './FenceMeta.ts'
 
 export interface MarkdownItOptions {
   /** 代码高亮主题（明/暗双主题） */

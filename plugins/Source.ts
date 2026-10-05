@@ -25,7 +25,7 @@ import { visit } from 'unist-util-visit'
 import { toString as mdastToString } from 'mdast-util-to-string'
 import type { Root, Heading, PhrasingContent } from 'mdast'
 import type { Plugin, ViteDevServer, ResolvedConfig } from 'vite'
-import { generateApiPages, type ApiPage, type ApiDocData, type DocgenOptions } from './Docgen'
+import { generateApiPages, type ApiPage, type ApiDocData, type DocgenOptions } from './Docgen.ts'
 import type {
   BannerConfig,
   ConfigHooks,
@@ -36,7 +36,7 @@ import type {
   OutlineConfig,
   SidebarConfig,
   UiText,
-} from '../src/lib/ConfigTypes'
+} from '../src/lib/ConfigTypes.ts'
 
 export const VIRTUAL_SOURCE = 'virtual:source'
 const RESOLVED_SOURCE = '\0' + VIRTUAL_SOURCE

@@ -1,6 +1,7 @@
 ---
 title: 介绍
 description: 个人文档站 —— Java / dotnet / 数据库 / 中间件 等笔记。
+icon: 👋
 ---
 
 # 杨 ◦ 柳 · 个人文档

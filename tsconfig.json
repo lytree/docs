@@ -13,6 +13,8 @@
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowJs": true,
+    // vite 8 的原生 config loader 要求显式文件后缀（仅类型检查，不 emit）
+    "allowImportingTsExtensions": true,
     "types": ["node", "vite/client"],
     "baseUrl": ".",
     "paths": {
