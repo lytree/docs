@@ -18,7 +18,6 @@ import matter from 'gray-matter'
 import GithubSlugger from 'github-slugger'
 import remarkParse from 'remark-parse'
 import remarkGfm from 'remark-gfm'
-import remarkMdx from 'remark-mdx'
 import remarkMath from 'remark-math'
 import remarkFrontmatter from 'remark-frontmatter'
 import { unified } from 'unified'
@@ -27,6 +26,17 @@ import { toString as mdastToString } from 'mdast-util-to-string'
 import type { Root, Heading, PhrasingContent } from 'mdast'
 import type { Plugin, ViteDevServer, ResolvedConfig } from 'vite'
 import { generateApiPages, type ApiPage, type ApiDocData, type DocgenOptions } from './Docgen'
+import type {
+  BannerConfig,
+  ConfigHooks,
+  DesignTokens,
+  FooterConfig,
+  HeadConfig,
+  NavItem,
+  OutlineConfig,
+  SidebarConfig,
+  UiText,
+} from '../src/lib/ConfigTypes'
 
 export const VIRTUAL_SOURCE = 'virtual:source'
 const RESOLVED_SOURCE = '\0' + VIRTUAL_SOURCE
@@ -54,6 +64,18 @@ export interface PageData {
   full?: boolean // frontmatter full: true — wide page, sidebar + toc hidden
   lastModified?: number // git last commit timestamp (ms)
   api?: ApiDocData // generated API reference payload (docgen pages)
+  /** full frontmatter — 布局插槽与页面覆盖都从这里读 */
+  frontmatter?: Record<string, unknown>
+  /** frontmatter aside: false | 'left' | 'right' */
+  aside?: 'left' | 'right' | false
+  /** frontmatter outline: false | [min, max] */
+  outline?: false | [number, number]
+  /** frontmatter pageClass — 追加到 <article> 的类名 */
+  pageClass?: string
+  /** frontmatter layout — 强制布局变体 */
+  layout?: string
+  /** frontmatter head — 追加的 head 标签 */
+  head?: unknown[]
 }
 
 export interface PageTreeNode {
@@ -96,17 +118,36 @@ export interface SiteInfo {
   title: string
   description: string
   editLink?: { repo: string; branch?: string } // github repo, e.g. user/repo
-  /** site-wide announcement banner (fumadocs Banner) */
+  /** site-wide announcement banner */
   banner?: {
     id: string // localStorage key suffix — change to re-show
     text: string
     variant?: 'normal' | 'rainbow'
     link?: string
   }
+  /** site <head> tags */
+  head?: HeadConfig[]
+  /** site language */
+  lang?: string
+  /** site base path */
+  base?: string
+}
+
+/** 浏览器侧的站点配置（virtual:source 里的 config 区块） */
+export interface ClientConfig {
+  nav: NavItem[]
+  sidebar?: SidebarConfig
+  outline: OutlineConfig
+  ui: Required<UiText>
+  footer?: FooterConfig
+  tokens?: DesignTokens
+  markdown: { lineNumbers: boolean; containers: Record<string, string> }
 }
 
 export interface SourceRoot {
   site: SiteInfo
+  /** 站点 UI 配置（导航/侧栏/token/文案） */
+  config: ClientConfig
   locales: LocaleInfo[]
   defaultLocale: string
   byLocale: Record<string, SourceData>
@@ -115,7 +156,15 @@ export interface SourceRoot {
 }
 
 export interface FumadocsSourceOptions {
-  site?: Partial<SiteInfo>
+  site?: {
+    url?: string
+    title?: string
+    description?: string
+    lang?: string
+    base?: string
+    head?: HeadConfig[]
+    banner?: BannerConfig
+  }
   i18n?: {
     locales: { code: string; name: string }[]
     defaultLocale?: string
@@ -126,6 +175,61 @@ export interface FumadocsSourceOptions {
   editLink?: { repo: string; branch?: string }
   /** TypeDoc powered API reference generation */
   docgen?: DocgenOptions
+
+  // ---- 站点 UI 配置 ----
+
+  /** 顶部导航；不配置时由 root folders 自动生成 */
+  nav?: NavItem[]
+  /** 侧边栏；不配置时回退到 meta.json 页面树 */
+  sidebar?: SidebarConfig
+  /** 右侧目录 */
+  outline?: OutlineConfig
+  /** 界面文案 */
+  ui?: UiText
+  /** 全局页脚 */
+  footer?: FooterConfig
+  /** 设计 token */
+  tokens?: DesignTokens
+  /** Markdown 行为 */
+  markdown?: {
+    lineNumbers?: boolean
+    containers?: Record<string, string>
+    remarkPlugins?: unknown[]
+    rehypePlugins?: unknown[]
+  }
+
+  /** 构建期钩子（可简写为顶层字段） */
+  hooks?: ConfigHooks
+  transformPageData?: ConfigHooks['transformPageData']
+  transformHead?: ConfigHooks['transformHead']
+}
+
+const DEFAULT_UI: Required<UiText> = {
+  searchPlaceholder: '搜索文档…',
+  sidebarMenuLabel: '页面导航',
+  homeLinkLabel: '首页',
+  editLink: '在 GitHub 编辑',
+  lastUpdated: '最后更新于',
+  prev: '上一篇',
+  next: '下一篇',
+  notFound: '页面不存在',
+  backToHome: '返回首页',
+}
+
+/** 组装给浏览器侧的 UI 配置 */
+function buildClientConfig(opts: FumadocsSourceOptions): ClientConfig {
+  return {
+    nav: opts.nav ?? [],
+    sidebar: opts.sidebar,
+    outline: opts.outline ?? { range: [2, 3] },
+    ui: { ...DEFAULT_UI, ...(opts.ui ?? {}) },
+    footer: opts.footer,
+    tokens: opts.tokens,
+    markdown: {
+      lineNumbers: opts.markdown?.lineNumbers ?? false,
+      containers: opts.markdown?.containers ?? {},
+    },
+  }
 }
 
 // ---------------------------------------------------------------------------
@@ -221,7 +325,6 @@ function gitLastModified(absFile: string): number | undefined {
 const parser = unified()
   .use(remarkParse as never)
   .use(remarkGfm as never)
-  .use(remarkMdx as never)
   .use(remarkMath as never)
   .use(remarkFrontmatter as never, ['yaml', 'toml'] as never)
 
@@ -351,6 +454,20 @@ function scanPage(ctx: ScanContext, absFile: string, locale: string): PageData {
   const toc = mdast ? extractToc(mdast) : []
   const relToContent = path.relative(ctx.contentRoot, absFile).split(path.sep).join('/')
   const title = (data.title as string) ?? prettify(path.basename(slug || 'index'))
+
+  // frontmatter layout overrides (VitePress parity)
+  const asideRaw = data.aside
+  const aside: PageData['aside'] =
+    asideRaw === false ? false : asideRaw === 'left' || asideRaw === 'right' ? asideRaw : undefined
+
+  const outlineRaw = data.outline
+  const outline: PageData['outline'] =
+    outlineRaw === false
+      ? false
+      : Array.isArray(outlineRaw) && outlineRaw.length === 2
+        ? [Number(outlineRaw[0]), Number(outlineRaw[1])]
+        : undefined
+
   const page: PageData = {
     slug,
     locale,
@@ -361,6 +478,12 @@ function scanPage(ctx: ScanContext, absFile: string, locale: string): PageData {
     icon: data.icon as string | undefined,
     full: data.full === true,
     lastModified: gitLastModified(absFile),
+    frontmatter: data as Record<string, unknown>,
+    aside,
+    outline,
+    pageClass: data.pageClass as string | undefined,
+    layout: data.layout as string | undefined,
+    head: Array.isArray(data.head) ? (data.head as unknown[]) : undefined,
   }
   ctx.pages.set(slug, page)
   return page
@@ -579,13 +702,17 @@ function scanContent(cwd: string, opts: FumadocsSourceOptions): SourceRoot {
   return {
     site: {
       url: (opts.site?.url ?? 'http://localhost:5173').replace(/\/$/, ''),
-      title: opts.site?.title ?? 'Fumadocs Vue',
+      title: opts.site?.title ?? 'Docs',
       description:
         opts.site?.description ??
-        'Fumadocs re-implemented with Vue 3 + TSX — MDX, page tree, full-text search, code highlighting, dark mode.',
+        'Vue 3 + TSX 文档站 — MDX, page tree, full-text search, code highlighting, dark mode.',
       editLink: opts.editLink,
       banner: opts.site?.banner,
+      head: opts.site?.head,
+      lang: opts.site?.lang,
+      base: opts.site?.base,
     },
+    config: buildClientConfig(opts),
     locales: [
       { code: defaultLocale, name: localeList.find((l) => l.code === defaultLocale)?.name ?? defaultLocale, isDefault: true },
       ...localeList.filter((l) => l.code !== defaultLocale).map((l) => ({ code: l.code, name: l.name, isDefault: false })),
@@ -593,6 +720,68 @@ function scanContent(cwd: string, opts: FumadocsSourceOptions): SourceRoot {
     defaultLocale,
     byLocale,
     pages,
+  }
+}
+
+/**
+ * 应用用户钩子：transformPageData 改写页面、transformHead 追加 head 标签。
+ * 钩子可能是异步的，因此这个步骤必须在 await 之后再产出 virtual:source。
+ */
+async function applyHooks(root: SourceRoot, opts: FumadocsSourceOptions): Promise<void> {
+  const transformPageData = opts.hooks?.transformPageData ?? opts.transformPageData
+  const transformHead = opts.hooks?.transformHead ?? opts.transformHead
+  if (!transformPageData && !transformHead) return
+
+  const extraHead: HeadConfig[] = []
+
+  if (transformPageData) {
+    for (const locale of Object.keys(root.byLocale)) {
+      const data = root.byLocale[locale]
+      for (let i = 0; i < data.pages.length; i++) {
+        const page = data.pages[i]
+        try {
+          const next = await transformPageData(page as never)
+          if (next) data.pages[i] = { ...page, ...(next as unknown as PageData) }
+        } catch (e) {
+          console.warn(`[fumadocs-source] transformPageData failed for /${page.slug}:`, (e as Error).message)
+        }
+      }
+      // 树节点的标题 / 描述同步跟随页面变化
+      const sync = (nodes: PageTreeNode[]) => {
+        for (const n of nodes) {
+          if (n.type === 'page' && n.url) {
+            const slug = n.url.replace(/^\/docs\/?/, '').replace(/\/$/, '')
+            const p = data.pages.find((x) => x.slug === slug)
+            if (p) {
+              n.title = p.title
+              n.description = p.description
+              n.icon = p.icon
+            }
+          }
+          if (n.children) sync(n.children)
+        }
+      }
+      sync(data.tree)
+    }
+    root.pages = Object.values(root.byLocale).flatMap((d) => d.pages)
+  }
+
+  if (transformHead) {
+    for (const page of root.pages) {
+      try {
+        const head = await transformHead(page as never)
+        if (head && Array.isArray(head) && head.length) {
+          extraHead.push(...head)
+          page.head = [...(page.head ?? []), ...head]
+        }
+      } catch (e) {
+        console.warn(`[fumadocs-source] transformHead failed for /${page.slug}:`, (e as Error).message)
+      }
+    }
+  }
+
+  if (extraHead.length && Array.isArray(root.site.head)) {
+    root.site.head = [...root.site.head, ...extraHead]
   }
 }
 
@@ -806,18 +995,24 @@ export function fumadocsSource(opts: FumadocsSourceOptions = {}): Plugin {
   const applyDocgen = () => {
     if (opts.docgen && apiPages.length) injectApi(root, apiPages, opts.docgen, root.defaultLocale)
   }
-  const rescan = () => {
-    root = scanContent(cwd, opts)
-    applyDocgen()
+  // 串行化重扫，避免并发 hook 交叉修改同一份 root
+  let scanChain: Promise<void> = Promise.resolve()
+  const rescan = (): Promise<void> => {
+    scanChain = scanChain.then(async () => {
+      root = scanContent(cwd, opts)
+      applyDocgen()
+      await applyHooks(root, opts)
+    })
+    return scanChain
   }
   rescan()
 
   // kick off TypeDoc once; re-merge when it lands (dev + build await this)
   const docgenDone: Promise<void> | null = opts.docgen
     ? generateApiPages(opts.docgen)
-        .then((pages) => {
+        .then(async (pages) => {
           apiPages = pages
-          rescan()
+          await rescan()
           console.log(`[fumadocs-source] docgen: ${pages.length} API pages generated`)
         })
         .catch((e) => {
@@ -842,21 +1037,22 @@ export function fumadocsSource(opts: FumadocsSourceOptions = {}): Plugin {
     async buildStart() {
       // build: make sure API pages exist before bundling starts
       if (docgenDone) await docgenDone
-      rescan()
+      await rescan()
     },
     async configureServer(server: ViteDevServer) {
       // dev: wait for TypeDoc so the first page load already has API pages
       if (docgenDone) await docgenDone
-      rescan()
+      await rescan()
       const reload = (file: string) => {
         const rel = path.relative(cwd, file)
         if (!rel.startsWith(CONTENT_ROOT)) return
-        rescan()
-        const mod = server.moduleGraph.getModuleById(RESOLVED_SOURCE)
-        if (mod) {
-          server.moduleGraph.invalidateModule(mod)
-        }
-        server.ws.send({ type: 'full-reload' })
+        void rescan().then(() => {
+          const mod = server.moduleGraph.getModuleById(RESOLVED_SOURCE)
+          if (mod) {
+            server.moduleGraph.invalidateModule(mod)
+          }
+          server.ws.send({ type: 'full-reload' })
+        })
       }
       server.watcher.on('change', reload)
       server.watcher.on('add', reload)

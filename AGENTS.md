@@ -1,23 +1,36 @@
 # Repository Guidelines
 
-A contributor guide for this Vue 3 + TSX port of Fumadocs, hosted at [doc.prideyang.top](https://doc.prideyang.top).
+A contributor guide for this Vue 3 + TSX documentation site, hosted at [doc.prideyang.top](https://doc.prideyang.top).
+The content pipeline is **markdown-it** (same approach as VitePress); the site framework is a Vue 3 + TSX port of Fumadocs.
 
 ## Project Structure & Module Organization
 
-- `content/docs/` — MDX documentation source. Each top-level category is a directory with an `index.md` and a `meta.json` (e.g. `dotnet/`, `java/`, `db/`, `middleware/`, `other/`).
+- `content/docs/` — Markdown source. Each top-level category is a directory with an `index.md` and a `meta.json` (e.g. `dotnet/`, `java/`, `db/`, `middleware/`, `other/`).
 - Root `content/docs/meta.json` lists the order in which the root categories appear in the nav.
 - A category directory's own `meta.json` controls the sidebar inside that category. Use `"root": true` to flag a category as a top-level tab. Supported syntax: `pages` list, inline folder overrides (`{ name: { title, icon, pages } }`), `---` / `---Label---` separators, `...` wildcard.
-- `src/` — Vue 3 TSX application: routes (`src/Router.ts`), pages (`src/pages/`), layout (`src/components/DocsLayout.tsx`), MDX component mapping (`src/components/MdxComponents.tsx`), shared utilities (`src/lib/`).
-- `plugins/Source.ts` — Vite plugin that scans `content/docs/`, parses `meta.json`, extracts frontmatter + TOC + search index, and exposes `virtual:source`.
-- `scripts/Prerender.mjs` — Optional SSG: launches `vite preview`, walks `dist/routes.json` and snapshots each route with playwright.
-- `public/` — Static assets (history images under `public/assets/`, favicon). Referenced from MDX as `/assets/...`.
+- `theme.tsx` — **component-level** customization: layout slots and shared components (browser only).
+- `vite.config.ts` — **data-level** configuration, all passed to `fumadocsSource()` (read in Node).
+- `plugins/` — `MarkdownIt.ts` (markdown pipeline), `Katex.ts` (math rules + browser render), `FileImport.ts` (`<<<` imports), `Source.ts` (content pipeline → `virtual:source`), `Docgen.ts`, `FenceMeta.ts`.
+- `src/components/` — layout components (DocsLayout / Sidebar / Toc / SearchDialog / Banner / ApiDoc).
+- `src/pages/` — route-level pages (Home / DocPage / NotFound / DebugTree).
+- `src/lib/` — `Slots.ts` (slot registry), `Markdown.ts` (renders + enhances markdown-it output), `Config.ts` (runtime config access), `Seo.ts`, `Theme.ts`, `Source.ts`.
+- `src/styles/` — `Global.scss` (tokens, shell chrome) and `Markdown.scss` (markdown-it output styling).
+- `scripts/Prerender.mjs` — optional SSG via playwright.
+- `public/assets/` — static assets, referenced from Markdown as `/assets/...`.
+
+## Why data config and component config are separate
+
+`fumadocsSource()` is read by `vite.config.ts` in Node. If it imported components, Vue would be pulled into Vite's config-execution environment. So:
+
+- **Data** (nav, sidebar, tokens, copy) → `vite.config.ts`
+- **Components** (slots, TSX) → `theme.tsx`
 
 ## Build, Test, and Development Commands
 
-- `pnpm dev` — Start the Vite dev server with HMR.
-- `pnpm build` — Produce a production build in `dist/`.
-- `pnpm preview` — Serve the production build locally.
-- `pnpm prerender` — After `pnpm build`, snapshot each route to static HTML (requires playwright + a browser).
+- `pnpm dev` — dev server with HMR.
+- `pnpm build` — production build into `dist/`.
+- `pnpm preview` — serve the production build.
+- `pnpm prerender` — snapshot each route to static HTML (requires playwright + a browser).
 - `pnpm build:full` — `pnpm build && pnpm prerender`.
 - `pnpm typecheck` — `vue-tsc --noEmit`.
 
@@ -25,33 +38,54 @@ There is no automated test suite. Validate by running `pnpm dev` and visually in
 
 ## Content Authoring
 
-- Each MDX page uses YAML frontmatter: `title` (required), optional `description`, `icon`, `full` (boolean — hides sidebar and TOC for a wider page), `date`, `lastmod`.
-- The category directory's `meta.json` controls sidebar order and title. Set `"root": true` on top-level category files so they show up as tabs.
-- Root order is fixed by `content/docs/meta.json` `pages`; new top-level categories must be added there too.
-- MDX supports: `<Callout>`, `<Cards>` / `<Card>`, `<Tabs>` / `<Tab>` (persisted to `?tab=`, props: `title` / `value` / `label`), `<Accordion>` / `<AccordionItem>` (`type="multiple"`, `defaultOpen`, `id` anchor), `<Files>` / `<Folder>` / `<File>` (collapsible file tree), `<TypeTable type={{...}}>`, `<InlineToc>`, `<Steps>` / `<Step>`, `<pre>` (Shiki dual-theme, with `title="..."`, `{n-m}` line highlight and `[!code highlight]` / `[!code ++]`–`--` notation/diff markers), GFM tables, KaTeX math (`$...$` / `$$...$$`). Images are click-to-zoom automatically.
-- All components are demonstrated in `content/docs/other/mdx-components.mdx` (「MDX 组件一览」) — use it as the live reference page.
+Content is **plain Markdown**, not MDX. This matters: markdown-it treats `<` as inline HTML, so `List<String>`, `a < b`, and `Map<K,V>` are all safe. Under MDX they were parse errors.
+
+Frontmatter (YAML): `title` (required), `description`, `icon`, `full` (wide page, hides sidebar + TOC), `date`, `lastmod`, plus layout overrides:
+
+| Field | Type | Effect |
+| --- | --- | --- |
+| `aside` | `false \| 'left' \| 'right'` | outline position; `false` hides it |
+| `outline` | `false \| [number, number]` | heading depths collected into the outline |
+| `pageClass` | `string` | extra class on the layout root |
+| `lastUpdated` | `false` | hide the "last updated" line |
+| `head` | `array` | extra `<head>` tags (`{ tag, attrs }`) |
+
+### Containers
+
+```
+::: tip 标题        → info / note / warning / danger / important / quote
+::: details 标题    → collapsible
+::: code-group      → tabbed code blocks; the fence `[filename]` becomes the tab label
+::: raw             → passthrough
+```
+
+Nested containers are supported. Code fences accept `[filename]` / `title="..."`, `{1,3-5}` line highlight, `[!code focus]`, `[!code word:xxx]`, `[!code ++]` / `[!code --]`.
+
+### File imports
+
+A line containing only `<<< path` is replaced by a code fence with the file's contents. `@/` resolves to `content/docs/`; relative paths resolve from the document. The directive **must be on its own line**. Under MDX this could not work — `<<<` collided with JSX parsing.
 
 ## Coding Style & Naming Conventions
 
-- TypeScript with `vue-jsx`; components in `src/` are written as TSX.
-- SCSS Modules for component styles (`*.module.scss`), with UnoCSS utility classes inlined via `--at-apply:` rules.
+- TypeScript with `vue-jsx`; components in `src/` are TSX.
+- SCSS Modules for component styles (`*.module.scss`); markdown output styles live in `src/styles/Markdown.scss` using plain global classes (`md-*`) because they are injected via `innerHTML`.
 - 2-space indentation, double quotes for JSON, single quotes for TS/TSX strings.
-- File names use lowercase kebab-case; Vue components use PascalCase (`DocsLayout.tsx`); utility modules use camelCase (`Source.ts`, `Theme.ts`).
-- No project-level linter is configured. Match the existing surrounding style.
+- File names lowercase kebab-case; Vue components PascalCase; utility modules camelCase.
+- No project-level linter. Match surrounding style.
 
 ## Commit & Pull Request Guidelines
 
-- This submodule is its own git repo (`lytree/docs`); commits here do not affect the parent `lytree` repo and vice versa.
-- Conventional Commits are welcome but not enforced. Prefer a short imperative subject in English or Chinese.
-- Branches: `main` is the default; feature work uses `codex/<short-topic>` or topic branches.
-- PRs should describe the doc or code change and list the files added/modified under `content/docs/`. Screenshots are required when layout, sidebar order, or visual styling changes.
+- This submodule is its own git repo (`lytree/docs`); commits here do not affect the parent `lytree` repo.
+- Branches: `main` is default; feature work uses `codex/<short-topic>` or topic branches.
+- PRs should describe the doc or code change and list files added/modified under `content/docs/`. Screenshots are required when layout, sidebar order, or visual styling changes.
 
 ## Agent-Specific Notes
 
 - Do not hand-edit `dist/` — it is generated.
-- When adding a new top-level docs category, update both `content/docs/meta.json` and the category's own `meta.json` with `"root": true`, plus an `icon`.
-- Site config (URL, title, edit-link repo, announcement banner) lives in `vite.config.ts` under `fumadocsSource({ site, editLink })`. The banner (`site.banner: { id, text, link?, variant? }`) persists dismissal to localStorage — change `id` to re-show it to everyone.
-- Search supports a `分类:` prefix (root folder name, e.g. `其他:`) to filter results by category.
-- `Tabs` persists its selection to the `?tab=` query param via `router.replace`; `DocPage` re-applies `route.meta` (toc/title/full) after query-only navigations — keep that watcher if you touch routing.
-- The content pipeline is recreated on every dev server start; editing MDX or `meta.json` triggers HMR automatically.
-- Keep MDX changes localized; do not refactor unrelated category structures.
+- When adding a top-level docs category, update both `content/docs/meta.json` and the category's own `meta.json` with `"root": true`, plus an `icon`.
+- Site config (URL, title, edit-link, banner, nav, tokens, copy) lives in `vite.config.ts` under `fumadocsSource()`. Change `banner.id` to re-show the banner to everyone.
+- Slots are registered in `theme.tsx` and consumed by `<Slot name="..." ctx={...} />` in the layout. Available names are listed in `README.md`.
+- **markdown-it renderer rules must be synchronous.** Shiki's `codeToHtml` is async, so fences are highlighted ahead of time into a map (`MarkdownRenderer.render`) and the sync renderer only looks results up by token index.
+- **remark plugin factories must return an attacher** (`() => transformer`), not the transformer itself — unified calls array entries as attachers, and passing a transformer directly makes it receive `undefined` for tree/file.
+- `markdown-it-container` v4 changed `validate` to receive the info **string** (not an object), and its `render` is called for both nesting directions — return `''` to keep the default tag.
+- The content pipeline is recreated on each dev start; editing Markdown or `meta.json` triggers HMR automatically.

@@ -1,0 +1,456 @@
+/**
+ * markdown-it 产物的样式。
+ *
+ * markdown-it 只负责解析，视觉与交互都在这里：
+ * 容器、代码块标题栏、代码组标签页、表格横向滚动、图片放大遮罩。
+ * 双主题靠 Shiki 输出的 `--shiki-dark` 变量 + `:root.dark` 切换。
+ */
+
+// ---------------------------------------------------------------------------
+// 正文排版
+// ---------------------------------------------------------------------------
+
+.md-body {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--fd-foreground);
+  overflow-wrap: break-word;
+}
+
+.md-body > :first-child {
+  margin-top: 0;
+}
+
+.md-body p {
+  margin: 1rem 0;
+}
+
+.md-body h1,
+.md-body h2,
+.md-body h3,
+.md-body h4 {
+  margin: 1.8em 0 0.8em;
+  font-weight: 650;
+  line-height: 1.3;
+  scroll-margin-top: calc(var(--fd-nav-height) + 1rem);
+}
+
+.md-body h1 {
+  font-size: 1.6rem;
+}
+.md-body h2 {
+  font-size: 1.3rem;
+  padding-bottom: 0.3em;
+  border-bottom: 1px solid var(--fd-border);
+}
+.md-body h3 {
+  font-size: 1.1rem;
+}
+.md-body h4 {
+  font-size: 1rem;
+}
+
+.md-body a {
+  color: var(--fd-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.md-body ul,
+.md-body ol {
+  margin: 1rem 0;
+  padding-left: 1.5rem;
+}
+
+.md-body li {
+  margin: 0.35rem 0;
+}
+
+.md-body blockquote {
+  margin: 1rem 0;
+  padding: 0.4rem 0 0.4rem 1rem;
+  border-left: 3px solid var(--fd-border);
+  color: var(--fd-muted-foreground);
+}
+
+.md-body hr {
+  margin: 2rem 0;
+  border: none;
+  border-top: 1px solid var(--fd-border);
+}
+
+.md-body kbd {
+  display: inline-block;
+  padding: 0.1em 0.4em;
+  border: 1px solid var(--fd-border);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--fd-muted);
+  font-family: var(--fd-font-mono);
+  font-size: 0.85em;
+}
+
+.md-body del {
+  opacity: 0.6;
+}
+
+// ---------------------------------------------------------------------------
+// 表格（横向滚动）
+// ---------------------------------------------------------------------------
+
+.md-table-wrap {
+  margin: 1.1rem 0;
+  overflow-x: auto;
+  border: 1px solid var(--fd-border);
+  border-radius: var(--fd-radius, 8px);
+}
+
+.md-body table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.md-body th,
+.md-body td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--fd-border);
+  text-align: left;
+}
+
+.md-body th {
+  background: var(--fd-muted);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.md-body tr:last-child td {
+  border-bottom: none;
+}
+
+// ---------------------------------------------------------------------------
+// 代码块
+// ---------------------------------------------------------------------------
+
+.md-codeblock {
+  margin: 1.1rem 0;
+  border: 1px solid var(--fd-border);
+  border-radius: var(--fd-radius, 8px);
+  overflow: hidden;
+  background: var(--fd-muted);
+}
+
+.md-codeblock-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem 0.4rem 0.75rem;
+  border-bottom: 1px solid var(--fd-border);
+  background: color-mix(in srgb, var(--fd-muted) 60%, transparent);
+}
+
+.md-codeblock-title {
+  font-family: var(--fd-font-mono);
+  font-size: 0.75rem;
+  color: var(--fd-muted-foreground);
+}
+
+.md-codeblock-copy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  border: none;
+  border-radius: 5px;
+  background: transparent;
+  color: var(--fd-muted-foreground);
+  cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.md-codeblock-copy:hover {
+  background: var(--fd-border);
+  color: var(--fd-foreground);
+}
+
+.md-codeblock-copy.copied {
+  color: #16a34a;
+}
+
+.md-codeblock pre {
+  margin: 0;
+  padding: 0.85rem 1rem;
+  overflow-x: auto;
+  background: transparent;
+  font-family: var(--fd-font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.65;
+}
+
+.md-codeblock pre code {
+  background: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+/* 行高亮 */
+.md-codeblock .line.highlighted {
+  display: inline-block;
+  width: 100%;
+  background: color-mix(in srgb, var(--fd-primary) 12%, transparent);
+}
+
+/* focus：非目标行淡出 */
+.md-codeblock .line.faded {
+  opacity: 0.45;
+  transition: opacity 0.15s ease;
+}
+
+/* 悬停恢复可读性 */
+.md-codeblock:hover .line.faded {
+  opacity: 0.75;
+}
+
+/* 行号 */
+.md-codeblock pre.has-line-numbers code {
+  counter-reset: ln;
+}
+
+.md-codeblock pre.has-line-numbers .line::before {
+  counter-increment: ln;
+  content: counter(ln);
+  display: inline-block;
+  width: 2.2em;
+  margin-right: 0.9em;
+  text-align: right;
+  color: var(--fd-muted-foreground);
+  opacity: 0.5;
+}
+
+/* diff 标注由 Shiki 处理，这里兜底 */
+.md-codeblock .line.diff.add {
+  background: color-mix(in srgb, #22c55e 14%, transparent);
+}
+.md-codeblock .line.diff.remove {
+  background: color-mix(in srgb, #ef4444 14%, transparent);
+}
+
+/* 代码块内联 */
+.md-body :not(pre) > code {
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  background: var(--fd-muted);
+  font-family: var(--fd-font-mono);
+  font-size: 0.875em;
+}
+
+// ---------------------------------------------------------------------------
+// ::: 容器
+// ---------------------------------------------------------------------------
+
+.md-container {
+  --c-border: var(--fd-border);
+  --c-bg: var(--fd-muted);
+  margin: 1.1rem 0;
+  padding: 0.85rem 1rem;
+  border-radius: var(--fd-radius, 8px);
+  border-left: 3px solid var(--c-border);
+  background: var(--c-bg);
+  font-size: 0.9375rem;
+  line-height: 1.65;
+}
+
+.md-container-title {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin: 0 0 0.5rem;
+  font-weight: 600;
+  font-size: 0.8125rem;
+}
+
+.md-container-icon {
+  font-size: 0.9em;
+  line-height: 1;
+}
+
+.md-container > :first-child {
+  margin-top: 0;
+}
+.md-container > :last-child {
+  margin-bottom: 0;
+}
+
+.md-container-tip {
+  --c-border: #3b82f6;
+  --c-bg: color-mix(in srgb, #3b82f6 8%, var(--fd-background));
+}
+.md-container-info,
+.md-container-note {
+  --c-border: #0ea5e9;
+  --c-bg: color-mix(in srgb, #0ea5e9 8%, var(--fd-background));
+}
+.md-container-warning {
+  --c-border: #f59e0b;
+  --c-bg: color-mix(in srgb, #f59e0b 9%, var(--fd-background));
+}
+.md-container-danger {
+  --c-border: #ef4444;
+  --c-bg: color-mix(in srgb, #ef4444 8%, var(--fd-background));
+}
+.md-container-important {
+  --c-border: #8b5cf6;
+  --c-bg: color-mix(in srgb, #8b5cf6 8%, var(--fd-background));
+}
+.md-container-quote {
+  --c-border: var(--fd-border);
+  --c-bg: transparent;
+  font-style: italic;
+}
+
+/* 嵌套容器：内层不再叠加外边距 */
+.md-container .md-container {
+  margin: 0.75rem 0;
+}
+
+/* ::: details */
+.md-details {
+  margin: 1.1rem 0;
+  border: 1px solid var(--fd-border);
+  border-radius: var(--fd-radius, 8px);
+  background: var(--fd-card);
+  overflow: hidden;
+}
+
+.md-details-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 0.9rem;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9375rem;
+  user-select: none;
+  list-style: none;
+  transition: background 0.15s ease;
+}
+
+.md-details-summary::-webkit-details-marker {
+  display: none;
+}
+
+.md-details-summary:hover {
+  background: var(--fd-muted);
+}
+
+.md-details-caret {
+  display: inline-block;
+  color: var(--fd-muted-foreground);
+  transition: transform 0.18s ease;
+}
+
+.md-details[open] .md-details-caret {
+  transform: rotate(90deg);
+}
+
+/* ::: code-group */
+.md-codegroup {
+  margin: 1.1rem 0;
+}
+
+.md-codegroup-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.15rem;
+  padding: 0.3rem 0.4rem 0;
+  border: 1px solid var(--fd-border);
+  border-bottom: none;
+  border-radius: var(--fd-radius, 8px) var(--fd-radius, 8px) 0 0;
+  background: color-mix(in srgb, var(--fd-muted) 60%, transparent);
+}
+
+.md-codegroup-tab {
+  appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0.4rem 0.75rem;
+  font-family: var(--fd-font-mono);
+  font-size: 0.8125rem;
+  color: var(--fd-muted-foreground);
+  cursor: pointer;
+  border-radius: 6px 6px 0 0;
+  transition: color 0.15s ease, background 0.15s ease;
+}
+
+.md-codegroup-tab:hover {
+  color: var(--fd-foreground);
+}
+
+.md-codegroup-tab.active {
+  color: var(--fd-foreground);
+  background: var(--fd-background);
+  font-weight: 600;
+}
+
+/* 组内代码块与 tab 栏贴合 */
+.md-codegroup .md-codeblock {
+  margin: 0;
+  border-radius: 0 0 var(--fd-radius, 8px) var(--fd-radius, 8px);
+}
+
+.md-codegroup-single .md-codeblock {
+  border-radius: var(--fd-radius, 8px);
+}
+
+// ---------------------------------------------------------------------------
+// 数学公式
+// ---------------------------------------------------------------------------
+
+.md-math-block {
+  margin: 1.2rem 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: center;
+}
+
+.md-math-failed {
+  color: #ef4444;
+  font-family: var(--fd-font-mono);
+  font-size: 0.85em;
+}
+
+// ---------------------------------------------------------------------------
+// 图片放大
+// ---------------------------------------------------------------------------
+
+.md-zoomable {
+  cursor: zoom-in;
+  border-radius: var(--fd-radius-sm, 6px);
+  transition: opacity 0.15s ease;
+}
+
+.md-zoomable:hover {
+  opacity: 0.85;
+}
+
+.md-zoom-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background: var(--fd-overlay);
+  backdrop-filter: blur(3px);
+  cursor: zoom-out;
+}
+
+.md-zoom-img {
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: var(--fd-radius, 8px);
+  box-shadow: 0 20px 60px rgb(0 0 0 / 0.35);
+}

@@ -520,3 +520,57 @@
     display: block;
   }
 }
+/* ---------------- VitePress parity additions ---------------- */
+
+/* social link group (themeConfig.socialLinks) */
+.navIconGroup {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.125rem;
+  margin-right: 0.25rem;
+
+  @media (max-width: 640px) {
+    display: none;
+  }
+}
+
+/* frontmatter aside: left —— 目录挪到正文左侧 */
+.bodyInnerTocLeft {
+  @media (min-width: 1280px) {
+    grid-template-columns: var(--fd-sidebar-width) var(--fd-toc-width) minmax(0, 1fr);
+  }
+
+  .bodyToc {
+    order: 2;
+    border-left: 1px solid var(--fd-border);
+    border-right: 1px solid var(--fd-border);
+  }
+
+  .main {
+    order: 3;
+  }
+}
+
+/* mobile TOC 出现时的正文后区域（doc-bottom 插槽在移动端也可见） */
+.articleTocAfter:empty {
+  display: none;
+}
+
+/* 全局页脚（themeConfig.footer） */
+.globalFooter {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--fd-border);
+  text-align: center;
+  font-size: 0.8125rem;
+  color: var(--fd-muted-foreground);
+}
+
+.footerMessage {
+  margin: 0 0 0.35rem;
+}
+
+.footerCopyright {
+  margin: 0;
+  opacity: 0.85;
+}

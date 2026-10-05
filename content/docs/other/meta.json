@@ -6,6 +6,7 @@
   "pages": [
     "index",
     "mdx-components",
+    "layout-and-syntax",
     "---参考资源---",
     {
       "js": {

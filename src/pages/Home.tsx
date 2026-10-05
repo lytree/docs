@@ -1,13 +1,15 @@
 import { defineComponent, computed, onMounted } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRoute } from 'vue-router'
 import { site, defaultLocale, dataFor } from '../lib/Source'
 import { applyHead } from '../lib/Seo'
 import { Banner } from '../components/Banner'
+import { Slot } from '../lib/Slots'
 import s from './Home.module.scss'
 
 export const Home = defineComponent({
   name: 'HomePage',
   setup() {
+    const route = useRoute()
     onMounted(() =>
       applyHead({ title: site.title, description: site.description, path: '/' }),
     )
@@ -27,8 +29,12 @@ export const Home = defineComponent({
         : [{ title: '文档', description: '开始阅读', icon: '📘', url: '/docs' }],
     )
 
-    return () => (
+    return () => {
+      const ctx = { path: route.path, title: site.title }
+      return (
       <div class={s.home}>
+        {/* layout-top */}
+        <Slot name="layout-top" ctx={ctx} />
         <Banner />
         <header class={s.header}>
           <div class={s.headerInner}>
@@ -235,6 +241,7 @@ export const Home = defineComponent({
           </div>
         </footer>
       </div>
-    )
+      )
+    }
   },
 })

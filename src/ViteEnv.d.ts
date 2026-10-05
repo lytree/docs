@@ -6,6 +6,15 @@ declare module '*.module.scss' {
 }
 
 declare module 'virtual:source' {
+  import type {
+    NavItem,
+    SidebarConfig,
+    OutlineConfig,
+    UiText,
+    FooterConfig,
+    DesignTokens,
+  } from './lib/ConfigTypes'
+
   export interface TocItem {
     title: string
     url: string
@@ -62,6 +71,12 @@ declare module 'virtual:source' {
     full?: boolean
     lastModified?: number
     api?: ApiDocData
+    frontmatter?: Record<string, unknown>
+    aside?: 'left' | 'right' | false
+    outline?: false | [number, number]
+    pageClass?: string
+    layout?: string
+    head?: unknown[]
   }
   export interface PageTreeNode {
     type: 'page' | 'folder' | 'separator'
@@ -100,9 +115,22 @@ declare module 'virtual:source' {
     description: string
     editLink?: { repo: string; branch?: string }
     banner?: { id: string; text: string; variant?: 'normal' | 'rainbow'; link?: string }
+    head?: unknown[]
+    lang?: string
+    base?: string
+  }
+  export interface ClientConfig {
+    nav: NavItem[]
+    sidebar?: SidebarConfig
+    outline: OutlineConfig
+    ui: Required<UiText>
+    footer?: FooterConfig
+    tokens?: DesignTokens
+    markdown: { lineNumbers: boolean; containers: Record<string, string> }
   }
   export const source: {
     site: SiteInfo
+    config: ClientConfig
     locales: LocaleInfo[]
     defaultLocale: string
     byLocale: Record<string, SourceData>

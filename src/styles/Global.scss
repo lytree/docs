@@ -56,6 +56,17 @@
 
   --fd-overlay: rgba(0, 0, 0, 0.5);
 
+  /* token 覆盖入口 —— fumadocsSource({ tokens }) 会在运行时重写以下变量 */
+  --fd-brand-1: var(--fd-primary);
+  --fd-brand-2: var(--fd-primary);
+  --fd-radius-sm: 6px;
+  --fd-radius: 8px;
+  --fd-radius-lg: 12px;
+  --fd-font-body: system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+  --fd-font-size-base: 16px;
+  --fd-content-width: 1280px;
+  --fd-content-padding: 2rem;
+
   color-scheme: light;
 }
 

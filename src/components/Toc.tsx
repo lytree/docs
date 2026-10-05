@@ -29,7 +29,12 @@ function useIsDesktop(): { value: import('vue').Ref<boolean> } {
 
 export const Toc = defineComponent({
   name: 'FdToc',
-  props: { toc: { type: Array as () => TocItem[], required: true }, path: String },
+  props: {
+    toc: { type: Array as () => TocItem[], required: true },
+    path: String,
+    /** 目录标题（来自配置 themeConfig.outlineTitle） */
+    title: { type: String, default: '本页目录' },
+  },
   setup(props) {
     const route = useRoute()
     const activeId = ref('')
@@ -136,7 +141,7 @@ export const Toc = defineComponent({
       if (isDesktop.value) {
         return (
           <div class={s.toc}>
-            <p class={s.title}>本页目录</p>
+            <p class={s.title}>{props.title}</p>
             {renderLinks()}
             <BackToTop />
           </div>
@@ -162,7 +167,7 @@ export const Toc = defineComponent({
             aria-expanded={popoverOpen.value}
             aria-controls="fd-toc-popover"
           >
-            <span class={s.popoverLabel}>本页目录</span>
+            <span class={s.popoverLabel}>{props.title}</span>
             <span class={s.popoverActive}>{activeTitle.value}</span>
             <span class={[s.popoverChevron, popoverOpen.value && s.popoverChevronOpen]}>
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">

@@ -10,27 +10,59 @@ import {
   type PageTreeNode,
 } from '../lib/Source'
 import { applyHead } from '../lib/Seo'
-import { setMDXComponents } from '../lib/JsxRuntime'
-import { mdxComponents } from '../components/MdxComponents'
+import { Slot } from '../lib/Slots'
+import { uiText } from '../lib/Config'
 import s from './DocPage.module.scss'
 
-const modules = import.meta.glob('/content/docs/**/*.{md,mdx}')
+const modules = import.meta.glob('/content/docs/**/*.md')
 
 /** og image file name for a page slug (slashes flattened) */
 export const ogKey = (slug: string) => `/og/${slug.replace(/\//g, '-') || 'index'}.png`
 
-const fmtDate = (ts: number) =>
-  new Date(ts).toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })
+const fmtDate = (ts: number, options?: Intl.DateTimeFormatOptions) =>
+  new Date(ts).toLocaleDateString('zh-CN', options ?? { year: 'numeric', month: 'long', day: 'numeric' })
+
+/**
+ * 注入 frontmatter 里的 head 标签。
+ * 先清掉上一次注入的（带 data-fm-head 标记），避免切页时残留。
+ */
+function applyPageHead(head: unknown[] | undefined) {
+  document.querySelectorAll('[data-fm-head]').forEach((el) => el.remove())
+  if (!head || head.length === 0) return
+  for (const h of head) {
+    if (!h || typeof h !== 'object') continue
+    const cfg = h as { tag?: string; attrs?: Record<string, unknown>; children?: string }
+    const el = document.createElement((cfg.tag ?? 'meta') as 'meta')
+    el.setAttribute('data-fm-head', '')
+    for (const [k, v] of Object.entries(cfg.attrs ?? {})) {
+      if (v == null || v === false) continue
+      el.setAttribute(k, v === true ? '' : String(v))
+    }
+    if (cfg.children) el.innerHTML = cfg.children
+    document.head.appendChild(el)
+  }
+}
 
 export const DocPage = defineComponent({
   name: 'DocPage',
   setup() {
     const route = useRoute()
     const page = ref<PageData | null>(null)
-    const MdxContent = ref<Component | null>(null)
+    const PageContent = ref<Component | null>(null)
     const notFound = ref(false)
     const mdCopied = ref(false)
     const viewOptionsOpen = ref(false)
+
+    /** 界面文案（fumadocsSource 的 ui 配置） */
+    const texts = uiText()
+    const showLastUpdated = computed(() => {
+      if (page.value?.frontmatter?.lastUpdated === false) return false
+      return true
+    })
+    const lastUpdatedFormat = computed(() => {
+      const v = page.value?.frontmatter?.lastUpdatedFormat
+      return typeof v === 'object' && v !== null ? (v as Intl.DateTimeFormatOptions) : undefined
+    })
 
     const slug = computed(() =>
       route.path.startsWith('/docs')
@@ -60,14 +92,22 @@ export const DocPage = defineComponent({
       page.value = data ?? null
       if (!data) {
         notFound.value = true
-        MdxContent.value = null
+        PageContent.value = null
         route.meta.full = false
+        applyPageHead([])
         applyHead({ title: `未找到 · ${site.title}`, path: route.path })
         return
       }
       route.meta.toc = data.toc
       route.meta.title = data.title
       route.meta.full = !!data.full
+      // frontmatter layout overrides -> route.meta (布局据此渲染)
+      route.meta.aside = data.aside
+      route.meta.outline = data.outline
+      route.meta.pageClass = data.pageClass
+      route.meta.layout = data.layout
+      route.meta.frontmatter = data.frontmatter
+      applyPageHead(data.head)
       applyHead({
         title: `${data.title} · ${site.title}`,
         description: data.description,
@@ -76,7 +116,7 @@ export const DocPage = defineComponent({
         locale: data.locale,
       })
       if (data.api) {
-        MdxContent.value = null
+        PageContent.value = null
         return
       }
       const loader = modules[data.file]
@@ -85,13 +125,10 @@ export const DocPage = defineComponent({
         return
       }
       const mod = (await loader()) as { default: Component }
-      MdxContent.value = mod.default
+      PageContent.value = mod.default
     }
 
     watch(slug, load, { immediate: true })
-    watch(MdxContent, (c) => {
-      if (c) setMDXComponents(mdxComponents)
-    })
     // Tabs' `router.replace` (query-only) creates a fresh route whose meta is
     // reset from the route record — re-apply the runtime meta of current page
     // so TOC / InlineToc keep working after a tab switch.
@@ -103,6 +140,11 @@ export const DocPage = defineComponent({
         route.meta.toc = p.toc
         route.meta.title = p.title
         route.meta.full = !!p.full
+        route.meta.aside = p.aside
+        route.meta.outline = p.outline
+        route.meta.pageClass = p.pageClass
+        route.meta.layout = p.layout
+        route.meta.frontmatter = p.frontmatter
       },
     )
 
@@ -232,8 +274,8 @@ export const DocPage = defineComponent({
 
             {p.api ? (
               <ApiDoc data={p.api} />
-            ) : MdxContent.value ? (
-              h(MdxContent.value as Component, { components: mdxComponents })
+            ) : PageContent.value ? (
+              h(PageContent.value as Component)
             ) : (
               <p class={s.docLoading}>加载中…</p>
             )}
@@ -262,20 +304,22 @@ export const DocPage = defineComponent({
             {/* footer: last updated + edit link */}
             {(p.lastModified || editUrl.value) && (
               <footer class={s.docFooter}>
+                <Slot name="doc-footer-before" ctx={{ path: route.path, slug: p.slug, title: p.title, frontmatter: p.frontmatter }} />
                 <div class={s.docFooterLeft}>
-                  {p.lastModified && (
+                  {showLastUpdated.value && p.lastModified && (
                     <span class={s.docFooterDate}>
-                      最后更新于 {fmtDate(p.lastModified)}
+                      {texts.lastUpdated} {fmtDate(p.lastModified, lastUpdatedFormat.value)}
                     </span>
                   )}
                 </div>
                 <div class={s.docFooterRight}>
                   {editUrl.value && (
                     <a class={s.docFooterEdit} href={editUrl.value} target="_blank" rel="noopener">
-                      在 GitHub 编辑 ↗
+                      {texts.editLink} ↗
                     </a>
                   )}
                 </div>
+                <Slot name="doc-footer-after" ctx={{ path: route.path, slug: p.slug, title: p.title, frontmatter: p.frontmatter }} />
               </footer>
             )}
           </article>
