@@ -41,6 +41,13 @@
   overflow-x: auto;
   border: 1px solid var(--fd-border);
   border-radius: var(--fd-radius, 8px);
+
+  /* 防御：万一表格被再次包裹，不叠加 margin/border 把正文撑高 */
+  .md-table-wrap {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+  }
 }
 
 .md-body table {

@@ -298,8 +298,12 @@ export async function createMarkdownIt(
   })
 
   // ---- 表格加外层容器（便于横向滚动）----
+  // 必须成对重写 table_open / table_close：只开不闭会让后续表格全部
+  // 落进第一个 wrapper，margin/border 层层累积，把正文撑到数万像素。
   md.renderer.rules.table_open = (tokens: Token[], idx, options_, env, self) =>
     `<div class="md-table-wrap">${(self as { renderToken(t: Token[], i: number, o: unknown): string }).renderToken(tokens, idx, options_)}`
+  md.renderer.rules.table_close = (tokens: Token[], idx, options_, env, self) =>
+    `${(self as { renderToken(t: Token[], i: number, o: unknown): string }).renderToken(tokens, idx, options_)}</div>`
 
   // ---- 对外暴露：先异步高亮 fence，再同步渲染 ----
   const originalParse = md.parse.bind(md)
