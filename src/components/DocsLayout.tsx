@@ -368,18 +368,8 @@ export const DocsLayout = defineComponent({
                     </div>
                   )}
 
-                  {/* 页脚区：自定义插槽 + 配置版权 */}
+                  {/* 页脚区：自定义插槽 */}
                   <Slot name="doc-footer" ctx={ctx} />
-                  {(footer.value?.message || footer.value?.copyright) && (
-                    <footer class={s.globalFooter}>
-                      {footer.value?.message && (
-                        <p class={s.footerMessage}>{footer.value.message}</p>
-                      )}
-                      {footer.value?.copyright && (
-                        <p class={s.footerCopyright}>{footer.value.copyright}</p>
-                      )}
-                    </footer>
-                  )}
                 </article>
 
                 <Slot name="doc-after" ctx={ctx} />
@@ -405,6 +395,18 @@ export const DocsLayout = defineComponent({
 
           {/* ---- 全局底部插槽（layout-bottom） ---- */}
           <Slot name="layout-bottom" ctx={ctx} />
+
+          {/* ---- 全站页脚：themeConfig.footer ---- */}
+          {(footer.value?.message || footer.value?.copyright) && (
+            <footer class={s.globalFooter}>
+              {footer.value?.message && (
+                <p class={s.footerMessage}>{footer.value.message}</p>
+              )}
+              {footer.value?.copyright && (
+                <p class={s.footerCopyright}>{footer.value.copyright}</p>
+              )}
+            </footer>
+          )}
         </div>
       )
     }

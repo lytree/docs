@@ -5,6 +5,8 @@
   display: flex;
   min-height: 100vh;
   flex-direction: column;
+  /* 兜底：任何子元素意外超宽时不拖出整页横向滚动条 */
+  overflow-x: clip;
 }
 
 /* ---------------- top nav (sticky) ---------------- */
@@ -390,6 +392,9 @@
 
 .article {
   max-width: 768px;
+  /* flex/grid 子项默认 min-width:auto，宽表格/长代码会把容器顶开，
+     连带整页出现横向滚动条。归零后由内部 .md-table-wrap 自行滚动 */
+  min-width: 0;
   margin: 0 auto;
 }
 
@@ -556,11 +561,12 @@
   display: none;
 }
 
-/* 全局页脚（themeConfig.footer） */
+/* 全站页脚（themeConfig.footer）—— 位于整页最底部，通栏 */
 .globalFooter {
   margin-top: 3rem;
-  padding-top: 1.5rem;
   border-top: 1px solid var(--fd-border);
+  background: var(--fd-card);
+  padding: 1.5rem;
   text-align: center;
   font-size: 0.8125rem;
   color: var(--fd-muted-foreground);
