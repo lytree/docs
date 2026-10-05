@@ -2,7 +2,7 @@
 
 杨 ◦ 柳 · 个人文档站 —— Vue 3 + TSX 实现的 Fumadocs，接入 VitePress 的布局与写作体系。
 
-源码：[github.com/lytree/docs](https://github.com/lytree/docs) · 站点：[doc.prideyang.top](https://doc.prideyang.top)
+源码：[github.com/lytree/docs](https://github.com/lytree/docs) · 站点：[doc.lytree.top](https://doc.lytree.top)
 
 ## 开发
 
