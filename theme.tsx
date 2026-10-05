@@ -53,6 +53,7 @@ export default defineTheme({
       h(
         'div',
         {
+          class: 'fd-layout-bottom',
           style: {
             padding: '1rem',
             textAlign: 'center',

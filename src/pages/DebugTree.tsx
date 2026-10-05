@@ -6,7 +6,7 @@ export const DebugTree = defineComponent({
   name: 'DebugTree',
   setup() {
     return () => (
-      <div style={{ padding: '2rem', fontFamily: 'ui-monospace, Consolas, monospace', fontSize: '12px' }}>
+      <div style={{ padding: '2rem', fontFamily: 'var(--fd-font-mono)', fontSize: '12px' }}>
         <h1 style={{ fontSize: '20px', marginBottom: '1rem' }}>Debug: source tree</h1>
         <section>
           <h2 style={{ fontSize: '16px' }}>locales</h2>

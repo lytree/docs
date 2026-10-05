@@ -57,7 +57,7 @@
   line-height: 1.6;
 
   code {
-    font-family: ui-monospace, Consolas, monospace;
+    font-family: var(--fd-font-mono);
   }
 }
 
@@ -65,7 +65,7 @@
   border-radius: 0.3rem;
   background: var(--fd-muted);
   padding: 0.05rem 0.35rem;
-  font-family: ui-monospace, Consolas, monospace;
+  font-family: var(--fd-font-mono);
   font-size: 0.85em;
   color: var(--fd-foreground);
 }
@@ -90,7 +90,7 @@
   }
 
   td:first-child {
-    font-family: ui-monospace, Consolas, monospace;
+    font-family: var(--fd-font-mono);
     white-space: nowrap;
   }
 }
@@ -101,7 +101,7 @@
 }
 
 .defaultVal {
-  font-family: ui-monospace, Consolas, monospace;
+  font-family: var(--fd-font-mono);
   font-size: 0.75rem;
   color: var(--fd-muted-foreground);
 }
@@ -146,7 +146,7 @@
 }
 
 .sourceLink {
-  font-family: ui-monospace, Consolas, monospace;
+  font-family: var(--fd-font-mono);
   color: var(--fd-foreground);
   text-decoration: none;
 

@@ -4,10 +4,17 @@
  * markdown-it 只负责解析，视觉与交互都在这里：
  * 容器、代码块标题栏、代码组标签页、表格横向滚动、图片放大遮罩。
  * 双主题靠 Shiki 输出的 `--shiki-dark` 变量 + `:root.dark` 切换。
+ *
+ * 分层约定（对齐 VitePress 的 `vp-doc`）：
+ *   - 元素级排版（标题/段落/列表/引用/表格/图片）只在 Global.scss 的
+ *     `.fd-prose` 里定义一份，这里不再重复。
+ *   - 本文件只负责 markdown-it 特有的结构：容器、代码块、代码组、
+ *     表格滚动容器、公式、图片遮罩。
+ *   - 需要覆盖正文基座时用 `.md-body` 提高一层优先级，而不是重写整套规则。
  */
 
 // ---------------------------------------------------------------------------
-// 正文排版
+// 正文作用域：只做 markdown-it 特有的微调，排版基座继承 .fd-prose
 // ---------------------------------------------------------------------------
 
 .md-body {
@@ -19,75 +26,6 @@
 
 .md-body > :first-child {
   margin-top: 0;
-}
-
-.md-body p {
-  margin: 1rem 0;
-}
-
-.md-body h1,
-.md-body h2,
-.md-body h3,
-.md-body h4 {
-  margin: 1.8em 0 0.8em;
-  font-weight: 650;
-  line-height: 1.3;
-  scroll-margin-top: calc(var(--fd-nav-height) + 1rem);
-}
-
-.md-body h1 {
-  font-size: 1.6rem;
-}
-.md-body h2 {
-  font-size: 1.3rem;
-  padding-bottom: 0.3em;
-  border-bottom: 1px solid var(--fd-border);
-}
-.md-body h3 {
-  font-size: 1.1rem;
-}
-.md-body h4 {
-  font-size: 1rem;
-}
-
-.md-body a {
-  color: var(--fd-primary);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-.md-body ul,
-.md-body ol {
-  margin: 1rem 0;
-  padding-left: 1.5rem;
-}
-
-.md-body li {
-  margin: 0.35rem 0;
-}
-
-.md-body blockquote {
-  margin: 1rem 0;
-  padding: 0.4rem 0 0.4rem 1rem;
-  border-left: 3px solid var(--fd-border);
-  color: var(--fd-muted-foreground);
-}
-
-.md-body hr {
-  margin: 2rem 0;
-  border: none;
-  border-top: 1px solid var(--fd-border);
-}
-
-.md-body kbd {
-  display: inline-block;
-  padding: 0.1em 0.4em;
-  border: 1px solid var(--fd-border);
-  border-bottom-width: 2px;
-  border-radius: 4px;
-  background: var(--fd-muted);
-  font-family: var(--fd-font-mono);
-  font-size: 0.85em;
 }
 
 .md-body del {
@@ -139,7 +77,6 @@
   overflow: hidden;
   background: var(--fd-muted);
 }
-
 .md-codeblock-head {
   display: flex;
   align-items: center;
@@ -176,7 +113,7 @@
 }
 
 .md-codeblock-copy.copied {
-  color: #16a34a;
+  color: var(--fd-success);
 }
 
 .md-codeblock pre {
@@ -199,7 +136,7 @@
 .md-codeblock .line.highlighted {
   display: inline-block;
   width: 100%;
-  background: color-mix(in srgb, var(--fd-primary) 12%, transparent);
+  background: var(--fd-code-line-highlight);
 }
 
 /* focus：非目标行淡出 */
@@ -226,15 +163,15 @@
   margin-right: 0.9em;
   text-align: right;
   color: var(--fd-muted-foreground);
-  opacity: 0.5;
+  opacity: 0.6;
 }
 
 /* diff 标注由 Shiki 处理，这里兜底 */
 .md-codeblock .line.diff.add {
-  background: color-mix(in srgb, #22c55e 14%, transparent);
+  background: color-mix(in srgb, var(--fd-success) 14%, transparent);
 }
 .md-codeblock .line.diff.remove {
-  background: color-mix(in srgb, #ef4444 14%, transparent);
+  background: color-mix(in srgb, var(--fd-danger) 14%, transparent);
 }
 
 /* 代码块内联 */
@@ -250,13 +187,13 @@
 // ::: 容器
 // ---------------------------------------------------------------------------
 
+/* 对齐 VitePress custom block：整块柔和底色 + 无左边框 + 标题下分隔线 */
 .md-container {
   --c-border: var(--fd-border);
   --c-bg: var(--fd-muted);
   margin: 1.1rem 0;
   padding: 0.85rem 1rem;
   border-radius: var(--fd-radius, 8px);
-  border-left: 3px solid var(--c-border);
   background: var(--c-bg);
   font-size: 0.9375rem;
   line-height: 1.65;
@@ -266,7 +203,9 @@
   display: flex;
   align-items: center;
   gap: 0.45rem;
-  margin: 0 0 0.5rem;
+  margin: 0 0 0.6rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--c-border);
   font-weight: 600;
   font-size: 0.8125rem;
 }
@@ -284,25 +223,25 @@
 }
 
 .md-container-tip {
-  --c-border: #3b82f6;
-  --c-bg: color-mix(in srgb, #3b82f6 8%, var(--fd-background));
+  --c-border: var(--fd-brand-line);
+  --c-bg: var(--fd-brand-soft);
 }
 .md-container-info,
 .md-container-note {
-  --c-border: #0ea5e9;
-  --c-bg: color-mix(in srgb, #0ea5e9 8%, var(--fd-background));
+  --c-border: var(--fd-info-line);
+  --c-bg: var(--fd-info-soft);
 }
 .md-container-warning {
-  --c-border: #f59e0b;
-  --c-bg: color-mix(in srgb, #f59e0b 9%, var(--fd-background));
+  --c-border: var(--fd-warning-line);
+  --c-bg: var(--fd-warning-soft);
 }
 .md-container-danger {
-  --c-border: #ef4444;
-  --c-bg: color-mix(in srgb, #ef4444 8%, var(--fd-background));
+  --c-border: var(--fd-danger-line);
+  --c-bg: var(--fd-danger-soft);
 }
 .md-container-important {
-  --c-border: #8b5cf6;
-  --c-bg: color-mix(in srgb, #8b5cf6 8%, var(--fd-background));
+  --c-border: var(--fd-brand-line);
+  --c-bg: var(--fd-brand-soft);
 }
 .md-container-quote {
   --c-border: var(--fd-border);
@@ -416,7 +355,7 @@
 }
 
 .md-math-failed {
-  color: #ef4444;
+  color: var(--fd-danger);
   font-family: var(--fd-font-mono);
   font-size: 0.85em;
 }

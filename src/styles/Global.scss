@@ -1,51 +1,76 @@
-// global layer: runtime theming, prose, shiki — things that cannot be
-// CSS modules (constructed dynamically by MDX / Shiki / theme switch)
+// global layer: design tokens, resets, prose 基座, shiki —— 那些不能写成
+// CSS Modules 的东西（token 由 fumadocsSource 运行时改写，prose 与 shiki
+// 由 markdown-it 动态构造）。
+//
+// 分层约定：
+//   Global.scss   → token + reset + `.fd-prose` 正文排版基座（唯一一份）
+//   Markdown.scss → markdown-it 特有结构：容器 / 代码块 / 代码组 / 公式 / 遮罩
+//   *.module.scss→ 组件私有样式
 @import 'katex/dist/katex.min.css';
 
 /* ------------------------------------------------------------------ */
-/*  Fumadocs-UI v16 design tokens                                     */
-/*  light: shadcn zinc; dark: cool neutral. Components only read these */
+/*  design tokens                                                     */
+/*                                                                 */
+/*  取值对齐 VitePress 默认主题（--vp-c-* 的实际色值），但保留        */
+/*  fumadocs 的 token 命名与形状 —— fumadocsSource({ tokens }) 的     */
+/*  运行时覆盖入口不变。配置层是 Fumadocs，视觉层跟 VitePress。       */
 /* ------------------------------------------------------------------ */
 :root {
-  /* core palette — light */
-  --fd-background: hsl(0 0% 100%);
-  --fd-foreground: hsl(240 10% 3.9%);
+  /* core palette — light（对应 --vp-c-bg / --vp-c-text-1 / --vp-c-divider） */
+  --fd-background: #ffffff;
+  --fd-foreground: #3c3c43;
 
-  --fd-card: hsl(0 0% 100%);
-  --fd-card-foreground: hsl(240 10% 3.9%);
+  --fd-card: #ffffff;
+  --fd-card-foreground: #3c3c43;
 
-  --fd-popover: hsl(0 0% 100%);
-  --fd-popover-foreground: hsl(240 10% 3.9%);
+  --fd-popover: #ffffff;
+  --fd-popover-foreground: #3c3c43;
 
-  --fd-muted: hsl(240 4.8% 95.9%);
-  --fd-muted-foreground: hsl(240 3.8% 46.1%);
+  /* --vp-c-bg-alt / --vp-c-bg-soft */
+  --fd-muted: #f6f6f7;
+  --fd-muted-foreground: #67676c;
 
-  --fd-subtle: hsl(0 0% 98%);
-  --fd-subtle-foreground: hsl(240 3.8% 46.1%);
+  --fd-subtle: #f6f6f7;
+  --fd-subtle-foreground: #67676c;
 
-  --fd-border: hsl(240 5.9% 90%);
-  --fd-border-foreground: hsl(240 10% 3.9%);
+  --fd-border: #e2e2e3;
+  --fd-border-foreground: #3c3c43;
 
-  --fd-accent: hsl(240 4.8% 95.9%);
-  --fd-accent-foreground: hsl(240 5.9% 10%);
+  --fd-accent: #f6f6f7;
+  --fd-accent-foreground: #3c3c43;
 
-  --fd-ring: hsl(240 5% 64.9%);
+  --fd-ring: #3451b2;
 
-  --fd-primary: hsl(240 5.9% 10%);
-  --fd-primary-foreground: hsl(0 0% 98%);
+  --fd-primary: #3451b2;
+  --fd-primary-foreground: #ffffff;
 
-  /* secondary — also a shadcn token (used by bg-secondary class) */
-  --fd-secondary: hsl(240 4.8% 95.9%);
-  --fd-secondary-foreground: hsl(240 5.9% 10%);
+  /* secondary */
+  --fd-secondary: #f6f6f7;
+  --fd-secondary-foreground: #3c3c43;
 
-  /* status (Callout colors) */
-  --fd-info: hsl(221 83% 53%);
-  --fd-success: hsl(173 80% 40%);
-  --fd-warning: hsl(35 92% 50%);
-  --fd-danger: hsl(0 72% 51%);
+  /* status — 与 VitePress custom block 的 soft 色一致 */
+  --fd-info: #67676c;
+  --fd-success: #1b1b1f;
+  --fd-warning: #eab308;
+  --fd-danger: #f43f5e;
+  --fd-caution: #8b5cf6;
 
-  /* layout widths — match fumadocs default */
-  --fd-layout-width: 1440px;
+  /* custom block 底色 —— rgba 由status 色派生，亮暗各一份 */
+  --fd-info-soft: rgba(142, 150, 170, 0.14);
+  --fd-brand-soft: rgba(100, 108, 255, 0.14);
+  --fd-warning-soft: rgba(234, 179, 8, 0.14);
+  --fd-danger-soft: rgba(244, 63, 94, 0.14);
+
+  /* 容器标题下的分隔线：soft 底色上的实色描边 */
+  --fd-info-line: #8e96aa;
+  --fd-brand-line: #646cff;
+  --fd-warning-line: #eab308;
+  --fd-danger-line: #f43f5e;
+
+  --fd-code-line-highlight: rgba(142, 150, 170, 0.14);
+
+  /* layout widths */
+  --fd-layout-width: 1440px; /* --vp-layout-max-width: 90rem */
   --fd-container: 1280px;
   --fd-sidebar-width: 260px;
   --fd-toc-width: 220px;
@@ -57,12 +82,19 @@
   --fd-overlay: rgba(0, 0, 0, 0.5);
 
   /* token 覆盖入口 —— fumadocsSource({ tokens }) 会在运行时重写以下变量 */
-  --fd-brand-1: var(--fd-primary);
-  --fd-brand-2: var(--fd-primary);
+  --fd-brand-1: #3451b2;
+  --fd-brand-2: #3a5ccc;
+  --fd-brand-3: #5672cd;
   --fd-radius-sm: 6px;
   --fd-radius: 8px;
   --fd-radius-lg: 12px;
-  --fd-font-body: system-ui, -apple-system, 'Segoe UI', 'Microsoft YaHei', sans-serif;
+
+  /* 字体 —— 所有等宽场景（代码块 / 内联 code / kbd / 表格标题）统一读这个 */
+  --fd-font-body:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei',
+    sans-serif;
+  --fd-font-mono: ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono',
+    'Courier New', monospace;
   --fd-font-size-base: 16px;
   --fd-content-width: 1280px;
   --fd-content-padding: 2rem;
@@ -71,39 +103,58 @@
 }
 
 :root.dark {
-  --fd-background: hsl(240 10% 3.9%);
-  --fd-foreground: hsl(0 0% 98%);
+  --fd-background: #1b1b1f;
+  --fd-foreground: #dfdfd6;
 
-  --fd-card: hsl(240 6% 7%);
-  --fd-card-foreground: hsl(0 0% 98%);
+  --fd-card: #202127;
+  --fd-card-foreground: #dfdfd6;
 
-  --fd-popover: hsl(240 6% 7%);
-  --fd-popover-foreground: hsl(0 0% 98%);
+  --fd-popover: #202127;
+  --fd-popover-foreground: #dfdfd6;
 
-  --fd-muted: hsl(240 4% 16%);
-  --fd-muted-foreground: hsl(240 5% 64.9%);
+  --fd-muted: #161618;
+  --fd-muted-foreground: #98989f;
 
-  --fd-subtle: hsl(240 4% 10%);
-  --fd-subtle-foreground: hsl(240 5% 64.9%);
+  --fd-subtle: #161618;
+  --fd-subtle-foreground: #98989f;
 
-  --fd-border: hsl(240 4% 16%);
-  --fd-border-foreground: hsl(0 0% 98%);
+  --fd-border: #2e2e32;
+  --fd-border-foreground: #dfdfd6;
 
-  --fd-accent: hsl(240 4% 16%);
-  --fd-accent-foreground: hsl(0 0% 98%);
+  --fd-accent: #202127;
+  --fd-accent-foreground: #dfdfd6;
 
-  --fd-ring: hsl(240 4.9% 83.9%);
+  --fd-ring: #a8b1ff;
 
-  --fd-primary: hsl(0 0% 98%);
-  --fd-primary-foreground: hsl(240 5.9% 10%);
+  --fd-primary: #a8b1ff;
+  --fd-primary-foreground: #1b1b1f;
 
-  --fd-secondary: hsl(240 4% 16%);
-  --fd-secondary-foreground: hsl(0 0% 98%);
+  --fd-secondary: #202127;
+  --fd-secondary-foreground: #dfdfd6;
 
-  --fd-info: hsl(217 91% 60%);
-  --fd-success: hsl(173 80% 50%);
-  --fd-warning: hsl(35 92% 55%);
-  --fd-danger: hsl(0 72% 56%);
+  --fd-info: #98989f;
+  --fd-success: #dfdfd6;
+  --fd-warning: #eab308;
+  --fd-danger: #f43f5e;
+  --fd-caution: #a78bfa;
+
+  /* custom block 底色 —— 暗色下统一到 0.16 alpha */
+  --fd-info-soft: rgba(101, 117, 133, 0.16);
+  --fd-brand-soft: rgba(100, 108, 255, 0.16);
+  --fd-warning-soft: rgba(234, 179, 8, 0.16);
+  --fd-danger-soft: rgba(244, 63, 94, 0.16);
+
+  --fd-info-line: #657585;
+  --fd-brand-line: #646cff;
+  --fd-warning-line: #eab308;
+  --fd-danger-line: #f43f5e;
+
+  --fd-code-line-highlight: rgba(101, 117, 133, 0.16);
+
+  /* brand 在暗色下按 VitePress 换用 indigo 的dark 档 */
+  --fd-brand-1: #a8b1ff;
+  --fd-brand-2: #5c73e7;
+  --fd-brand-3: #3e63dd;
 
   --fd-overlay: rgba(0, 0, 0, 0.6);
 
@@ -125,9 +176,8 @@ html {
 body {
   background: var(--fd-background);
   color: var(--fd-foreground);
-  font-family:
-    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
+  font-family: var(--fd-font-body);
+  font-size: var(--fd-font-size-base);
   font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
   font-variant-ligatures: contextual;
 }
@@ -137,73 +187,76 @@ body {
 }
 
 /* ------------------------------------------------------------------ */
-/*  prose (MDX content)                                               */
+/*  prose — 唯一的正文排版权威                                     */
+/*  对齐 VitePress 的 `vp-doc`：所有markdown 产物的元素级排版       */
+/*  都在这里定义，Markdown.scss 只补结构，不重复定义元素样式。       */
 /* ------------------------------------------------------------------ */
 .fd-prose {
   line-height: 1.75;
   color: var(--fd-foreground);
 
-  > h1 {
-    font-size: 2.25rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin: 0 0 1rem;
+  h1 {
+    font-size: 1.6rem;
+    font-weight: 650;
+    line-height: 1.3;
+    margin: 1.8em 0 0.8em;
+    scroll-margin-top: calc(var(--fd-nav-height) + 1rem);
   }
 
-  > h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    letter-spacing: -0.01em;
-    margin: 2.5rem 0 0.75rem;
-    padding-bottom: 0.4rem;
+  h2 {
+    font-size: 1.3rem;
+    font-weight: 650;
+    line-height: 1.3;
+    margin: 1.8em 0 0.8em;
+    padding-bottom: 0.3em;
     border-bottom: 1px solid var(--fd-border);
     scroll-margin-top: calc(var(--fd-nav-height) + 1rem);
   }
 
-  > h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    margin: 1.75rem 0 0.5rem;
+  h3 {
+    font-size: 1.1rem;
+    font-weight: 650;
+    line-height: 1.3;
+    margin: 1.8em 0 0.8em;
     scroll-margin-top: calc(var(--fd-nav-height) + 1rem);
   }
 
-  > h4 {
-    font-size: 1.05rem;
-    font-weight: 600;
-    margin: 1.5rem 0 0.5rem;
+  h4 {
+    font-size: 1rem;
+    font-weight: 650;
+    line-height: 1.3;
+    margin: 1.8em 0 0.8em;
     scroll-margin-top: calc(var(--fd-nav-height) + 1rem);
   }
 
-  > p {
+  p {
     margin: 1rem 0;
     line-height: 1.75;
   }
 
-  > a {
-    color: var(--fd-foreground);
+  a {
+    color: var(--fd-primary);
     text-decoration: underline;
-    text-underline-offset: 3px;
-    text-decoration-thickness: 1px;
-    text-decoration-color: var(--fd-border);
+    text-underline-offset: 2px;
     transition: text-decoration-color 0.15s;
     &:hover {
       text-decoration-color: var(--fd-foreground);
     }
   }
 
-  > ul,
-  > ol {
+  ul,
+  ol {
     margin: 1rem 0;
     padding-left: 1.5rem;
     line-height: 1.75;
   }
-  > ul {
+  ul {
     list-style: disc;
   }
-  > ol {
+  ol {
     list-style: decimal;
   }
-  > li {
+  li {
     margin: 0.35rem 0;
     > p {
       margin: 0.25rem 0;
@@ -213,75 +266,37 @@ body {
     }
   }
 
-  > blockquote {
-    border-left: 3px solid var(--fd-info);
-    padding: 0.5rem 0 0.5rem 1rem;
-    margin: 1.25rem 0;
+  blockquote {
+    margin: 1rem 0;
+    padding: 0.4rem 0 0.4rem 1rem;
+    border-left: 3px solid var(--fd-border);
     color: var(--fd-muted-foreground);
-    background: color-mix(in oklab, var(--fd-info) 6%, transparent);
-    border-radius: 0 0.375rem 0.375rem 0;
     font-style: normal;
   }
 
-  > table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.25rem 0;
-    font-size: 0.9rem;
-    display: block;
-    overflow-x: auto;
-
-    th,
-    td {
-      border: 1px solid var(--fd-border);
-      padding: 0.5rem 0.85rem;
-      text-align: left;
-    }
-
-    th {
-      background: var(--fd-muted);
-      font-weight: 600;
-    }
-
-    tr:nth-child(even) td {
-      background: color-mix(in oklab, var(--fd-muted) 50%, transparent);
-    }
-  }
-
-  > :not(pre) > code {
-    background: var(--fd-muted);
-    border: 1px solid var(--fd-border);
-    border-radius: 0.3rem;
-    padding: 0.1rem 0.35rem;
-    font-size: 0.85em;
-    font-family: ui-monospace, Consolas, monospace;
-  }
-
-  > hr {
+  hr {
+    margin: 2rem 0;
     border: none;
     border-top: 1px solid var(--fd-border);
-    margin: 2rem 0;
   }
 
-  > img {
+  img {
     max-width: 100%;
     border-radius: 0.5rem;
     border: 1px solid var(--fd-border);
   }
 
-  > ul > li > input[type='checkbox'] {
+  ul > li > input[type='checkbox'] {
     margin-right: 0.5rem;
   }
 
-  /* kbd inside prose */
-  kbd {
+  /* inline code —— 代码块内的由 .md-codeblockpre code 单独处理 */
+  :not(pre) > code {
+    padding: 0.15em 0.4em;
+    border-radius: 4px;
     background: var(--fd-muted);
-    border: 1px solid var(--fd-border);
-    border-bottom-width: 2px;
-    border-radius: 0.3rem;
-    padding: 0 0.35rem;
-    font-family: ui-monospace, Consolas, monospace;
-    font-size: 0.85em;
+    font-family: var(--fd-font-mono);
+    font-size: 0.875em;
   }
 }
 
@@ -304,37 +319,23 @@ body {
   }
 }
 
-/* ---------------- shiki code blocks ---------------- */
-.fd-prose pre.shiki {
-  margin: 0;
-  padding: 1rem 1.25rem;
-  overflow-x: auto;
-  font-size: 0.85rem;
-  line-height: 1.7;
-  font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
-  background: var(--fd-muted) !important;
-  border-radius: 0;
-
-  .line.highlighted {
-    background: color-mix(in oklab, var(--fd-info) 12%, transparent);
-    display: inline-block;
-    width: 100%;
-  }
-
-  .line.diff.add {
-    background: color-mix(in oklab, var(--fd-success) 12%, transparent);
-  }
-  .line.diff.remove {
-    background: color-mix(in oklab, var(--fd-danger) 12%, transparent);
-  }
-}
-
+/* ------------------------------------------------------------------ */
+/*  shiki dual theme                                                  */
+/*                                                                   */
+/*  代码块的布局/配色由 Markdown.scss 的 `.md-codeblock` 负责；        */
+/*  这里只处理 Shiki 输出的双主题变量切换，避免两处规则互相覆盖。      */
+/*  背景色不跟随 shiki-dark-bg —— 统一用容器底色，                   */
+/*  否则代码块会与外框脱节、暗色下出现色带。                          */
+/* ------------------------------------------------------------------ */
 :root.dark .fd-prose pre.shiki,
 :root.dark .fd-prose pre.shiki span {
   color: var(--shiki-dark) !important;
-  background-color: var(--shiki-dark-bg) !important;
   font-style: var(--shiki-dark-font-style) !important;
   font-weight: var(--shiki-dark-font-weight) !important;
+}
+
+:root.dark .fd-prose pre.shiki {
+  background: var(--fd-muted) !important;
 }
 
 /* standalone kbd (used in headers etc.) */
@@ -344,7 +345,7 @@ kbd {
   border-bottom-width: 2px;
   border-radius: 0.3rem;
   padding: 0 0.35rem;
-  font-family: ui-monospace, Consolas, monospace;
+  font-family: var(--fd-font-mono);
   font-size: 0.85em;
   color: var(--fd-muted-foreground);
 }

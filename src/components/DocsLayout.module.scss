@@ -225,7 +225,7 @@
   background: var(--fd-background);
   border-radius: 0.25rem;
   font-size: 0.7rem;
-  font-family: ui-monospace, Consolas, monospace;
+  font-family: var(--fd-font-mono);
   color: var(--fd-muted-foreground);
   line-height: 1;
 

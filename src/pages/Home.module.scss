@@ -285,12 +285,12 @@
 .codeFile {
   margin-left: 0.5rem;
   font-size: 0.7rem;
-  font-family: ui-monospace, Consolas, monospace;
+  font-family: var(--fd-font-mono);
   color: var(--fd-muted-foreground);
 }
 
 .codeBody {
-  font-family: ui-monospace, 'Cascadia Code', Consolas, monospace;
+  font-family: var(--fd-font-mono);
   font-size: 0.78rem;
   line-height: 1.7;
   padding: 1rem 1.25rem;

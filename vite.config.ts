@@ -38,6 +38,10 @@ const siteConfig = {
 
   tokens: {
     brand: { '1': '#3b6ef6', '2': '#2f5fe0' },
+    fontFamily: {
+      body: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif",
+      mono: "ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace",
+    },
     radius: { md: '8px', lg: '12px' },
     layout: { sidebarWidth: '260px', asideWidth: '232px' },
   },
