@@ -6,7 +6,7 @@ The content pipeline is **markdown-it** (same approach as VitePress); the site f
 ## Project Structure & Module Organization
 
 - `content/docs/` — Markdown source. Each top-level category is a directory with an `index.md` and a `meta.json` (e.g. `dotnet/`, `java/`, `db/`, `middleware/`, `other/`).
-- Root `content/docs/meta.json` lists the order in which the root categories appear in the nav.
+- Root `content/docs/meta.json` lists the categories in `pages`; its `order` array is the authoritative display order for the sidebar and the category switcher. Names in `order` that don't match a category are ignored (with a build warning), and categories missing from `order` keep their `pages` order and are appended to the end — so a newly added category still shows up.
 - A category directory's own `meta.json` controls the sidebar inside that category. Use `"root": true` to flag a category as a top-level tab. Supported syntax: `pages` list, inline folder overrides (`{ name: { title, icon, pages } }`), `---` / `---Label---` separators, `...` wildcard.
 - `theme.tsx` — **component-level** customization: layout slots and shared components (browser only).
 - `vite.config.ts` — **data-level** configuration, all passed to `fumadocsSource()` (read in Node).
@@ -82,7 +82,7 @@ A line containing only `<<< path` is replaced by a code fence with the file's co
 ## Agent-Specific Notes
 
 - Do not hand-edit `dist/` — it is generated.
-- When adding a top-level docs category, update both `content/docs/meta.json` and the category's own `meta.json` with `"root": true`, plus an `icon`.
+- When adding a top-level docs category, update both `content/docs/meta.json` (both `pages` and `order`) and the category's own `meta.json` with `"root": true`, plus an `icon`.
 - Site config (URL, title, edit-link, banner, nav, tokens, copy) lives in `vite.config.ts` under `fumadocsSource()`. Change `banner.id` to re-show the banner to everyone.
 - Slots are registered in `theme.tsx` and consumed by `<Slot name="..." ctx={...} />` in the layout. Available names are listed in `README.md`.
 - **markdown-it renderer rules must be synchronous.** Shiki's `codeToHtml` is async, so fences are highlighted ahead of time into a map (`MarkdownRenderer.render`) and the sync renderer only looks results up by token index.

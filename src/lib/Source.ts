@@ -74,6 +74,34 @@ export function sidebarRoot(slug: string, treeNodes?: PageTreeNode[]): PageTreeN
   return nodes
 }
 
+/** landing url of a root folder: its own index page, else its first descendant
+ *  page, else /docs — a category with no `index.md` must still be clickable. */
+function folderLanding(folder: PageTreeNode): string {
+  if (folder.url) return folder.url
+  for (const node of flattenTree(folder.children ?? [])) {
+    if (node.type === 'page' && node.url) return node.url
+  }
+  return '/docs'
+}
+
+/** all top-level root folders of a locale, plus the one owning `slug`.
+ *  Used by the sidebar category switcher (one-click directory jump). */
+export function rootFoldersOf(slug: string): {
+  folders: { node: PageTreeNode; href: string }[]
+  active?: PageTreeNode
+} {
+  const nodes = dataFor(localeOfSlug(slug)).tree
+  const url = urlBySlug(slug)
+  const roots = nodes.filter((n) => n.type === 'folder' && n.root)
+
+  const folders = roots.map((node) => ({ node, href: folderLanding(node) }))
+  const owns = (node: PageTreeNode) =>
+    node.url === url || flattenTree(node.children ?? []).some((n) => n.url === url)
+
+  const active = roots.find(owns)
+  return { folders, active }
+}
+
 /** find the parent folder of a slug and return its page children, skipping the slug itself.
  *  Used by DocsCategory — index pages list their siblings as cards. */
 export function getPageTreePeers(slug: string, treeNodes?: PageTreeNode[]): PageTreeNode[] {

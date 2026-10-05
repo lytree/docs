@@ -262,6 +262,8 @@ interface DirMeta {
   root?: boolean
   defaultOpen?: boolean
   pages?: MetaEntry[]
+  /** 仅根 meta.json 有意义：一级目录显示顺序，按目录名匹配 */
+  order?: string[]
 }
 
 /** map a single-key override object / separator object to (name, override) */
@@ -657,6 +659,16 @@ function buildLocaleData(
 
   const tree = buildFolderChildren(ctx, scanDir, locale)
 
+  // 一级目录顺序：根 meta.json 的 `order` 字段，不写则沿用 pages 的自然顺序
+  const rootOrder = readMeta(scanDir)?.order
+  const orderedTree = Array.isArray(rootOrder)
+    ? sortRootFolders(
+        tree,
+        rootOrder.filter((x): x is string => typeof x === 'string'),
+        locale,
+      )
+    : tree
+
   // ensure every page has been parsed (folders may not be referenced by meta.json)
   const walk = (dir: string) => {
     for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -681,7 +693,7 @@ function buildLocaleData(
     if (mdast) searchIndex.push(...extractSearchEntries(mdast, page, title))
   }
 
-  return { pages: [...ctx.pages.values()], tree, searchIndex }
+  return { pages: [...ctx.pages.values()], tree: orderedTree, searchIndex }
 }
 
 function scanContent(cwd: string, opts: FumadocsSourceOptions): SourceRoot {
@@ -783,6 +795,46 @@ async function applyHooks(root: SourceRoot, opts: FumadocsSourceOptions): Promis
   if (extraHead.length && Array.isArray(root.site.head)) {
     root.site.head = [...root.site.head, ...extraHead]
   }
+}
+
+// ---------------------------------------------------------------------------
+// root folder ordering (root `meta.json` -> `order`)
+// ---------------------------------------------------------------------------
+
+/**
+ * 按根 `meta.json` 的 `order` 字段重排页面树里的一级目录。
+ *
+ * 直接改树而不是在组件层排序，是为了让侧栏、分类下拉、搜索、上一篇/下一篇
+ * 全部看到同一个顺序。列在前面的按数组顺序走，其余分类保持原有相对顺序追加
+ * 到末尾 —— 这样新增分类时忘了写进 order 也不会消失。
+ */
+function sortRootFolders(tree: PageTreeNode[], order: string[], locale: string): PageTreeNode[] {
+  if (order.length === 0) return tree
+
+  const rank = new Map(order.map((name, i) => [name, i]))
+  const known = new Set<string>()
+  for (const n of tree) {
+    if (n.type === 'folder' && n.root) known.add(n.name)
+  }
+
+  const unknown = order.filter((name) => !known.has(name))
+  if (unknown.length) {
+    console.warn(
+      `[fumadocs-source] content/docs/meta.json 的 order 忽略了不存在的分类（${locale}）：${unknown.join(', ')}`,
+    )
+  }
+
+  // 未列出的 rank 为 Infinity，再按原下标兜底 —— 排序稳定，未列出的保持原相对次序
+  return tree
+    .map((node, i) => ({ node, i }))
+    .sort((a, b) => {
+      const ra =
+        a.node.type === 'folder' && a.node.root ? (rank.get(a.node.name) ?? Infinity) : Infinity
+      const rb =
+        b.node.type === 'folder' && b.node.root ? (rank.get(b.node.name) ?? Infinity) : Infinity
+      return ra !== rb ? ra - rb : a.i - b.i
+    })
+    .map((x) => x.node)
 }
 
 // ---------------------------------------------------------------------------

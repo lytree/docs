@@ -30,11 +30,6 @@ import s from './DocsLayout.module.scss'
 
 type PageNode = PageTreeNode & { type: 'page' }
 
-function isTabActive(folderUrl: string | undefined, currentUrl: string): boolean {
-  if (!folderUrl) return false
-  return currentUrl === folderUrl || currentUrl.startsWith(folderUrl + '/')
-}
-
 export const DocsLayout = defineComponent({
   name: 'DocsLayout',
   setup(_props, { slots }) {
@@ -51,7 +46,6 @@ export const DocsLayout = defineComponent({
 
     const locale = computed(() => localeOfSlug(currentSlug.value))
     const localeTree = computed(() => dataFor(locale.value).tree)
-    const rootFolders = computed(() => localeTree.value.filter((n) => n.type === 'folder' && n.root))
     const crumbs = computed(() => breadcrumb(currentSlug.value, localeTree.value))
     const currentUrl = computed(() => urlBySlug(currentSlug.value))
 
@@ -168,20 +162,7 @@ export const DocsLayout = defineComponent({
                 <span class={s.brandName}>{site.title}</span>
               </RouterLink>
 
-              {rootFolders.value.length > 0 && (
-                <nav class={s.tabsList} aria-label="主题">
-                  {rootFolders.value.map((folder) => (
-                    <RouterLink
-                      key={folder.name}
-                      to={folder.url ?? '/docs'}
-                      class={[s.tab, isTabActive(folder.url, currentUrl.value) && s.tabActive]}
-                    >
-                      {folder.icon && <span class={s.tabIcon}>{folder.icon}</span>}
-                      <span>{folder.title ?? folder.name}</span>
-                    </RouterLink>
-                  ))}
-                </nav>
-              )}
+              {/* 分类切换已移到左侧边栏顶部（CategorySwitcher），顶栏不再放分类标签 */}
 
               {/* 配置驱动的 nav（themeConfig.nav） */}
               {configNav.value.length > 0 && (

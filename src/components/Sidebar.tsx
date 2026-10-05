@@ -1,6 +1,7 @@
 import { defineComponent, ref, computed } from 'vue'
 import { useRoute, RouterLink } from 'vue-router'
 import { sidebarRoot, type PageTreeNode } from '../lib/Source'
+import { CategorySwitcher } from './CategorySwitcher'
 import s from './Sidebar.module.scss'
 
 interface Props {
@@ -179,6 +180,7 @@ export const Sidebar = defineComponent({
 
     return () => (
       <nav class={s.sidebar} aria-label="文档导航">
+        <CategorySwitcher onNavigate={() => emit('navigate')} />
         {rootFolders.value.length === 0 ? (
           <p class={s.empty}>暂无目录</p>
         ) : (

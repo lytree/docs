@@ -172,7 +172,7 @@ export interface SourceOptions {
 
   /** 顶部导航；不配置时由 root folders 自动生成 */
   nav?: NavItem[]
-  /** 侧边栏；不配置时回退到 meta.json 页面树 */
+  /** 侧边栏；不配置时回退到 meta.json 页面树（一级目录顺序见根 meta.json 的 `order`） */
   sidebar?: SidebarConfig
   /** 右侧目录 */
   outline?: OutlineConfig

@@ -16,16 +16,12 @@ const siteConfig = {
     title: '杨 ◦ 柳',
     description: '个人文档站 —— Java / dotnet / 数据库 / 中间件 等笔记。',
     lang: 'zh-CN',
-    banner: {
-      id: '2026-layout-parity',
-      text: '布局已接入 VitePress 体系 —— 插槽 · ::: 容器 · 文件导入 · 代码组',
-      link: 'https://github.com/lytree/docs',
-    },
+    // 公告栏：需要时打开即可（id 变更会让所有访客重新看到一次）
+    // banner: { id: '2026-layout-parity', text: '…', link: 'https://…' },
   },
 
   nav: [
     { label: '首页', to: '/', icon: '🏠' },
-    { label: '源码', to: 'https://github.com/lytree/docs', icon: '📦' },
   ],
 
   outline: { range: [2, 3] as [number, number], title: '本页目录' },
