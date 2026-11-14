@@ -16,58 +16,58 @@
 /*  运行时覆盖入口不变。配置层是 Fumadocs，视觉层跟 VitePress。       */
 /* ------------------------------------------------------------------ */
 :root {
-  /* core palette — light（对应 --vp-c-bg / --vp-c-text-1 / --vp-c-divider） */
-  --fd-background: #ffffff;
-  --fd-foreground: #3c3c43;
+  /* core palette — light（淡紫薰衣草底 + 深紫文字） */
+  --fd-background: #faf8fe;
+  --fd-foreground: #2f2742;
 
   --fd-card: #ffffff;
-  --fd-card-foreground: #3c3c43;
+  --fd-card-foreground: #2f2742;
 
   --fd-popover: #ffffff;
-  --fd-popover-foreground: #3c3c43;
+  --fd-popover-foreground: #2f2742;
 
   /* --vp-c-bg-alt / --vp-c-bg-soft */
-  --fd-muted: #f6f6f7;
-  --fd-muted-foreground: #67676c;
+  --fd-muted: #f4effb;
+  --fd-muted-foreground: #6f6386;
 
-  --fd-subtle: #f6f6f7;
-  --fd-subtle-foreground: #67676c;
+  --fd-subtle: #f5f1fb;
+  --fd-subtle-foreground: #6f6386;
 
-  --fd-border: #e2e2e3;
-  --fd-border-foreground: #3c3c43;
+  --fd-border: #e6ddf4;
+  --fd-border-foreground: #2f2742;
 
-  --fd-accent: #f6f6f7;
-  --fd-accent-foreground: #3c3c43;
+  --fd-accent: #f0eaf9;
+  --fd-accent-foreground: #3a2f52;
 
-  --fd-ring: #3451b2;
+  --fd-ring: #8b6fd6;
 
-  --fd-primary: #3451b2;
+  --fd-primary: #8b6fd6;
   --fd-primary-foreground: #ffffff;
 
   /* secondary */
-  --fd-secondary: #f6f6f7;
-  --fd-secondary-foreground: #3c3c43;
+  --fd-secondary: #f4effb;
+  --fd-secondary-foreground: #3a2f52;
 
   /* status — 与 VitePress custom block 的 soft 色一致 */
-  --fd-info: #67676c;
-  --fd-success: #1b1b1f;
+  --fd-info: #6f6386;
+  --fd-success: #2f2742;
   --fd-warning: #eab308;
   --fd-danger: #f43f5e;
-  --fd-caution: #8b5cf6;
+  --fd-caution: #8b6fd6;
 
   /* custom block 底色 —— rgba 由status 色派生，亮暗各一份 */
   --fd-info-soft: rgba(142, 150, 170, 0.14);
-  --fd-brand-soft: rgba(100, 108, 255, 0.14);
+  --fd-brand-soft: rgba(139, 111, 214, 0.14);
   --fd-warning-soft: rgba(234, 179, 8, 0.14);
   --fd-danger-soft: rgba(244, 63, 94, 0.14);
 
   /* 容器标题下的分隔线：soft 底色上的实色描边 */
   --fd-info-line: #8e96aa;
-  --fd-brand-line: #646cff;
+  --fd-brand-line: #8b6fd6;
   --fd-warning-line: #eab308;
   --fd-danger-line: #f43f5e;
 
-  --fd-code-line-highlight: rgba(142, 150, 170, 0.14);
+  --fd-code-line-highlight: rgba(139, 111, 214, 0.12);
 
   /* layout widths */
   --fd-layout-width: 1440px; /* --vp-layout-max-width: 90rem */
@@ -82,9 +82,9 @@
   --fd-overlay: rgba(0, 0, 0, 0.5);
 
   /* token 覆盖入口 —— fumadocsSource({ tokens }) 会在运行时重写以下变量 */
-  --fd-brand-1: #3451b2;
-  --fd-brand-2: #3a5ccc;
-  --fd-brand-3: #5672cd;
+  --fd-brand-1: #8b6fd6;
+  --fd-brand-2: #7357c2;
+  --fd-brand-3: #a78bfa;
   --fd-radius-sm: 6px;
   --fd-radius: 8px;
   --fd-radius-lg: 12px;
@@ -103,60 +103,60 @@
 }
 
 :root.dark {
-  --fd-background: #1b1b1f;
-  --fd-foreground: #dfdfd6;
+  --fd-background: #14101c;
+  --fd-foreground: #ece6f7;
 
-  --fd-card: #202127;
-  --fd-card-foreground: #dfdfd6;
+  --fd-card: #1b1626;
+  --fd-card-foreground: #ece6f7;
 
-  --fd-popover: #202127;
-  --fd-popover-foreground: #dfdfd6;
+  --fd-popover: #1b1626;
+  --fd-popover-foreground: #ece6f7;
 
-  --fd-muted: #161618;
-  --fd-muted-foreground: #98989f;
+  --fd-muted: #120e19;
+  --fd-muted-foreground: #a79cba;
 
-  --fd-subtle: #161618;
-  --fd-subtle-foreground: #98989f;
+  --fd-subtle: #120e19;
+  --fd-subtle-foreground: #a79cba;
 
-  --fd-border: #2e2e32;
-  --fd-border-foreground: #dfdfd6;
+  --fd-border: #2b2440;
+  --fd-border-foreground: #ece6f7;
 
-  --fd-accent: #202127;
-  --fd-accent-foreground: #dfdfd6;
+  --fd-accent: #221b30;
+  --fd-accent-foreground: #ece6f7;
 
-  --fd-ring: #a8b1ff;
+  --fd-ring: #b9a7ff;
 
-  --fd-primary: #a8b1ff;
-  --fd-primary-foreground: #1b1b1f;
+  --fd-primary: #b9a7ff;
+  --fd-primary-foreground: #14101c;
 
-  --fd-secondary: #202127;
-  --fd-secondary-foreground: #dfdfd6;
+  --fd-secondary: #1b1626;
+  --fd-secondary-foreground: #ece6f7;
 
-  --fd-info: #98989f;
-  --fd-success: #dfdfd6;
+  --fd-info: #a79cba;
+  --fd-success: #ece6f7;
   --fd-warning: #eab308;
   --fd-danger: #f43f5e;
   --fd-caution: #a78bfa;
 
-  /* custom block 底色 —— 暗色下统一到 0.16 alpha */
-  --fd-info-soft: rgba(101, 117, 133, 0.16);
-  --fd-brand-soft: rgba(100, 108, 255, 0.16);
+  /* custom block 底色 —— 暗色下统一到紫调 */
+  --fd-info-soft: rgba(139, 111, 214, 0.16);
+  --fd-brand-soft: rgba(139, 111, 214, 0.18);
   --fd-warning-soft: rgba(234, 179, 8, 0.16);
   --fd-danger-soft: rgba(244, 63, 94, 0.16);
 
-  --fd-info-line: #657585;
-  --fd-brand-line: #646cff;
+  --fd-info-line: #7a6e91;
+  --fd-brand-line: #8b6fd6;
   --fd-warning-line: #eab308;
   --fd-danger-line: #f43f5e;
 
-  --fd-code-line-highlight: rgba(101, 117, 133, 0.16);
+  --fd-code-line-highlight: rgba(139, 111, 214, 0.16);
 
-  /* brand 在暗色下按 VitePress 换用 indigo 的dark 档 */
-  --fd-brand-1: #a8b1ff;
-  --fd-brand-2: #5c73e7;
-  --fd-brand-3: #3e63dd;
+  /* brand 在暗色下换用淡紫的高亮档 */
+  --fd-brand-1: #b9a7ff;
+  --fd-brand-2: #8b6fd6;
+  --fd-brand-3: #7357c2;
 
-  --fd-overlay: rgba(0, 0, 0, 0.6);
+  --fd-overlay: rgba(20, 16, 28, 0.6);
 
   color-scheme: dark;
 }

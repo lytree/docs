@@ -49,11 +49,11 @@
   align-items: center;
   justify-content: center;
   border-radius: 7px;
-  background: linear-gradient(135deg, hsl(221 83% 53%), hsl(266 70% 55%));
+  background: linear-gradient(135deg, #8b6fd6, #b9a7e8);
   color: #fff;
   font-size: 12px;
   font-weight: 700;
-  box-shadow: 0 2px 8px -2px hsl(221 83% 53% / 0.5);
+  box-shadow: 0 2px 8px -2px rgba(139, 111, 214, 0.5);
 }
 
 .nav {
@@ -197,7 +197,7 @@
 }
 
 :global(.dark) .header .brandIcon {
-  box-shadow: 0 2px 10px -2px hsl(266 70% 55% / 0.6);
+  box-shadow: 0 2px 10px -2px rgba(139, 111, 214, 0.6);
 }
 
 /* ---- main ---- */
@@ -220,9 +220,9 @@
   height: 130%;
   z-index: -2;
   background:
-    radial-gradient(38rem 22rem at 18% 8%, hsl(221 83% 53% / 0.16), transparent 65%),
-    radial-gradient(32rem 20rem at 82% 12%, hsl(266 70% 55% / 0.14), transparent 65%),
-    radial-gradient(30rem 18rem at 50% 92%, hsl(173 80% 40% / 0.1), transparent 70%);
+    radial-gradient(38rem 22rem at 18% 8%, rgba(167, 139, 250, 0.18), transparent 65%),
+    radial-gradient(32rem 20rem at 82% 12%, rgba(139, 111, 214, 0.16), transparent 65%),
+    radial-gradient(30rem 18rem at 50% 92%, rgba(196, 181, 253, 0.12), transparent 70%);
   pointer-events: none;
 }
 
@@ -282,8 +282,8 @@
   width: 0.4rem;
   height: 0.4rem;
   border-radius: 50%;
-  background: hsl(142 65% 45%);
-  box-shadow: 0 0 0 3px hsl(142 65% 45% / 0.18);
+  background: #8b6fd6;
+  box-shadow: 0 0 0 3px rgba(139, 111, 214, 0.18);
 }
 
 .heroTitle {
@@ -296,7 +296,7 @@
 }
 
 .heroTitleAccent {
-  background: linear-gradient(100deg, hsl(221 83% 53%), hsl(266 70% 55%) 48%, hsl(173 70% 36%));
+  background: linear-gradient(100deg, #5f4b91, #8b6fd6 48%, #a78bfa);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -476,7 +476,7 @@
 }
 
 .noteKey {
-  color: hsl(35 92% 48%);
+  color: #7357c2;
 }
 
 .notePunct {
@@ -484,15 +484,39 @@
 }
 
 .noteStr {
-  color: hsl(142 55% 42%);
+  color: #8b6fd6;
 }
 
 .noteText {
-  color: hsl(221 83% 60%);
+  color: #6b5796;
 }
 
 .noteFn {
-  color: hsl(340 75% 55%);
+  color: #5f4b91;
+}
+
+:global(.dark) .heroTitleAccent {
+  background: linear-gradient(100deg, #c9b6f5, #b9a7ff 48%, #a78bfa);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+:global(.dark) .noteKey {
+  color: #c9b6f5;
+}
+
+:global(.dark) .noteStr {
+  color: #b9a7ff;
+}
+
+:global(.dark) .noteText {
+  color: #d8c7f8;
+}
+
+:global(.dark) .noteFn {
+  color: #a78bfa;
 }
 
 .noteHead {

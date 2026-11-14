@@ -33,7 +33,7 @@ const siteConfig = {
   },
 
   tokens: {
-    brand: { '1': '#3b6ef6', '2': '#2f5fe0' },
+    brand: { '1': '#8b6fd6', '2': '#7357c2' },
     fontFamily: {
       body: "-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif",
       mono: "ui-monospace, 'Menlo', 'Monaco', 'Consolas', 'Liberation Mono', 'Courier New', monospace",

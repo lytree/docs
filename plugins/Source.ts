@@ -908,32 +908,32 @@ function ogSvg(root: SourceRoot, title: string, description: string | undefined,
   const titleSpans = titleLines
     .map(
       (l, i) =>
-        `<text x="96" y="${270 + i * 84}" font-size="68" font-weight="700" fill="#f2f3f8">${escapeXml(l)}</text>`,
+        `<text x="96" y="${270 + i * 84}" font-size="68" font-weight="700" fill="#f6f1ff">${escapeXml(l)}</text>`,
     )
     .join('\n  ')
   const descY = 270 + titleLines.length * 84 + 24
   const descSpans = descLines
     .map(
       (l, i) =>
-        `<text x="96" y="${descY + i * 44}" font-size="30" fill="#9aa1b5">${escapeXml(l)}</text>`,
+        `<text x="96" y="${descY + i * 44}" font-size="30" fill="#b3a7c9">${escapeXml(l)}</text>`,
     )
     .join('\n  ')
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#0b0b10"/>
-      <stop offset="1" stop-color="#171e31"/>
+      <stop offset="0" stop-color="#14101c"/>
+      <stop offset="1" stop-color="#241a35"/>
     </linearGradient>
   </defs>
   <rect width="1200" height="630" fill="url(#bg)"/>
-  <circle cx="1050" cy="80" r="220" fill="#2f6feb" fill-opacity="0.12"/>
-  <circle cx="120" cy="580" r="160" fill="#7c5cff" fill-opacity="0.10"/>
-  <rect x="48" y="48" width="1104" height="534" rx="24" fill="none" stroke="#2f6feb" stroke-opacity="0.35" stroke-width="2"/>
-  <text x="96" y="150" font-size="34" font-weight="600" fill="#7c8cf8">${escapeXml(root.site.title)}</text>
-  <text x="1104" y="150" text-anchor="end" font-size="26" fill="#5b6172">${escapeXml(crumb)}</text>
+  <circle cx="1050" cy="80" r="220" fill="#8b6fd6" fill-opacity="0.18"/>
+  <circle cx="120" cy="580" r="160" fill="#a78bfa" fill-opacity="0.14"/>
+  <rect x="48" y="48" width="1104" height="534" rx="24" fill="none" stroke="#8b6fd6" stroke-opacity="0.4" stroke-width="2"/>
+  <text x="96" y="150" font-size="34" font-weight="600" fill="#b9a7ff">${escapeXml(root.site.title)}</text>
+  <text x="1104" y="150" text-anchor="end" font-size="26" fill="#7d7295">${escapeXml(crumb)}</text>
   ${titleSpans}
   ${descSpans}
-  <text x="96" y="540" font-size="26" fill="#5b6172">${escapeXml(root.site.url)}</text>
+  <text x="96" y="540" font-size="26" fill="#7d7295">${escapeXml(root.site.url)}</text>
 </svg>`
 }
 
