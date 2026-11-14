@@ -1,6 +1,6 @@
 # Repository Guidelines
 
-A contributor guide for this Vue 3 + TSX documentation site, hosted at [doc.prideyang.top](https://doc.prideyang.top).
+A contributor guide for this Vue 3 + TSX documentation site, hosted at [doc.lytree.top](https://doc.lytree.top).
 The content pipeline is **markdown-it** (same approach as VitePress); the site framework is a Vue 3 + TSX port of Fumadocs.
 
 ## Project Structure & Module Organization

@@ -63,7 +63,7 @@ public final class ConnectionPool {
 
 ```ts [config.ts]
 export default defineConfig({
-  site: { title: '杨 ◦ 柳', url: 'https://doc.prideyang.top' },
+  site: { title: '杨 ◦ 柳', url: 'https://doc.lytree.top' },
 })
 ```
 
