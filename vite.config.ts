@@ -12,7 +12,7 @@ import { fileImportPlugin } from './plugins/FileImport.ts'
  */
 const siteConfig = {
   site: {
-    url: 'https://doc.prideyang.top',
+    url: 'https://doc.lytree.top',
     title: '杨 ◦ 柳',
     description: '个人文档站 —— Java / dotnet / 数据库 / 中间件 等笔记。',
     lang: 'zh-CN',
